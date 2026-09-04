@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 10 — RAII e Regra dos Zero/Três/Cinco | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link active"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 10 — RAII e Regra dos Zero/Três/Cinco</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="../unidade-1/aula09-ciclo-de-vida.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula11-smart-pointers.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 10 · 02/jun</span>
+          <h2 class="slide-title hero-title">RAII e Regra dos Zero/Três/Cinco</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Compreender a Regra do Zero, Três e Cinco</li><li>Decidir quando o compilador gera operações corretas vs. quando declarar manualmente</li><li>Implementar o idioma copy-and-swap para atribuição segura</li><li>Identificar vazamentos de recursos com AddressSanitizer</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v1.1 — effect_chain com RAII</div>
+            <p><code>effect_chain</code> armazena <code>unique_ptr&lt;effect&gt;</code>. A regra do zero em ação: nenhuma operação especial declarada — o compilador gera tudo corretamente.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="regra-zero">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Regra do Zero</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Regra do Zero — deixe o compilador trabalhar</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ✅ Regra do Zero: usa apenas membros que gerenciam si próprios
+class track {
+    std::string      name_;      // gerencia sua memória
+    audio_buffer     buffer_;    // gerencia sua memória
+    float            gain_ = 1.0f;
+    bool             muted_ = false;
+public:
+    // SEM destrutor, SEM construtor de cópia, SEM atribuição
+    // O compilador gera tudo corretamente — faça membros simples
+};
+
+// ❌ Evite: declarar destrutor sem necessidade
+class track_errada {
+    ~track_errada() {}  // agora cópia e movimento precisam ser declarados!
+};</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Quando a regra do zero é impossível</div>
+              <p>Apenas quando a classe gerencia um recurso que não tem wrapper RAII: sockets, handles de arquivo C-style, handles de GPU. Nesses casos, encapsule em uma classe dedicada de RAII e use a regra do zero no resto.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="regra-cinco">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Regra dos Três e Cinco</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Operação</th><th>Gerada pelo compilador?</th><th>Regra</th></tr></thead><tbody><tr><td>Construtor padrão</td><td>Sim, se nenhum outro declarado</td><td>—</td></tr><tr><td>Destrutor</td><td>Sempre</td><td>Se declara → declara os outros</td></tr><tr><td>Cópia (ctor + assign)</td><td>Sim, se não há move declarado</td><td>Regra dos Três</td></tr><tr><td>Movimento (ctor + assign)</td><td>Não se há destrutor declarado</td><td>Regra dos Cinco</td></tr></tbody></table>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Quando declarar a Regra dos Cinco</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Necessário quando você gerencia recurso manualmente
+class raw_buffer {
+    float* data_;
+    std::size_t size_;
+public:
+    raw_buffer(std::size_t n) : data_{new float[n]}, size_{n} {}
+    ~raw_buffer()                        { delete[] data_; }
+    raw_buffer(const raw_buffer& o)      : data_{new float[o.size_]}, size_{o.size_}
+                                         { std::copy(o.data_, o.data_+size_, data_); }
+    raw_buffer& operator=(raw_buffer o)  { swap(*this, o); return *this; } // copy-and-swap
+    raw_buffer(raw_buffer&& o) noexcept  : data_{o.data_}, size_{o.size_}
+                                         { o.data_ = nullptr; o.size_ = 0; }
+    raw_buffer& operator=(raw_buffer&& o) noexcept { swap(*this, o); return *this; }
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente uma classe C++17 <code>audio_file_handle</code> que gerencia um <code>FILE*</code> com RAII. Aplique a Regra dos Cinco completa. Mostre por que o operador de atribuição usa o idioma copy-and-swap."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente: (1) declaram o destrutor mas esquecem o move constructor, (2) não marcam o move constructor com <code>noexcept</code>, (3) implementam o operador de atribuição sem copy-and-swap, criando código não exception-safe.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Usando o código do exercício <code>llms/code-review-exercises/ex01_audio_buffer.cpp</code>, identifique a qual 'regra' (0, 3 ou 5) pertence o bug. Aplique a regra correta.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>A classe <code>audio_buffer</code> do Sintonia usa a Regra do Zero. Adicione um membro <code>FILE* log_file_ = nullptr;</code> sem alterar mais nada. O que acontece na cópia? Corrija o problema.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente o idioma copy-and-swap para uma classe de sua escolha. Demonstre que a implementação é exception-safe mesmo se o construtor de cópia lançar.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Compile com <code>-fsanitize=address</code> um programa que viola a Regra dos Três (declara destrutor mas não cópia). Copie o objeto e observe o double-free. Corrija aplicando a Regra dos Cinco.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="../unidade-1/aula09-ciclo-de-vida.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Ciclo de Vida</span></div>
+      </a>
+      <a href="aula11-smart-pointers.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Smart Pointers</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

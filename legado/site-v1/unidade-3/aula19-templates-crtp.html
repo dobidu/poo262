@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 19 — Templates e CRTP | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link active"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 19 — Templates e CRTP</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="../unidade-2/aula18-polimorfismo-dinamico.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula20-concepts-ranges.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 19 · 09/jul</span>
+          <h2 class="slide-title hero-title">Templates de Classe e CRTP</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Criar templates de função e de classe em C++17</li><li>Usar <code>static_assert</code> para restringir tipos</li><li>Compreender o CRTP (Curiously Recurring Template Pattern)</li><li>Contrastar polimorfismo estático com dinâmico em performance</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v2.0 — buffer&lt;T&gt;</div>
+            <p><code>audio_buffer</code> se torna <code>buffer&lt;T&gt;</code>: funciona com <code>float</code>, <code>int16_t</code> e <code>double</code>. Veja <code>include/sintonia/core/buffer.hpp</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="templates">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Templates de Função e Classe</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Template de classe — buffer<T></span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// C++17: static_assert para restringir T (sem concepts)
+template <typename T>
+class buffer {
+    static_assert(std::is_arithmetic<T>::value,
+                  "buffer<T>: T deve ser tipo aritmético");
+public:
+    explicit buffer(std::size_t n, float sr = 44100.0f);
+
+    T& operator[](std::size_t i);
+    const T& operator[](std::size_t i) const;
+
+    // Template membro: converte para outro tipo
+    template <typename U>
+    buffer<U> convert_to(float scale = 1.0f) const;
+
+    std::size_t size()        const noexcept;
+    float       sample_rate() const noexcept;
+private:
+    std::vector<T> data_;
+    float          sample_rate_;
+    template <typename U> friend class buffer; // acesso entre instâncias
+};
+
+// Instâncias: cada uma é uma classe diferente em compilação
+buffer<float>   fp32{1024, 44100.0f};
+buffer<int16_t> pcm16{1024, 44100.0f};
+auto converted = fp32.convert_to<int16_t>(32767.0f);</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="crtp">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">CRTP — Polimorfismo Estático sem vtable</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">CRTP no Sintonia v2.0 — examples/v20_templates/</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Base template: conhece o tipo derivado em compilação
+template <typename Derived>
+class static_effect {
+public:
+    // Chamada resolvida em compilação — zero overhead de vtable
+    void process(buffer<float>& b) {
+        static_cast<Derived*>(this)->process_impl(b);
+    }
+    std::string name() const {
+        return static_cast<const Derived*>(this)->name_impl();
+    }
+};
+
+class static_gain : public static_effect<static_gain> {
+public:
+    explicit static_gain(float f) : factor_{f} {}
+    void process_impl(buffer<float>& b) {
+        b.apply([this](float s) { return s * factor_; });
+    }
+    std::string name_impl() const { return "StaticGain"; }
+private:
+    float factor_;
+};
+
+// Função template: aceita qualquer static_effect sem vtable
+template <typename Effect>
+void apply_to(Effect& eff, buffer<float>& b) {
+    eff.process(b);  // resolvido em compilação
+}</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="static-vs-dynamic">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Estático vs. Dinâmico: Trade-offs</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Aspecto</th><th>Polimorfismo Dinâmico</th><th>Polimorfismo Estático (CRTP)</th></tr></thead><tbody><tr><td>Overhead</td><td>1 indireção por chamada</td><td>Zero (inlined pelo compilador)</td></tr><tr><td>Tamanho do binário</td><td>Menor (1 cópia)</td><td>Maior (instanciado para cada T)</td></tr><tr><td>Tempo de compilação</td><td>Rápido</td><td>Lento (para muitos tipos)</td></tr><tr><td>Extensibilidade runtime</td><td>Sim (plugins)</td><td>Não (tipos fixos em compilação)</td></tr><tr><td>Uso típico</td><td>Cadeia de efeitos, plugins</td><td>Processamento de buffer, DSP</td></tr></tbody></table></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente um template C++17 <code>ring_buffer&lt;T, N&gt;</code> de tamanho fixo em compilação (N como parâmetro não-tipo). Inclua push, pop, peek, size, empty. Use static_assert para N > 0."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs com templates frequentemente: (1) usam concepts C++20 quando o requisito é C++17, (2) declaram a implementação em .cpp em vez de .hpp (templates precisam estar visíveis), (3) esquecem a especialização parcial necessária para void.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Instancie <code>buffer&lt;T&gt;</code> para os tipos <code>float</code>, <code>double</code>, <code>int16_t</code>, <code>int32_t</code> e <code>char</code>. Para <code>char</code>, o <code>static_assert</code> rejeita? Por quê?</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Implemente um template de função <code>transform_buffer</code> que recebe um <code>buffer&lt;T&gt;</code> e um callable, e retorna um <code>buffer&lt;U&gt;</code> com os valores transformados. Funciona com lambda.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Meça a diferença de performance entre a cadeia de efeitos virtual (Aula 18) e uma versão CRTP equivalente em um buffer de 10M samples. Compile com <code>-O2</code>.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Implemente o CRTP para adicionar <code>clone()</code> automaticamente em toda a hierarquia de efeitos, sem repetir código em cada subclasse.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="../unidade-2/aula18-polimorfismo-dinamico.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Polimorfismo Dinâmico</span></div>
+      </a>
+      <a href="aula20-concepts-ranges.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Concepts e Ranges</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

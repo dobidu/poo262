@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 13 — Sobrecarga de Operadores | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link active"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 13 — Sobrecarga de Operadores</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula12-move-semantics.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula14-testes-catch2.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 13 · 16/jun</span>
+          <h2 class="slide-title hero-title">Sobrecarga de Operadores Idiomática</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Decidir quando sobrecarregar um operador (e quando não)</li><li>Implementar operadores aritméticos como membros e como funções livres</li><li>Implementar <code>operator&lt;&lt;</code> para streams</li><li>Seguir as convenções do C++ moderno</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v1.3 — Operadores em sample e audio_buffer</div>
+            <p><code>sample</code> ganha <code>+</code>, <code>*</code>, <code>+=</code>, <code>*=</code> e <code>&lt;&lt;</code>. Mix de buffers via <code>operator+=</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="membro-livre">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Membro vs. Função Livre</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Convenções: quando usar membro vs. livre</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ✅ MEMBRO: operadores que modificam *this (+=, -=, *=, [])
+sample& sample::operator+=(const sample& rhs) noexcept {
+    float novo = amplitude_ + rhs.amplitude_;
+    amplitude_ = std::clamp(novo, -MAX_AMP, MAX_AMP);  // com clipping
+    return *this;
+}
+
+// ✅ LIVRE: operadores binários simétricos (+, -, *, ==)
+// Livre permite: 2.0f * s E s * 2.0f (comutativo)
+sample operator+(sample lhs, const sample& rhs) noexcept {
+    return lhs += rhs;   // reutiliza o membro — DRY
+}
+sample operator*(sample lhs, float factor) noexcept {
+    return lhs *= factor;
+}
+sample operator*(float factor, sample rhs) noexcept {  // comutativo
+    return rhs *= factor;
+}
+
+// ✅ LIVRE: operator<< para streams (não pode ser membro de ostream)
+std::ostream& operator<<(std::ostream& os, const sample& s) {
+    return os << "sample(" << s.amplitude() << " @ "
+              << static_cast<int>(s.sample_rate()) << " Hz)";
+}</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="audio-buffer-ops">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Operadores para audio_buffer</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Mix e ganho via operadores</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Mistura dois buffers sample a sample
+audio_buffer& audio_buffer::operator+=(const audio_buffer& rhs) {
+    if (data_.size() != rhs.data_.size())
+        throw std::invalid_argument("tamanhos incompatíveis");
+    for (std::size_t i = 0; i < data_.size(); ++i)
+        data_[i] += rhs.data_[i];
+    return *this;
+}
+
+// Aplicar ganho escalar
+audio_buffer& audio_buffer::operator*=(float factor) noexcept {
+    for (auto& s : data_) s *= factor;
+    return *this;
+}
+
+// Acessar sample por índice — com e sem const
+float& audio_buffer::operator[](std::size_t i) {
+    if (i >= data_.size()) throw std::out_of_range("indice fora do intervalo");
+    return data_[i];
+}
+const float& audio_buffer::operator[](std::size_t i) const {
+    if (i >= data_.size()) throw std::out_of_range("indice fora do intervalo");
+    return data_[i];
+}
+
+// Função livre: mix de dois buffers
+audio_buffer mix(audio_buffer lhs, const audio_buffer& rhs) {
+    return lhs += rhs;  // reutiliza operator+=
+}</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente sobrecargas de operadores para uma classe <code>spectrum</code> (espectro de frequências). Inclua: +, -, *, +=, -=, *=, ==, !=, [], <<. Siga as convenções: membro para operadores de modificação, livre para simétricos."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente: (1) implementam todos os operadores como membros, quebrando a comutatividade, (2) esquecem a versão <code>const</code> de <code>operator[]</code>, (3) não retornam <code>*this</code> de <code>operator+=</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Implemente <code>operator==</code> e <code>operator!=</code> para <code>sample</code>. Por que comparar floats com <code>==</code> é problemático? Implemente uma comparação com tolerância usando <code>std::abs</code>.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Adicione <code>operator[]</code> a <code>audio_buffer</code> (const e não-const). Verifique nos testes que a versão const pode ser chamada em objetos <code>const audio_buffer</code>.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente uma função <code>normalize()</code> que retorna um novo buffer com peak_level() == 1.0f, usando os operadores existentes de <code>audio_buffer</code>. Escreva o teste Catch2 correspondente.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Por que não se deve sobrecarregar <code>operator&&</code>, <code>operator||</code> e <code>operator,</code>? Pesquise e explique o problema com o short-circuit evaluation.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula12-move-semantics.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Move Semantics</span></div>
+      </a>
+      <a href="aula14-testes-catch2.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Testes com Catch2</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

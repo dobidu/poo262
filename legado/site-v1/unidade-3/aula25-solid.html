@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 25 — SOLID | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+        <a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+        <a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+        <a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+        <a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+        <a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+        <a href="aula25-solid.html" class="nav-link active"><span class="num">25.</span>SOLID</a>
+        <a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+        <a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 25 — SOLID</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula24-serializacao.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula26-design-patterns.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+
+    <main class="slides-container">
+
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 25 · 30/jul</span>
+          <h2 class="slide-title hero-title">Princípios SOLID</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul>
+              <li>Identificar e aplicar cada um dos cinco princípios SOLID</li>
+              <li>Reconhecer violações em código existente (incluindo código gerado por LLM)</li>
+              <li>Refatorar aplicando o princípio correto</li>
+              <li>Ver SOLID em ação no Sintonia v2.3</li>
+            </ul>
+          </div>
+          <div class="callout callout-sintonia">
+            <span class="callout-icon">🎵</span>
+            <div class="callout-content">
+              <div class="callout-title">Sintonia v2.3 — Refatoração SOLID</div>
+              <p>Hoje refatoramos o Sintonia aplicando SOLID. O arquivo <code>extras/broken-designs/v2.3-before-solid/broken_manager.hpp</code> mostra a versão <em>antes</em> — com todas as violações deliberadas para exercício.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visão geral -->
+      <section class="slide" id="overview">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Os Cinco Princípios</h2>
+        </div>
+        <div class="slide-body">
+          <table class="slide-table">
+            <thead>
+              <tr><th>Letra</th><th>Princípio</th><th>Em uma frase</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong style="color:#7aa2f7">S</strong></td><td>Single Responsibility</td><td>Uma classe, um motivo para mudar</td></tr>
+              <tr><td><strong style="color:#9ece6a">O</strong></td><td>Open/Closed</td><td>Aberta para extensão, fechada para modificação</td></tr>
+              <tr><td><strong style="color:#e0af68">L</strong></td><td>Liskov Substitution</td><td>Subclasse pode substituir a base sem surpresas</td></tr>
+              <tr><td><strong style="color:#73daca">I</strong></td><td>Interface Segregation</td><td>Interfaces pequenas e específicas</td></tr>
+              <tr><td><strong style="color:#bb9af7">D</strong></td><td>Dependency Inversion</td><td>Dependa de abstrações, não de concretas</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SRP -->
+      <section class="slide" id="srp">
+        <div class="slide-header">
+          <span class="slide-num">S</span>
+          <h2 class="slide-title">SRP — Single Responsibility Principle</h2>
+        </div>
+        <div class="slide-body">
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">❌ Violação — audio_manager faz tudo</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ❌ VIOLA SRP: 4 responsabilidades em 1 classe
+class audio_manager {
+    void load_from_file(const std::string&amp; path);  // responsabilidade 1
+    void apply_effect(const std::string&amp; type);    // responsabilidade 2
+    void save_to_file(const std::string&amp; path);    // responsabilidade 3
+    void print_stats();                             // responsabilidade 4
+    // 4 motivos para mudar → 4 violações de SRP
+};</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">✅ Correto — cada classe tem uma responsabilidade</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ✅ SRP: responsabilidades separadas
+class audio_processor  { void process(audio_buffer&amp;); };
+class audio_reporter   { void print_stats(const audio_buffer&amp;); };
+class project_repository { // ver DIP abaixo
+    virtual void save(const project&amp;, const std::string&amp;) = 0;
+    virtual std::unique_ptr&lt;project&gt; load(const std::string&amp;) = 0;
+};</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- OCP -->
+      <section class="slide" id="ocp">
+        <div class="slide-header">
+          <span class="slide-num">O</span>
+          <h2 class="slide-title">OCP — Open/Closed Principle</h2>
+        </div>
+        <div class="slide-body">
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">❌ → ✅ via polimorfismo</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ❌ VIOLA OCP: adicionar distortion exige modificar apply_effect
+void apply_effect(const std::string&amp; type) {
+    if      (type == "gain")    applyGain();
+    else if (type == "reverb")  applyReverb();
+    // Nova linha obrigatória para cada novo efeito ← viola OCP
+}
+
+// ✅ OCP: hierarquia polimórfica — aberta para extensão
+class effect {
+    virtual void process(audio_buffer&amp; buf) = 0;  // interface estável
+};
+class gain_effect    : public effect { void process(audio_buffer&amp;) override; };
+class reverb_effect  : public effect { void process(audio_buffer&amp;) override; };
+// Para adicionar distortion: cria nova classe, NÃO modifica código existente
+class distortion_effect : public effect { void process(audio_buffer&amp;) override; };</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- DIP -->
+      <section class="slide" id="dip">
+        <div class="slide-header">
+          <span class="slide-num">D</span>
+          <h2 class="slide-title">DIP — Dependency Inversion Principle</h2>
+        </div>
+        <div class="slide-body">
+          <p>Módulos de alto nível (<code>audio_engine</code>) não devem depender de módulos de baixo nível (<code>json_repository</code>). Ambos devem depender de abstrações.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">DIP em ação — include/sintonia/io/project_repository.hpp</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ── Abstração (alto nível depende disso) ──────────────────────────
+class project_repository {
+public:
+    virtual void save(const project&amp;, const std::string&amp; path) = 0;
+    virtual std::unique_ptr&lt;project&gt; load(const std::string&amp; path) = 0;
+    virtual ~project_repository() = default;
+};
+
+// ── Concreta para produção ────────────────────────────────────────
+class json_repository : public project_repository {
+    void save(const project&amp;, const std::string&amp;) override { /* JSON */ }
+    std::unique_ptr&lt;project&gt; load(const std::string&amp;) override { /* JSON */ }
+};
+
+// ── Concreta para testes — sem arquivo físico! ────────────────────
+class memory_repository : public project_repository {
+    std::unordered_map&lt;std::string, project&gt; store_;
+    void save(const project&amp; p, const std::string&amp; k) override { store_[k] = p; }
+    std::unique_ptr&lt;project&gt; load(const std::string&amp; k) override {
+        return std::make_unique&lt;project&gt;(store_.at(k));
+    }
+};
+
+// ── audio_engine depende da ABSTRAÇÃO — injeção de dependência ───
+class audio_engine {
+    project_repository&amp; repo_;   // referência para abstração
+public:
+    explicit audio_engine(project_repository&amp; r) : repo_{r} {}
+    void save_project(const project&amp; p) { repo_.save(p, "projeto.json"); }
+};</code></pre>
+          </div>
+
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Testabilidade como métrica de DIP</div>
+              <p>Se você não consegue testar <code>audio_engine</code> sem criar um arquivo no disco, DIP está sendo violado. Com DIP correto, injeta-se <code>memory_repository</code> nos testes — nenhum arquivo necessário.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LLM -->
+      <section class="slide" id="llm">
+        <div class="slide-header">
+          <span class="slide-num">🤖</span>
+          <h2 class="slide-title">SOLID e LLMs</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt de análise SOLID</div>
+              <p><em>"Analise o código abaixo e identifique violações dos cinco princípios SOLID. Para cada violação: (1) nomeie o princípio, (2) cite a linha problemática, (3) explique o impacto (o que fica difícil), (4) mostre o código refatorado. Mantenha C++17 e snake_case."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">LLMs erram frequentemente em</div>
+              <p><strong>LSP:</strong> confundem com "override correto" — não é a mesma coisa. <strong>DIP:</strong> aceitam "usa abstração" sem verificar se a dependência ainda é concreta no ponto de construção. <strong>ISP:</strong> às vezes recomendam interfaces genéricas demais.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exercícios -->
+      <section class="slide" id="exercicios">
+        <div class="slide-header">
+          <span class="slide-num">Ex.</span>
+          <h2 class="slide-title">Exercícios Propostos</h2>
+        </div>
+        <div class="exercises">
+          <div class="exercise-item">
+            <span class="exercise-num">01.</span>
+            <span>Abra <code>extras/broken-designs/v2.3-before-solid/broken_manager.hpp</code>. Identifique as 5 violações SOLID (uma por princípio). Compare com o gabarito em <code>broken_manager_exercise.md</code>.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">02.</span>
+            <span>Refatore <code>audio_engine</code> aplicando DIP: crie a interface <code>project_repository</code>, implemente <code>json_repository</code> e <code>memory_repository</code> (para testes). Escreva um teste Catch2 que usa <code>memory_repository</code> sem criar arquivo no disco.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">03.</span>
+            <span>Use um LLM para analisar o <code>broken_manager.hpp</code> e identificar as violações SOLID. Compare a análise do LLM com o gabarito. Em quais princípios ele acertou? Em quais ele errou ou confundiu?</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">04.</span>
+            <span>Dada a interface <code>effect</code> do Sintonia, verifique se ela segue ISP: há algum método que efeitos simples (como <code>gain_effect</code>) são forçados a implementar sem usar? Se sim, proponha a segregação.</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="lecture-nav">
+      <a href="aula24-serializacao.html" class="lecture-nav-btn prev">
+        ←
+        <div>
+          <span class="label">anterior</span>
+          <span class="title">Serialização</span>
+        </div>
+      </a>
+      <a href="aula26-design-patterns.html" class="lecture-nav-btn next">
+        <div>
+          <span class="label">próxima</span>
+          <span class="title">Padrões de Projeto</span>
+        </div>
+        →
+      </a>
+    </nav>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

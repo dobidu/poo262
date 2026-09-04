@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 06 - UML leve · POO · UFPB</title>
+<meta name="description" content="Aula 06 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): UML leve.">
+<meta property="og:title" content="Aula 06 - UML leve · POO · UFPB">
+<meta property="og:description" content="Aula 06 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): UML leve.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-05.html">
+<link rel="next" href="aula-07.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE I</span><span class="sep">/</span><span class="atual">AULA 06</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a06">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06" aria-current="page"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>UML leve</h1>
+    <p class="sub">UNIDADE I · AULA 06 DE 26 · CAP. 6 DO LIVRO</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Ler e criar diagramas de classes UML</li><li>Usar Mermaid para diagramas embutidos em Markdown</li><li>Modelar relações: associação, composição, herança, realização</li><li>Criar diagramas de sequência para fluxos importantes</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>UML Leve: Diagramas de Classes e Sequência</h2></div></section>
+<section class="slide" id="classes"><div class="slide__cab"><span class="slide__n">02</span><h2>Diagrama de Classes</h2></div><p>A classe é um retângulo de três compartimentos: o nome no topo, os atributos no meio, as operações no fundo. A visibilidade vem como prefixo de cada linha - <code>+</code> para <code>public</code>, <code>-</code> para <code>private</code>, <code>#</code> para <code>protected</code> -, e o tipo de retorno vem à direita, depois dos parênteses. É notação de leitura, e não de geração: nada aqui produz código, e o que ela tem de fazer é caber no quadro da sala.</p>
+<p>O diagrama abaixo é o do Deriva na v0.3, que é o sistema que existe nesta aula. São quatro classes de domínio e nenhuma herança, e as duas coisas são decisões: a primeira relação de generalização chega na v1.0, com <code>entidade</code>. O que vale conferir nele é a ausência - <code>grade</code> não mostra nenhuma das operações especiais, porque segue a regra do zero, e a Aula 09 é sobre por que isso é decisão e não omissão.</p>
+<div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">DIAGRAMA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ exemplos/deriva/diagramas/mapa-tem-grade.mmd:8 ├</span><span class="moldura__canto">─┐</span></div><div class="painel painel--sistema"><pre style="margin:0;padding:var(--e2);font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado);overflow-x:auto">classDiagram
+  class mapa {
+    -string nome_
+    -grade grade_
+    -vetor2 entrada_
+    -marca_de_vida marca_
+    +carregar(path) optional~mapa~
+    +de_texto(string_view, string) optional~mapa~
+    +despejar() string
+  }
+  class grade {
+    -int largura_
+    -int altura_
+    -vector~celula~ celulas_
+    +dentro(vetor2) bool
+    +em(vetor2) celula&amp;
+  }
+  class celula {
+    +int energia
+    +int massa
+    +char glifo
+    +char sigla
+  }
+  class vetor2 {
+    +int x
+    +int y
+    +manhattan(vetor2) int
+  }
+  class marca_de_vida {
+    -string nome_
+  }
+  class instrumento {
+    +anotar(string_view, string_view) void
+    +traco() vector~string~
+  }
+  mapa &quot;1&quot; *-- &quot;1&quot; grade
+  mapa &quot;1&quot; *-- &quot;1&quot; vetor2 : entrada
+  mapa &quot;1&quot; *-- &quot;1&quot; marca_de_vida
+  grade &quot;1&quot; *-- &quot;largura x altura&quot; celula
+  grade ..&gt; vetor2 : parametro</pre></div><div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+<aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · As relações que o Deriva de fato tem</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><code>mapa</code> <strong>compõe</strong> uma <code>grade</code>, uma <code>vetor2</code> - o ponto de entrada - e uma <code>marca_de_vida</code>, todas por valor e todas 1 para 1. <code>grade</code> <strong>compõe</strong> as <code>celula</code> num <code>std::vector</code>, uma por posição.</p><p><code>grade</code> <strong>depende de</strong> <code>vetor2</code>: recebe-o como parâmetro em <code>dentro()</code> e em <code>em()</code>, e não guarda nenhum. <code>mapa</code> depende de <code>std::filesystem::path</code>, que é o parâmetro de <code>carregar()</code>. E <code>marca_de_vida</code> depende de <code>instrumento</code>, onde ela anota o nascimento e a morte de quem a carrega.</p><p><code>mapa</code> compõe <code>grade</code> porque um mapa <em>tem</em> uma grade: ele tem nome e ponto de entrada, que grade nenhuma tem, e não faz sentido passar um mapa onde se espera uma grade. Os dois trechos extraídos mais abaixo nesta página conferem isso contra o código, e é por isso que o desenho usa losango e não triângulo.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Notação</th><th>Significado</th><th>Em C++</th></tr></thead><tbody><tr><td>△ ─ seta fechada vazia</td><td>Herança, ou generalização: “é um”</td><td><code>class drone : public entidade</code></td></tr><tr><td>◆ ─ losango preenchido</td><td>Composição: a parte não existe sem o todo</td><td><code>class mapa { grade grade_; };</code></td></tr><tr><td>◇ ─ losango vazio</td><td>Agregação: a parte pode existir sem o todo</td><td>coleção de ponteiros para <code>entidade</code> (Aula 12)</td></tr><tr><td>△ ┄ moldura tracejada</td><td>Realização de interface pura</td><td><code>class sonda_reparadora : public sonda, public i_reparavel</code></td></tr><tr><td>┄&gt; seta tracejada</td><td>Dependência, ou uso: métrica de acoplamento</td><td><code>grade::em(vetor2)</code> recebe <code>vetor2</code> por parâmetro</td></tr></tbody></table></div></section>
+<section class="slide" id="sequencia"><div class="slide__cab"><span class="slide__n">03</span><h2>Diagrama de Sequência</h2></div><p>O diagrama de sequência mostra como os objetos interagem ao longo do tempo, lido de cima para baixo, com as mensagens trocadas horizontalmente entre as linhas de vida. No Deriva há uma coincidência útil: o traço de ciclo de vida da Aula 08 <em>é</em> um diagrama de sequência em texto - uma linha por mensagem, na ordem exata em que aconteceu -, e é essa ordem que os testes afirmam. Então existe um jeito de conferir o desenho: rodar <code>./build/deriva --replay roteiro.txt --traco</code> e comparar. Diagrama de sequência que discorda do traço está errado.</p>
+<p>O caso de uso que vale desenhar é o carregamento de um setor, e ele tem <strong>dois</strong> desfechos, porque a ausência de resultado é o assunto: <code>mapa::carregar</code> devolve <code>std::optional&lt;mapa&gt;</code>, e o <code>nullopt</code> é resposta, e não falha.</p>
+<div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">DIAGRAMA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ exemplos/deriva/diagramas/carregar-em-sequencia.mmd:8 ├</span><span class="moldura__canto">─┐</span></div><div class="painel painel--sistema"><pre style="margin:0;padding:var(--e2);font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado);overflow-x:auto">sequenceDiagram
+  participant m as main()
+  participant mp as mapa (estatico)
+  participant g as grade
+  m-&gt;&gt;mp: carregar(caminho)
+  mp-&gt;&gt;mp: exists() e is_regular_file()
+  alt arquivo ausente ou irregular
+    mp--&gt;&gt;m: nullopt
+  else arquivo lido
+    mp-&gt;&gt;mp: de_texto(texto, nome)
+    mp-&gt;&gt;mp: parte em fileiras (string_view, sem alocar)
+    alt fileira de largura divergente
+      mp--&gt;&gt;m: nullopt
+    else fileiras consistentes
+      mp-&gt;&gt;g: grade(largura, altura)
+      g--&gt;&gt;mp: grade construida
+      mp-&gt;&gt;g: em(p) para cada celula
+      mp-&gt;&gt;mp: acha a entrada &#x27;@&#x27;
+      mp--&gt;&gt;m: optional~mapa~ com valor
+    end</pre></div><div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></section>
+<section class="slide" id="mermaid"><div class="slide__cab"><span class="slide__n">04</span><h2>Mermaid - Diagramas em Texto</h2></div><p>Mermaid descreve o diagrama em texto, o que faz dele versionável: o desenho entra no repositório ao lado do código que ele descreve, e o <code>git diff</code> mostra o que mudou no desenho. Este é o diagrama de uma classe só, a <code>grade</code> de <code>include/deriva/grade.hpp</code>, e é o menor exemplo completo da notação.</p>
+<div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">DIAGRAMA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ exemplos/deriva/diagramas/grade-sozinha.mmd:8 ├</span><span class="moldura__canto">─┐</span></div><div class="painel painel--sistema"><pre style="margin:0;padding:var(--e2);font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado);overflow-x:auto">classDiagram
+  class grade {
+    -int largura_
+    -int altura_
+    -vector~celula~ celulas_
+    +grade(int largura, int altura)
+    +largura() int
+    +altura() int
+    +dentro(vetor2 p) bool
+    +em(vetor2 p) celula&amp;
+    +bytes_das_celulas() size_t</pre></div><div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · Desenhe antes de abrir o cabeçalho</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Faça o seu diagrama da <code>grade</code> antes de ler <code>grade.hpp</code>, e depois compare. Onde os dois divergirem, um dos dois está errado, e descobrir qual é o exercício 2 desta aula.</p><p>O GitHub renderiza Mermaid nativamente em arquivo <code>.md</code>, então o desenho pode morar no <code>LEIA-ME.md</code> do seu diretório. E há um cuidado que vale para todo diagrama: ele envelhece calado. Os dois trechos extraídos mais abaixo nesta página existem porque um diagrama envelhecido continuou afirmando que <code>sonda</code> era <code>final</code> depois de a v1.7 retirar a promessa.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste Tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Dado o código C++ abaixo, gere um diagrama de classes Mermaid que captura: classes, atributos (com tipos), métodos (com visibilidade +/-), e relações (herança, composição). Inclua multiplicidades."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>LLMs frequentemente omitem multiplicidades ('1' vs '0..*'), confundem agregação com composição, e ignoram interfaces puras. Peça explicitamente cada elemento.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">2 trechos do Deriva, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>`mapa` TEM uma grade, e o desenho usa losango e não triângulo. Diagrama que ninguém confere envelhece calado, e a versão desenhada passa a descrever um sistema que já não existe.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_uml.cpp · o diagrama, conferido</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;relacao 3: composicao, e nao heranca&quot;</span>) {
+  <span class="tk-com">// `mapa` TEM uma grade. O desenho usa losango, e nao triangulo.</span>
+  <span class="tk-kw">static_assert</span>(!<span class="tk-tipo">std::is_base_of_v</span>&lt;grade, mapa&gt;);
+  <span class="tk-com">// `mundo` TEM um mapa, e possui as entidades.</span>
+  <span class="tk-kw">static_assert</span>(!<span class="tk-tipo">std::is_base_of_v</span>&lt;mapa, mundo&gt;);
+  SUCCEED(<span class="tk-str">&quot;as duas sao composicao, e o desenho tem de mostrar losango&quot;</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_uml.cpp:37</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwicmVsYWNhbyAzOiBjb21wb3NpY2FvLCBlIG5hbyBoZXJhbmNhXCIpIHtcbiAgLy8gYG1hcGFgIFRFTSB1bWEgZ3JhZGUuIE8gZGVzZW5obyB1c2EgbG9zYW5nbywgZSBuYW8gdHJpYW5ndWxvLlxuICBzdGF0aWNfYXNzZXJ0KCFzdGQ6OmlzX2Jhc2Vfb2ZfdjxncmFkZSwgbWFwYT4pO1xuICAvLyBgbXVuZG9gIFRFTSB1bSBtYXBhLCBlIHBvc3N1aSBhcyBlbnRpZGFkZXMuXG4gIHN0YXRpY19hc3NlcnQoIXN0ZDo6aXNfYmFzZV9vZl92PG1hcGEsIG11bmRvPik7XG4gIFNVQ0NFRUQoXCJhcyBkdWFzIHNhbyBjb21wb3NpY2FvLCBlIG8gZGVzZW5obyB0ZW0gZGUgbW9zdHJhciBsb3NhbmdvXCIpO1xufSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`sonda` era `final` na v1.0 e deixou de ser na v1.7. Este teste protege contra a tentação de o diagrama continuar dizendo que é - foi um diagrama envelhecido que motivou escrever este arquivo.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_uml.cpp · o que o desenho não pode afirmar</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// O que o desenho NAO deve afirmar, e este teste protege contra a tentacao.</span>
+TEST_CASE(<span class="tk-str">&quot;sonda NAO e final, e o desenho nao pode dizer que e&quot;</span>) {
+  <span class="tk-kw">static_assert</span>(!<span class="tk-tipo">std::is_final_v</span>&lt;sonda&gt;,
+                <span class="tk-str">&quot;era final na v1.0, e a v1.7 retirou a promessa&quot;</span>);
+  <span class="tk-kw">static_assert</span>(<span class="tk-tipo">std::is_final_v</span>&lt;drone&gt;, <span class="tk-str">&quot;esta continua sendo folha&quot;</span>);
+  <span class="tk-kw">static_assert</span>(<span class="tk-tipo">std::is_final_v</span>&lt;item&gt;);
+  <span class="tk-kw">static_assert</span>(<span class="tk-tipo">std::is_final_v</span>&lt;sonda_reparadora&gt;);
+  SUCCEED(<span class="tk-str">&quot;tres folhas e uma base intermediaria, e o desenho tem de refletir isso&quot;</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_uml.cpp:72</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gTyBxdWUgbyBkZXNlbmhvIE5BTyBkZXZlIGFmaXJtYXIsIGUgZXN0ZSB0ZXN0ZSBwcm90ZWdlIGNvbnRyYSBhIHRlbnRhY2FvLlxuVEVTVF9DQVNFKFwic29uZGEgTkFPIGUgZmluYWwsIGUgbyBkZXNlbmhvIG5hbyBwb2RlIGRpemVyIHF1ZSBlXCIpIHtcbiAgc3RhdGljX2Fzc2VydCghc3RkOjppc19maW5hbF92PHNvbmRhPixcbiAgICAgICAgICAgICAgICBcImVyYSBmaW5hbCBuYSB2MS4wLCBlIGEgdjEuNyByZXRpcm91IGEgcHJvbWVzc2FcIik7XG4gIHN0YXRpY19hc3NlcnQoc3RkOjppc19maW5hbF92PGRyb25lPiwgXCJlc3RhIGNvbnRpbnVhIHNlbmRvIGZvbGhhXCIpO1xuICBzdGF0aWNfYXNzZXJ0KHN0ZDo6aXNfZmluYWxfdjxpdGVtPik7XG4gIHN0YXRpY19hc3NlcnQoc3RkOjppc19maW5hbF92PHNvbmRhX3JlcGFyYWRvcmE-KTtcbiAgU1VDQ0VFRChcInRyZXMgZm9saGFzIGUgdW1hIGJhc2UgaW50ZXJtZWRpYXJpYSwgZSBvIGRlc2VuaG8gdGVtIGRlIHJlZmxldGlyIGlzc29cIik7XG59IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-uml">
+  <div class="slide__cab"><span class="slide__n">07</span><h2>Diagrama de classes, como ferramenta</h2></div>
+  <p>O diagrama aqui é ferramenta, e não figura pronta: você acrescenta classe e relação, e o
+  desenho se reorganiza. Os níveis são <em>calculados</em> a partir da profundidade de
+  herança, em vez de fixados por posições escolhidas à mão; remover uma classe leva os
+  descendentes com ela, porque herança <em>é</em> dependência, e o diagrama não a esconde.</p>
+  <section class="interativo" data-uml aria-label="Diagrama de classes interativo da hierarquia do Deriva">
+    <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">HIERARQUIA DO DERIVA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ 3 a 8 classes ├</span><span class="moldura__canto">─┐</span></div>
+    <div class="int__palco"><div class="uml" data-uml-palco></div></div>
+    <div class="int__controles">
+      <span class="cenarios__rot">ACRESCENTAR</span>
+      <div class="cenarios"><button class="cen" type="button" data-add="entidade" aria-pressed="true">entidade</button><button class="cen" type="button" data-add="sonda" aria-pressed="true">sonda</button><button class="cen" type="button" data-add="drone" aria-pressed="true">drone</button><button class="cen" type="button" data-add="item" aria-pressed="false">item</button><button class="cen" type="button" data-add="i_reparo" aria-pressed="false">i_reparavel</button><button class="cen" type="button" data-add="reparadora" aria-pressed="false">sonda_reparadora</button><button class="cen" type="button" data-add="componente" aria-pressed="false">componente</button><button class="cen" type="button" data-add="mochila" aria-pressed="false">mochila</button></div>
+      <div class="grupo" style="margin-left:auto">
+        <button class="bt" type="button" data-uml-reset>↺ INICIAL</button>
+      </div>
+    </div>
+    <div class="int__estado" data-uml-estado aria-live="polite"></div>
+    <div class="int__legenda">
+      <span class="rot">LEGENDA</span>
+      <p><span style="color:var(--fosforo)">△ ─ herança pública</span> ·
+      <span style="color:var(--frio)">△ ┄ implementação de interface (moldura tracejada)</span> ·
+      <span style="color:var(--apagado)">◆ ─ composição</span> · <em>nome em itálico</em> = abstrata ·
+      <span style="color:var(--fosforo)">método em âmbar</span> = virtual ·
+      <span style="color:var(--fosforo);font-style:italic">itálico</span> = puramente virtual.</p>
+    </div>
+    <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+  </section>
+</section>
+<section class="slide" id="int-revisor"><div class="slide__cab"><span class="slide__n">08</span><h2>Revisor com rubrica</h2></div><p>Código oo gerado, plausível e defeituoso, com cada item da rubrica acendendo a falha. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="revisor" tabindex="0"></section></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">09</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Desenhe em Mermaid o diagrama de classes de um sistema de biblioteca: livro (título, ISBN, ano), autor (nome, biografia), biblioteca (a coleção de livros), empréstimo (livro, usuário, data). Indique as relações corretas e diga, em cada caso, por que <strong>não</strong> é herança.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Desenhe o diagrama de classes do Deriva v0.3 a partir dos cabeçalhos em <code>exemplos/deriva/include/deriva/</code>, sem olhar o desenho desta aula. Depois compare: você acertou as relações, e inventou alguma que o código não tem?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Escreva o diagrama de sequência do empréstimo de livro do exercício 1: o usuário solicita, a biblioteca confere a disponibilidade, registra o empréstimo, devolve a confirmação. Inclua o desfecho em que o livro não está disponível, e diga que tipo de retorno em C++17 você usaria para representá-lo.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>A v1.7 do Deriva traz <code>sonda_reparadora</code>, que herda de <code>sonda</code> e de <code>i_reparavel</code>: é o diamante. Desenhe-o, marcando a interface pura com moldura tracejada, e diga por que esse diamante é inofensivo. Depois pare: <code>sonda</code> era <code>final</code> na v1.0. O que o seu desenho teria de mudar, e por que a promessa foi retirada?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 7 do livro v1 e de <code>unidade-1/aula07-uml-leve</code>.</p><p>Diagramas passam a ser do Deriva.</p></div></details>
+  <nav class="nav-pe">
+    <a href="aula-05.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Linguagens e sistemas de tipos</div></a>
+    <div class="meio">AULA 06 / 26</div>
+    <a href="aula-07.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Classes, objetos e o contador `vivos`</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

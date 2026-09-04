@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 02 - Infraestrutura do programador C++ · POO · UFPB</title>
+<meta name="description" content="Aula 02 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Infraestrutura do programador C++.">
+<meta property="og:title" content="Aula 02 - Infraestrutura do programador C++ · POO · UFPB">
+<meta property="og:description" content="Aula 02 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Infraestrutura do programador C++.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-01.html">
+<link rel="next" href="aula-03.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE I</span><span class="sep">/</span><span class="atual">AULA 02</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a02">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02" aria-current="page"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Infraestrutura do programador C++</h1>
+    <p class="sub">UNIDADE I · AULA 02 DE 26 · CAP. 2 DO LIVRO · DERIVA v0.0 · LAB-01</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Configurar o ambiente da disciplina: g++, CMake, gdb e git</li><li>Compreender o modelo de compilação de C++ - pré-processamento, compilação e ligação - e saber em qual das três etapas cada erro aparece</li><li>Ler o <code>CMakeLists.txt</code> do Deriva: o padrão fixado, o portão de aviso, e a dependência externa por <code>FetchContent</code> em tag imutável</li><li>Rodar o portão <code>make verifica</code> e dizer qual das quatro condições falhou</li><li>Parar o <code>gdb</code> num destrutor e ler de onde ele foi chamado</li><li>Comparar C++ com C e com Python nas construções mais comuns</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Transição Python/C → C++ Moderno</h2></div></section>
+<section class="slide" id="ambiente"><div class="slide__cab"><span class="slide__n">02</span><h2>Configurando o Ambiente</h2></div><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>bash</span><span class="arq">Instalação e verificação (Ubuntu/Debian)</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com"># Compilador e ferramentas</span>
+sudo apt install -y build-essential g++ cmake git gdb
+
+<span class="tk-com"># Verificar. O material foi medido no g++ 13.3; C++17 completo vem do 9 em</span>
+<span class="tk-com"># diante, e o CMakeLists.txt do Deriva exige CMake 3.16 ou mais recente.</span>
+g++ --version
+cmake --version
+
+<span class="tk-com"># Primeiro programa, do echo ao binário que roda</span>
+echo <span class="tk-str">&#x27;#include &lt;iostream&gt;
+int main() { std::cout &lt;&lt; &quot;Olá, C++17!\n&quot;; }&#x27;</span> &gt; hello.cpp
+g++ -std=c++17 -Wall -Wextra -Wpedantic hello.cpp -o hello &amp;&amp; ./hello
+
+<span class="tk-com"># O Deriva, que já vem com CMakeLists.txt: configurar, compilar, rodar o portão</span>
+cd exemplos/deriva
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --parallel
+make verifica</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span></div></div>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · Sanitizer é ferramenta, e não portão</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><code>-fsanitize=address,undefined</code> aponta acesso fora de limite, dupla liberação e comportamento indefinido em execução, com a linha do defeito e a linha da alocação. Use-o sempre que ele estiver disponível.</p><p>Ele não é critério de aceitação nesta disciplina, e a razão é material: as máquinas do laboratório não o têm. No Deriva ele fica atrás da opção <code>DERIVA_SANITIZERS</code>, desligada por padrão, e se liga com <code>make sanitizers</code>. O que ocupa o lugar dele são as três técnicas que não dependem de ferramenta externa - o contador de instâncias vivas da Aula 07, a instrumentação de ciclo de vida da Aula 08, e o <code>gdb</code> com ponto de parada em destrutor.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="compilacao"><div class="slide__cab"><span class="slide__n">03</span><h2>Modelo de Compilação</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Etapa</th><th>Entrada</th><th>Saída</th><th>Ferramenta</th></tr></thead><tbody><tr><td>Pré-processamento</td><td>arquivo.cpp + headers</td><td>arquivo.ii (expandido)</td><td>cpp</td></tr><tr><td>Compilação</td><td>arquivo.ii</td><td>arquivo.o (objeto)</td><td>g++</td></tr><tr><td>Linkagem</td><td>*.o + bibliotecas</td><td>executável</td><td>ld (via g++)</td></tr><tr><td>CMake</td><td>CMakeLists.txt</td><td>Makefile/Ninja</td><td>cmake</td></tr></tbody></table></div>
+<p>Saber em qual das três etapas o erro aconteceu economiza mais tempo de depuração que qualquer outra coisa desta aula. Símbolo não declarado é erro de <strong>compilação</strong>, e a mensagem cita o arquivo e a linha do uso; símbolo declarado e nunca definido é erro de <strong>ligação</strong>, e a mensagem - <code>undefined reference to</code> - não se parece nada com a primeira, não traz linha nenhuma, e aparece no fim, quando ninguém está mais olhando para o código que a causou.</p>
+<p>A linha de compilação da disciplina não é digitada à mão em exercício nenhum: ela é o que o CMake gera a partir do <code>CMakeLists.txt</code>, com o padrão fixado e o conjunto de avisos embutido em cada invocação do compilador. É por isso que o Deriva se opera em dois comandos - <code>cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</code> para configurar e <code>cmake --build build --parallel</code> para compilar - e não em uma chamada de <code>g++ -c</code> por arquivo seguida de uma de ligação. Os trechos do <code>CMakeLists.txt</code> extraídos mais abaixo nesta página são o arquivo que produz essa linha.</p></section>
+<section class="slide" id="c-para-cpp"><div class="slide__cab"><span class="slide__n">04</span><h2>De C e Python para C++</h2></div><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">Equivalências: Python/C → C++17 - o arquivo inteiro, e ele compila</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-pre">#include &lt;iostream&gt;</span>
+<span class="tk-pre">#include &lt;vector&gt;</span>
+
+<span class="tk-com">// Python: def f(x) -&gt; int:     C: int f(int x)</span>
+<span class="tk-kw">int</span> f(<span class="tk-kw">int</span> x) { <span class="tk-kw">return</span> x * <span class="tk-num">2</span>; }              <span class="tk-com">// C++ - tipos obrigatórios</span>
+
+<span class="tk-kw">int</span> main() {
+  <span class="tk-com">// Python: print(&quot;hello&quot;)       C: printf(&quot;hello\n&quot;)</span>
+  <span class="tk-tipo">std::cout</span> &lt;&lt; <span class="tk-str">&quot;hello&quot;</span> &lt;&lt; <span class="tk-str">&#x27;\n&#x27;</span>;             <span class="tk-com">// C++ - sem &#x27;\n&#x27; faltando</span>
+
+  <span class="tk-com">// Python: x = [1, 2, 3]        C: int arr[] = {1, 2, 3};</span>
+  <span class="tk-tipo">std::vector</span>&lt;<span class="tk-kw">int</span>&gt; v = {<span class="tk-num">1</span>, <span class="tk-num">2</span>, <span class="tk-num">3</span>};           <span class="tk-com">// C++ - dimensionado em execução</span>
+
+  <span class="tk-com">// Python: for x in lista:      C: for (int i = 0; i &lt; n; i++)</span>
+  <span class="tk-kw">for</span> (<span class="tk-kw">int</span> x : v) <span class="tk-tipo">std::cout</span> &lt;&lt; f(x) &lt;&lt; <span class="tk-str">&#x27; &#x27;</span>; <span class="tk-com">// C++ - sobre o contêiner, sem índice</span>
+  <span class="tk-tipo">std::cout</span> &lt;&lt; <span class="tk-str">&#x27;\n&#x27;</span>;
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiI2luY2x1ZGUgPGlvc3RyZWFtPlxuI2luY2x1ZGUgPHZlY3Rvcj5cblxuLy8gUHl0aG9uOiBkZWYgZih4KSAtPiBpbnQ6ICAgICBDOiBpbnQgZihpbnQgeClcbmludCBmKGludCB4KSB7IHJldHVybiB4ICogMjsgfSAgICAgICAgICAgICAgLy8gQysrIC0gdGlwb3Mgb2JyaWdhdMOzcmlvc1xuXG5pbnQgbWFpbigpIHtcbiAgLy8gUHl0aG9uOiBwcmludChcImhlbGxvXCIpICAgICAgIEM6IHByaW50ZihcImhlbGxvXFxuXCIpXG4gIHN0ZDo6Y291dCA8PCBcImhlbGxvXCIgPDwgJ1xcbic7ICAgICAgICAgICAgIC8vIEMrKyAtIHNlbSAnXFxuJyBmYWx0YW5kb1xuXG4gIC8vIFB5dGhvbjogeCA9IFsxLCAyLCAzXSAgICAgICAgQzogaW50IGFycltdID0gezEsIDIsIDN9O1xuICBzdGQ6OnZlY3RvcjxpbnQ-IHYgPSB7MSwgMiwgM307ICAgICAgICAgICAvLyBDKysgLSBkaW1lbnNpb25hZG8gZW0gZXhlY3XDp8Ojb1xuXG4gIC8vIFB5dGhvbjogZm9yIHggaW4gbGlzdGE6ICAgICAgQzogZm9yIChpbnQgaSA9IDA7IGkgPCBuOyBpKyspXG4gIGZvciAoaW50IHggOiB2KSBzdGQ6OmNvdXQgPDwgZih4KSA8PCAnICc7IC8vIEMrKyAtIHNvYnJlIG8gY29udMOqaW5lciwgc2VtIMOtbmRpY2VcbiAgc3RkOjpjb3V0IDw8ICdcXG4nO1xufSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste Tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Tenho experiência em Python e estou aprendendo C++17. Mostre as 10 principais diferenças que vão me pegar de surpresa, com exemplos de código nos dois lados. Foque em: gerenciamento de memória, tipos, includes, e comportamento de strings."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>LLMs tendem a listar diferenças óbvias (ponto e vírgula, chaves) e ignorar as perigosas: undefined behavior, object slicing, e a diferença entre cópia e referência em tipos não-primitivos.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">7 trechos do Deriva, 2 deliberadamente quebrados, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>O núcleo não conhece UI nenhuma. É esta separação, e não uma promessa, que faz o argumento do segundo front-end da Aula 26 fechar.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cmake</span><span class="arq">CMakeLists.txt · a biblioteca do núcleo</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com"># ---------------------------------------------------------------------------</span>
+<span class="tk-com"># o núcleo: nada de UI aqui dentro. É esta separação que faz o argumento do</span>
+<span class="tk-com"># segundo front-end (Aula 26) fechar - e ela existe desde a v0.2.</span>
+<span class="tk-com"># ---------------------------------------------------------------------------</span>
+add_library(deriva_nucleo
+  src/contador.cpp
+  src/instrumento.cpp
+  src/grade.cpp
+  src/mapa.cpp
+  src/entidade.cpp
+  src/mundo.cpp
+  src/estacao.cpp
+  src/fov.cpp
+  src/reparadora.cpp
+  src/inspetor.cpp
+  src/erro.cpp
+  src/inventario.cpp
+  src/partida.cpp
+  src/fila_de_comandos.cpp
+  src/apresentacao.cpp
+  src/padroes.cpp
+  src/solid.cpp
+  comparativo/grade_procedural.cpp
+  tipos/despacho.cpp
+  src/terminal_bruto.cpp
+)</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/CMakeLists.txt:21</span></div></div><p>Os avisos incidem no núcleo e só nele. FTXUI e Catch2 entram como SYSTEM logo abaixo - para que o aviso deles não conte, e para que ninguém se esconda atrás deles.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cmake</span><span class="arq">CMakeLists.txt · o portão de warning</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com"># O portão de zero warning incide sobre ISTO, e só. Dependência de terceiro</span>
+<span class="tk-com"># entra como SYSTEM mais abaixo, justamente para que o aviso dela não conte -</span>
+<span class="tk-com"># e para que ninguém se esconda atrás dela.</span>
+target_compile_options(deriva_nucleo PRIVATE
+  -Wall -Wextra -Wpedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast
+  -Wcast-align -Wunused -Woverloaded-virtual -Wconversion -Wsign-conversion
+  -Wdouble-promotion -Wformat=2
+)</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/CMakeLists.txt:51</span></div></div><p>A tag não flutua. A v5.0.0 declara cxx_std_17; as v6/v7 podem elevar o padrão exigido e derrubar o alvo da disciplina.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cmake</span><span class="arq">CMakeLists.txt · FTXUI com tag fixa</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>FetchContent_Declare(ftxui
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI.git
+  GIT_TAG v5.0.0
+  GIT_SHALLOW TRUE
+  SYSTEM
+)</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/CMakeLists.txt:93</span></div></div><p>A terceira das três técnicas que substituem o sanitizer ausente. É ela que mostra, na Aula 11, o destrutor da derivada nunca sendo alcançado quando se deleta por ponteiro da base.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>make</span><span class="arq">Makefile · gdb com ponto de parada em destrutor</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com"># Aula 08 e 11: provar que o destrutor roda - e onde ele não roda.</span>
+gdb-dtor: compila
+	@gdb -batch -ex <span class="tk-str">&#x27;break deriva::mapa::~mapa&#x27;</span> -ex run -ex <span class="tk-str">&#x27;info locals&#x27;</span> -ex bt \
+	     -ex <span class="tk-str">&#x27;continue&#x27;</span> --args ./$(BUILD)/deriva --render 2&gt;&amp;1 | head -30</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/Makefile:71</span></div></div><p>O `operator[]` do `vector` não confere limite - `at()` conferiria, e é a escolha que a versão boa deixa explícita para quem chama. O ASan aponta a linha da escrita E a linha da alocação, que é a informação que faltava.</p><div class="codigo" data-estado="falha"><div class="codigo__cab"><span>cpp</span><span class="arq">sanitizers/defeitos_de_memoria.cpp · sem `dentro()` ao lado</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// DEFEITO 1 · acesso fora de limite.</span>
+<span class="tk-com">//</span>
+<span class="tk-com">// Sem `dentro()` ao lado, esta função aceita qualquer posição. O</span>
+<span class="tk-com">// `operator[]` do vector não confere - `at()` conferiria, e é a escolha que</span>
+<span class="tk-com">// a versão boa deixa explícita.</span>
+[[nodiscard]] celula&amp; em(<span class="tk-kw">int</span> x, <span class="tk-kw">int</span> y) {
+  <span class="tk-kw">return</span> celulas_[<span class="tk-kw">static_cast</span>&lt;<span class="tk-tipo">std::size_t</span>&gt;(y) * <span class="tk-kw">static_cast</span>&lt;<span class="tk-tipo">std::size_t</span>&gt;(largura_) +
+                  <span class="tk-kw">static_cast</span>&lt;<span class="tk-tipo">std::size_t</span>&gt;(x)];
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="falha">▲ QUEBRADO DE PROPÓSITO</span> · <span class="arq">exemplos/deriva/sanitizers/defeitos_de_memoria.cpp:57</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gREVGRUlUTyAxIMK3IGFjZXNzbyBmb3JhIGRlIGxpbWl0ZS5cbi8vXG4vLyBTZW0gYGRlbnRybygpYCBhbyBsYWRvLCBlc3RhIGZ1bsOnw6NvIGFjZWl0YSBxdWFscXVlciBwb3Npw6fDo28uIE9cbi8vIGBvcGVyYXRvcltdYCBkbyB2ZWN0b3IgbsOjbyBjb25mZXJlIC0gYGF0KClgIGNvbmZlcmlyaWEsIGUgw6kgYSBlc2NvbGhhIHF1ZVxuLy8gYSB2ZXJzw6NvIGJvYSBkZWl4YSBleHBsw61jaXRhLlxuW1tub2Rpc2NhcmRdXSBjZWx1bGEmIGVtKGludCB4LCBpbnQgeSkge1xuICByZXR1cm4gY2VsdWxhc19bc3RhdGljX2Nhc3Q8c3RkOjpzaXplX3Q-KHkpICogc3RhdGljX2Nhc3Q8c3RkOjpzaXplX3Q-KGxhcmd1cmFfKSArXG4gICAgICAgICAgICAgICAgICBzdGF0aWNfY2FzdDxzdGQ6OnNpemVfdD4oeCldO1xufSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Com literais, o g++ dobra a conta, vê o estouro e avisa por `-Woverflow`. Com os valores vindo de fora ele não tem o que dobrar, o aviso desaparece, e o estouro passa a acontecer em execução. O compilador pega o que consegue ver, e é por isso que o defeito real nunca chega com número escrito no código.</p><div class="codigo" data-estado="falha"><div class="codigo__cab"><span>cpp</span><span class="arq">sanitizers/defeitos_de_memoria.cpp · o estouro que não avisa</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// As dimensões vêm de FORA - de linha de comando, como vêm de um arquivo</span>
+<span class="tk-com">// de mapa no Deriva de verdade. E é essa a diferença que importa.</span>
+<span class="tk-com">//</span>
+<span class="tk-com">// Escrito com literais - `const int p = 50000 * 50000;` - o g++ dobra a</span>
+<span class="tk-com">// conta em tempo de compilação, vê o estouro e avisa: `-Woverflow`,</span>
+<span class="tk-com">// &quot;integer overflow in expression of type &#x27;int&#x27; results in</span>
+<span class="tk-com">// &#x27;-1794967296&#x27;&quot;. O defeito não embarca.</span>
+<span class="tk-com">//</span>
+<span class="tk-com">// Com os valores vindo de fora, o compilador não tem o que dobrar, o aviso</span>
+<span class="tk-com">// desaparece, e o estouro passa a acontecer em execução. É assim que ele</span>
+<span class="tk-com">// chega em produção: não com número escrito no código, mas com número</span>
+<span class="tk-com">// lido de um arquivo que alguém editou.</span>
+<span class="tk-kw">const</span> <span class="tk-kw">int</span> largura = <span class="tk-tipo">std::atoi</span>(<span class="tk-str">&quot;50000&quot;</span>);
+<span class="tk-kw">const</span> <span class="tk-kw">int</span> altura = <span class="tk-tipo">std::atoi</span>(<span class="tk-str">&quot;50000&quot;</span>);
+<span class="tk-kw">const</span> <span class="tk-kw">int</span> produto = largura * altura;       <span class="tk-com">// &lt;-- o estouro, sem aviso</span>
+<span class="tk-tipo">std::printf</span>(<span class="tk-str">&quot;   largura x altura ... %d  &lt;-- deveria ser 2500000000\n&quot;</span>, produto);
+<span class="tk-tipo">std::printf</span>(<span class="tk-str">&quot;   como size_t ........ %zu\n&quot;</span>, <span class="tk-kw">static_cast</span>&lt;<span class="tk-tipo">std::size_t</span>&gt;(produto));
+<span class="tk-tipo">std::puts</span>(<span class="tk-str">&quot;   a conta acontece em int, e nenhum static_cast depois a conserta.&quot;</span>);
+<span class="tk-tipo">std::puts</span>(<span class="tk-str">&quot;   a versao boa converte CADA fator ANTES de multiplicar.&quot;</span>);</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="falha">▲ QUEBRADO DE PROPÓSITO</span> · <span class="arq">exemplos/deriva/sanitizers/defeitos_de_memoria.cpp:99</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gQXMgZGltZW5zw7VlcyB2w6ptIGRlIEZPUkEgLSBkZSBsaW5oYSBkZSBjb21hbmRvLCBjb21vIHbDqm0gZGUgdW0gYXJxdWl2b1xuLy8gZGUgbWFwYSBubyBEZXJpdmEgZGUgdmVyZGFkZS4gRSDDqSBlc3NhIGEgZGlmZXJlbsOnYSBxdWUgaW1wb3J0YS5cbi8vXG4vLyBFc2NyaXRvIGNvbSBsaXRlcmFpcyAtIGBjb25zdCBpbnQgcCA9IDUwMDAwICogNTAwMDA7YCAtIG8gZysrIGRvYnJhIGFcbi8vIGNvbnRhIGVtIHRlbXBvIGRlIGNvbXBpbGHDp8OjbywgdsOqIG8gZXN0b3VybyBlIGF2aXNhOiBgLVdvdmVyZmxvd2AsXG4vLyBcImludGVnZXIgb3ZlcmZsb3cgaW4gZXhwcmVzc2lvbiBvZiB0eXBlICdpbnQnIHJlc3VsdHMgaW5cbi8vICctMTc5NDk2NzI5NidcIi4gTyBkZWZlaXRvIG7Do28gZW1iYXJjYS5cbi8vXG4vLyBDb20gb3MgdmFsb3JlcyB2aW5kbyBkZSBmb3JhLCBvIGNvbXBpbGFkb3IgbsOjbyB0ZW0gbyBxdWUgZG9icmFyLCBvIGF2aXNvXG4vLyBkZXNhcGFyZWNlLCBlIG8gZXN0b3VybyBwYXNzYSBhIGFjb250ZWNlciBlbSBleGVjdcOnw6NvLiDDiSBhc3NpbSBxdWUgZWxlXG4vLyBjaGVnYSBlbSBwcm9kdcOnw6NvOiBuw6NvIGNvbSBuw7ptZXJvIGVzY3JpdG8gbm8gY8OzZGlnbywgbWFzIGNvbSBuw7ptZXJvXG4vLyBsaWRvIGRlIHVtIGFycXVpdm8gcXVlIGFsZ3XDqW0gZWRpdG91LlxuY29uc3QgaW50IGxhcmd1cmEgPSBzdGQ6OmF0b2koXCI1MDAwMFwiKTtcbmNvbnN0IGludCBhbHR1cmEgPSBzdGQ6OmF0b2koXCI1MDAwMFwiKTtcbmNvbnN0IGludCBwcm9kdXRvID0gbGFyZ3VyYSAqIGFsdHVyYTsgICAgICAgLy8gPC0tIG8gZXN0b3Vybywgc2VtIGF2aXNvXG5zdGQ6OnByaW50ZihcIiAgIGxhcmd1cmEgeCBhbHR1cmEgLi4uICVkICA8LS0gZGV2ZXJpYSBzZXIgMjUwMDAwMDAwMFxcblwiLCBwcm9kdXRvKTtcbnN0ZDo6cHJpbnRmKFwiICAgY29tbyBzaXplX3QgLi4uLi4uLi4gJXp1XFxuXCIsIHN0YXRpY19jYXN0PHN0ZDo6c2l6ZV90Pihwcm9kdXRvKSk7XG5zdGQ6OnB1dHMoXCIgICBhIGNvbnRhIGFjb250ZWNlIGVtIGludCwgZSBuZW5odW0gc3RhdGljX2Nhc3QgZGVwb2lzIGEgY29uc2VydGEuXCIpO1xuc3RkOjpwdXRzKFwiICAgYSB2ZXJzYW8gYm9hIGNvbnZlcnRlIENBREEgZmF0b3IgQU5URVMgZGUgbXVsdGlwbGljYXIuXCIpOyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`CXX_EXTENSIONS OFF` é o que recusa `-std=gnu++17`: código que só compila com extensão não é C++17. E `DERIVA_SANITIZERS` nasce desligada, porque o laboratório não os tem.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cmake</span><span class="arq">CMakeLists.txt · o topo, com as quatro opções</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>cmake_minimum_required(VERSION 3.16)
+project(deriva LANGUAGES CXX VERSION 0.3.0)
+
+<span class="tk-com"># C++17 é o teto e o foco da disciplina. `CXX_EXTENSIONS OFF` desliga as</span>
+<span class="tk-com"># extensões GNU: código que só compila com -std=gnu++17 não é C++17.</span>
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING <span class="tk-str">&quot;&quot;</span> FORCE)
+endif()
+
+option(DERIVA_SANITIZERS <span class="tk-str">&quot;Compilar com ASan e UBSan&quot;</span> OFF)
+option(DERIVA_TESTES     <span class="tk-str">&quot;Compilar os testes (baixa o Catch2)&quot;</span> ON)
+option(DERIVA_COM_FTXUI  <span class="tk-str">&quot;Camada de terminal com FTXUI v5.0.0&quot;</span> OFF)
+option(DERIVA_COM_QT     <span class="tk-str">&quot;Segundo front-end em Qt6 (Aula 26)&quot;</span> OFF)</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/CMakeLists.txt:2</span></div></div></section>
+<section class="slide" id="int-expansor"><div class="slide__cab"><span class="slide__n">07</span><h2>Expansor de compilação e template</h2></div><p>Pré-processador/compilação/ligação e onde cada erro aparece; instanciação; if constexpr podando ramo. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="expansor" tabindex="0"></section></section>
+<section class="slide" id="deriva"><div class="slide__cab"><span class="slide__n">08</span><h2>O Deriva nesta aula</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · O QUE VOCÊ ENTREGA NESTA AULA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><span class="versao">v0.0</span> esqueleto que compila: CMake, FetchContent, main vazio. <span style="color:var(--apagado)">CMake, FetchContent, FTXUI v5.0.0 e Catch2 como SYSTEM, make verifica</span> · <span style="color:var(--apagado)">◇ nenhum teste próprio</span> <span style="color:var(--apagado)">· só o teste de fumaça do esqueleto</span></p><p style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado)">A versão anterior e a seguinte estão na <a href="trilha.html">trilha completa</a>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside><aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ LABORATÓRIO · LAB-01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><strong>Ambiente, CMake com FetchContent e portões de compilação</strong></p><p>Faça este laboratório antes desta aula. O portão de correção é: compilar sem warning; o primeiro alvo do Deriva.</p><p><a href="laboratorios.html#lab-01">Ver o LAB-01 na página dos laboratórios</a></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">09</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Configure o ambiente seguindo <code>exemplos/deriva/LEIA-ME.md</code>. Compile o Deriva com <code>cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</code> e <code>cmake --build build --parallel</code>, rode <code>make verifica</code>, e reporte o resultado das quatro condições, uma por uma.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Crie um <code>CMakeLists.txt</code> mínimo que compile dois arquivos <code>.cpp</code> num executável, com <code>CMAKE_CXX_STANDARD 17</code>, <code>CMAKE_CXX_EXTENSIONS OFF</code> e o conjunto de avisos do Deriva. Ponha os sanitizers atrás de uma opção desligada por padrão, e explique em uma frase por que eles não entram na configuração de Debug.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Traduza o seguinte código C para C++17 moderno (sem <code>malloc</code>, sem arrays crus, sem <code>printf</code>): <code>int* arr = malloc(10*sizeof(int)); for(int i=0;i&lt;10;i++) arr[i]=i; free(arr);</code></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Compile <code>exemplos/deriva/sanitizers/defeitos_de_memoria.cpp</code> com <code>-fsanitize=address</code> e sem ele. Transcreva a diferença entre as duas execuções, e explique por que o acesso fora de limite não produz aviso de compilador nenhum. Depois pare o <code>gdb</code> num destrutor com <code>make gdb-dtor</code> e diga de onde ele foi chamado.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 4 do livro v1 e de <code>unidade-1/aula04-transicao-cpp</code>.</p><p>Sobe do 4º para o 2º lugar. Entra FetchContent com FTXUI e Catch2 como dependência SYSTEM, para o portão de zero warnings incidir só no código do estudante. Sai o bloco de sanitizers como portão (o laboratório não os tem) e entra gdb com ponto de parada em destrutor.</p></div></details>
+  <nav class="nav-pe">
+    <a href="aula-01.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Do procedural ao objeto</div></a>
+    <div class="meio">AULA 02 / 26</div>
+    <a href="aula-03.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Fundamentos de C++17</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

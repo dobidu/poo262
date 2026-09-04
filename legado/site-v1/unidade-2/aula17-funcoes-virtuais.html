@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 17 — Funções Virtuais e Classes Abstratas | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link active"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 17 — Funções Virtuais e Classes Abstratas</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula16-heranca-multipla.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula18-polimorfismo-dinamico.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 17 · 30/jun</span>
+          <h2 class="slide-title hero-title">Funções Virtuais, override, final e Abstração</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Usar <code>virtual</code>, <code>override</code> e <code>final</code> corretamente</li><li>Criar classes abstratas com funções puramente virtuais</li><li>Compreender o mecanismo de vtable/vptr</li><li>Distinguir polimorfismo em tempo de compilação vs. execução</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="override-final">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">virtual, override e final</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Hierarquia com override e final</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class effect {
+public:
+    virtual void process(audio_buffer& buf) = 0; // pura virtual → abstrata
+    virtual std::string name() const { return "effect"; } // virtual com implementação
+    virtual ~effect() = default;
+};
+
+class gain_effect : public effect {
+public:
+    void process(audio_buffer& buf) override { // override: compilador verifica
+        buf *= factor_;
+    }
+    std::string name() const override { return "Gain"; }
+    // final: impede subclasses de sobrescrever
+    float factor() const noexcept final { return factor_; }
+private:
+    float factor_;
+};
+
+// ❌ Sem override — typo silencioso:
+class reverb_bad : public effect {
+    void Process(audio_buffer&) { }  // P maiúsculo — nova função, não override!
+    // Compilador não avisa sem override
+};</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Sempre use override</div>
+              <p><code>override</code> faz o compilador verificar que você está realmente sobrescrevendo um método virtual da base. Sem ele, um typo cria uma nova função silenciosamente.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="abstrata">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Classes Abstratas</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Classes abstratas e interfaces em C++</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Classe abstrata: tem pelo menos um método puramente virtual
+class effect {
+    virtual void process(audio_buffer&) = 0;  // = 0 → pura virtual
+    // NÃO pode ser instanciada: effect e{};  ← ERRO
+};
+
+// Interface pura: apenas métodos virtuais puros, sem estado
+class recordable {
+public:
+    virtual void start_recording() = 0;
+    virtual void stop_recording()  = 0;
+    virtual bool is_recording() const noexcept = 0;
+    virtual ~recordable() = default;  // destrutor virtual mesmo em interface
+};
+
+// Implementação concreta: implementa TODOS os puros
+class looper : public oscillator, public sampler, public recordable {
+public:
+    void start_recording() override { is_rec_ = true; }
+    void stop_recording()  override { is_rec_ = false; }
+    bool is_recording()    const noexcept override { return is_rec_; }
+    void generate(std::vector<float>&, float) override;
+private:
+    bool is_rec_ = false;
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Projete uma hierarquia de plugins de áudio em C++17 com: interface <code>audio_plugin</code> (pura virtual), classe abstrata <code>effect_plugin</code> (implementa partes comuns), e três concretas. Use override, final onde apropriado."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente: declaram override sem virtual na base (erro de compilação), usam final em classes quando deveriam usar em métodos, e não fornecem a implementação do destrutor virtual.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Remova todos os <code>override</code> de <code>gain_effect</code> no Sintonia. Introduza um typo no nome de um método. Compile — o compilador avisa? Recoloque os <code>override</code> e veja a diferença.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Crie uma classe abstrata <code>filter</code> com métodos virtuais puros <code>process()</code> e <code>reset()</code>. Implemente <code>low_pass_filter</code> e <code>high_pass_filter</code>. Escreva testes Catch2.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Meça o overhead do polimorfismo virtual: chame <code>process()</code> via ponteiro base (dinâmico) e via método direto (estático) em um loop de 10M iterações. Qual é a diferença?</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Implemente um método <code>describe()</code> não-virtual na classe base que chama o virtual <code>name()</code>. Demonstre o padrão Template Method: a base orquestra, as derivadas especializam.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula16-heranca-multipla.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Herança Múltipla</span></div>
+      </a>
+      <a href="aula18-polimorfismo-dinamico.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Polimorfismo Dinâmico</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

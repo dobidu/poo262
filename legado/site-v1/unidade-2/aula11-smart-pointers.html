@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 11 — Smart Pointers | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link active"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 11 — Smart Pointers</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula10-raii-rule-of-five.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula12-move-semantics.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 11 · 09/jun</span>
+          <h2 class="slide-title hero-title">Smart Pointers: unique_ptr, shared_ptr, weak_ptr</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Usar <code>unique_ptr</code> para propriedade exclusiva</li><li>Usar <code>shared_ptr</code> e <code>weak_ptr</code> para propriedade compartilhada</li><li>Detectar e quebrar ciclos de referência</li><li>Escolher o smart pointer certo para cada situação</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v1.1 — Cadeia de efeitos com unique_ptr</div>
+            <p><code>effect_chain</code> usa <code>vector&lt;unique_ptr&lt;effect&gt;&gt;</code>: propriedade exclusiva, destruição automática, sem vazamentos.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="unique">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">unique_ptr — Propriedade Exclusiva</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">unique_ptr na cadeia de efeitos</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <memory>
+
+class effect_chain {
+    std::vector<std::unique_ptr<effect>> effects_;
+public:
+    // Recebe propriedade — chamador não pode mais usar o ponteiro
+    void add(std::unique_ptr<effect> e) {
+        effects_.push_back(std::move(e));  // move, não copia
+    }
+
+    // Factory method idiomático
+    template<typename T, typename... Args>
+    void emplace(Args&&... args) {
+        effects_.push_back(std::make_unique<T>(std::forward<Args>(args)...));
+    }
+};
+
+// Uso
+effect_chain chain;
+chain.add(std::make_unique<gain_effect>(0.5f));  // make_unique: sem new
+chain.emplace<reverb_effect>(0.3f, 0.2f);        // ainda mais idiomático</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="shared-weak">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">shared_ptr e weak_ptr</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Ciclo de referência e como quebrá-lo com weak_ptr</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Problema: ciclo → vazamento mesmo com shared_ptr
+struct node {
+    std::shared_ptr<node> next;  // ciclo: A→B→A → nunca destroem
+};
+
+// Solução: weak_ptr não incrementa contagem de referências
+struct project_node {
+    std::shared_ptr<project_node> child;
+    std::weak_ptr<project_node>   parent;  // weak: não impede destruição
+};
+
+// Verificar se weak_ptr ainda é válido
+void use_parent(std::weak_ptr<project_node> wp) {
+    if (auto sp = wp.lock()) {  // lock() → shared_ptr ou nullptr
+        // sp é válido aqui
+    }
+    // fora do if: sp liberado automaticamente
+}</code></pre>
+          </div>
+        <table class="slide-table"><thead><tr><th>Tipo</th><th>Proprietário?</th><th>Conta ref?</th><th>Uso típico</th></tr></thead><tbody><tr><td>raw ptr (não-owning)</td><td>Não</td><td>Não</td><td>Parâmetros, observadores temporários</td></tr><tr><td>unique_ptr</td><td>Sim (único)</td><td>N/A</td><td>Propriedade exclusiva (80% dos casos)</td></tr><tr><td>shared_ptr</td><td>Sim (compartilhado)</td><td>Sim</td><td>Cache, recursos compartilhados</td></tr><tr><td>weak_ptr</td><td>Não</td><td>Não</td><td>Quebrar ciclos, observadores</td></tr></tbody></table></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Tenho um design onde <code>audio_engine</code> possui tracks (<code>unique_ptr</code>), e tracks precisam observar configurações globais sem possuir o objeto de configuração. Modele isso em C++17 com os smart pointers corretos."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs tendem a usar <code>shared_ptr</code> em excesso (mais fácil de explicar) quando <code>unique_ptr</code> + referência seria correto. Pergunte sempre: 'quem é o dono?'</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>O <code>effect_chain</code> do Sintonia usa <code>vector&lt;unique_ptr&lt;effect&gt;&gt;</code>. Tente copiar um <code>effect_chain</code> sem implementar o construtor de cópia. O que acontece? Por quê? Implemente a cópia profunda.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Crie um ciclo de referências com <code>shared_ptr</code> e comprove o vazamento com ASan. Quebre o ciclo com <code>weak_ptr</code> e verifique que o vazamento desaparece.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente um pool de objetos de áudio usando <code>shared_ptr</code> com deleter customizado que retorna objetos ao pool em vez de destruí-los.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Compare o overhead de <code>shared_ptr</code> vs. <code>unique_ptr</code> vs. raw pointer em um loop de 10 milhões de acessos. Use <code>std::chrono</code> e interprete os resultados.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula10-raii-rule-of-five.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">RAII e Regra dos 0/3/5</span></div>
+      </a>
+      <a href="aula12-move-semantics.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Move Semantics</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

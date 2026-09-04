@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 03 - Fundamentos de C++17 para POO · POO · UFPB</title>
+<meta name="description" content="Aula 03 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Fundamentos de C++17 para POO.">
+<meta property="og:title" content="Aula 03 - Fundamentos de C++17 para POO · POO · UFPB">
+<meta property="og:description" content="Aula 03 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Fundamentos de C++17 para POO.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-02.html">
+<link rel="next" href="aula-04.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE I</span><span class="sep">/</span><span class="atual">AULA 03</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a03">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03" aria-current="page"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Fundamentos de C++17 para POO</h1>
+    <p class="sub">UNIDADE I · AULA 03 DE 26 · CAP. 3 DO LIVRO · LAB-02</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Distinguir classe (molde) de objeto (instância)</li><li>Compreender mensagens e o mecanismo de despacho</li><li>Identificar atributos de instância e atributos de classe</li><li>Usar a terminologia OO corretamente em português e inglês</li><li>Usar <code>std::string_view</code> sabendo que ela não possui os bytes que enxerga, e reconhecer a armadilha de tempo de vida que isso cria</li><li>Ler e escrever ligação estruturada, <code>[[nodiscard]]</code> e <code>[[maybe_unused]]</code></li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Conceitos Fundamentais: Objetos, Classes e Mensagens</h2></div></section>
+<section class="slide" id="classe-objeto"><div class="slide__cab"><span class="slide__n">02</span><h2>Classe vs. Objeto</h2></div><p>Uma <strong>classe</strong> é um molde: define quais campos existem, em que ordem, e quais operações são legítimas sobre eles. Um <strong>objeto</strong> é uma instância concreta em memória, com os seus próprios valores. A classe existe em tempo de compilação e não ocupa byte nenhum de execução; o objeto existe em tempo de execução e ocupa exatamente o que a ordem de declaração dos membros mandar, que é o assunto da Aula 07.</p>
+<p>No Deriva o par mínimo é <code>grade</code> e as grades. A classe está declarada uma vez, em <code>include/deriva/grade.hpp</code>, com <code>largura_</code>, <code>altura_</code> e o vetor de <code>celula</code>. Duas grades construídas a partir dela - <code>grade a(4, 3)</code> e <code>grade b(80, 24)</code> - compartilham o <strong>código</strong> de <code>em()</code>, de <code>dentro()</code> e do construtor, e não compartilham <strong>dado</strong> nenhum: escrever numa célula de <code>a</code> não alcança <code>b</code>, e <code>a.largura()</code> devolve 4 enquanto <code>b.largura()</code> devolve 80. É a mesma função, chamada sobre objetos diferentes, e o que muda de uma chamada para a outra é só qual objeto está do lado esquerdo do ponto.</p></section>
+<section class="slide" id="mensagens"><div class="slide__cab"><span class="slide__n">03</span><h2>Mensagens e Despacho</h2></div><p>Em OO, objetos se comunicam por <strong>mensagens</strong>. Em C++, uma mensagem é implementada como chamada de função membro, e a forma é sempre a mesma: <code>receptor.mensagem(argumentos)</code>. Quem manda a mensagem não escolhe o que acontece; quem decide é o receptor, e é nisso que o encapsulamento se apoia.</p>
+<p>O caso do Deriva que mostra a diferença é <code>mapa::carregar(caminho)</code>. Quem chama manda um caminho e recebe um <code>std::optional&lt;mapa&gt;</code>. O que acontece entre as duas coisas - conferir se o arquivo existe, ler o conteúdo, partir em fileiras, recusar a fileira de largura divergente, achar a entrada da sonda - é decisão do receptor, e nada disso aparece na chamada. Trocar o algoritmo de leitura por outro não muda uma linha de quem chama, e é essa a liberdade que a mensagem compra. Compare com a versão em C da Aula 01: lá, <code>em(&amp;g, x, y)</code> é função livre, quem chama passa o endereço da struct, e nada na assinatura prende a função à grade a que ela pertence.</p>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · Mensagem ≠ Chamada de função</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Uma chamada de função em C é estática - o compilador sabe qual função chamar. Uma mensagem OO pode ser resolvida em tempo de execução (polimorfismo dinâmico), dependendo do tipo real do receptor.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="terminologia"><div class="slide__cab"><span class="slide__n">04</span><h2>Terminologia: OO vs. C++</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Conceito OO</th><th>Termo em C++</th><th>Exemplo</th></tr></thead><tbody><tr><td>Classe</td><td>class / struct</td><td><code>class grade { ... };</code></td></tr><tr><td>Objeto / Instância</td><td>variável do tipo classe</td><td><code>grade g(80, 24);</code></td></tr><tr><td>Atributo</td><td>membro dado (<em>data member</em>)</td><td><code>int largura_;</code></td></tr><tr><td>Método</td><td>função membro (<em>member function</em>)</td><td><code>int largura() const;</code></td></tr><tr><td>Mensagem</td><td>chamada de função membro</td><td><code>g.largura();</code></td></tr><tr><td>Construtor</td><td><em>constructor</em></td><td><code>grade(int largura, int altura);</code></td></tr><tr><td>Destrutor</td><td><em>destructor</em></td><td><code>~mapa();</code></td></tr></tbody></table></div></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste Tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Explique em português a diferença entre classe e objeto em C++17, usando como exemplo uma grade de células de um jogo de terminal. A classe deve ter ao menos três atributos privados, um construtor que estabeleça a invariante, e um método <code>const</code>. Convenções: snake_case, identificadores e comentários em português."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>LLMs confundem atributos de instância com atributos de classe (static). Peça explicitamente que demonstre os dois e mostre que objetos independentes têm dados independentes.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">5 trechos do Deriva, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>`string_view` não possui os bytes. As fileiras apontam para dentro de `texto`, e nada disso é guardado depois - se fosse, seriam referências penduradas no instante em que a função retornasse.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">src/mapa.cpp · string_view e tempo de vida</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-tipo">std::optional</span>&lt;mapa&gt; mapa::de_texto(<span class="tk-tipo">std::string_view</span> texto, <span class="tk-tipo">std::string</span> nome) {
+  <span class="tk-com">// `string_view` não possui os bytes: `texto` tem de continuar vivo durante</span>
+  <span class="tk-com">// toda esta função. É por isso que as fileiras abaixo são `string_view`</span>
+  <span class="tk-com">// para dentro de `texto`, e nada disso é guardado depois (Aula 03).</span>
+  <span class="tk-tipo">std::vector</span>&lt;<span class="tk-tipo">std::string_view</span>&gt; fileiras;
+  <span class="tk-tipo">std::size_t</span> inicio = <span class="tk-num">0</span>;
+  <span class="tk-kw">while</span> (inicio &lt;= texto.size()) {
+    <span class="tk-kw">const</span> <span class="tk-tipo">std::size_t</span> fim = texto.find(<span class="tk-str">&#x27;\n&#x27;</span>, inicio);
+    <span class="tk-tipo">std::string_view</span> linha = texto.substr(
+        inicio, fim == <span class="tk-tipo">std::string_view::npos</span> ? <span class="tk-tipo">std::string_view::npos</span> : fim - inicio);
+    <span class="tk-kw">if</span> (!linha.empty()) fileiras.push_back(linha);
+    <span class="tk-kw">if</span> (fim == <span class="tk-tipo">std::string_view::npos</span>) <span class="tk-kw">break</span>;
+    inicio = fim + <span class="tk-num">1</span>;
+  }
+
+  <span class="tk-kw">if</span> (fileiras.empty()) <span class="tk-kw">return</span> <span class="tk-tipo">std::nullopt</span>;</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/src/mapa.cpp:66</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoic3RkOjpvcHRpb25hbDxtYXBhPiBtYXBhOjpkZV90ZXh0byhzdGQ6OnN0cmluZ192aWV3IHRleHRvLCBzdGQ6OnN0cmluZyBub21lKSB7XG4gIC8vIGBzdHJpbmdfdmlld2AgbsOjbyBwb3NzdWkgb3MgYnl0ZXM6IGB0ZXh0b2AgdGVtIGRlIGNvbnRpbnVhciB2aXZvIGR1cmFudGVcbiAgLy8gdG9kYSBlc3RhIGZ1bsOnw6NvLiDDiSBwb3IgaXNzbyBxdWUgYXMgZmlsZWlyYXMgYWJhaXhvIHPDo28gYHN0cmluZ192aWV3YFxuICAvLyBwYXJhIGRlbnRybyBkZSBgdGV4dG9gLCBlIG5hZGEgZGlzc28gw6kgZ3VhcmRhZG8gZGVwb2lzIChBdWxhIDAzKS5cbiAgc3RkOjp2ZWN0b3I8c3RkOjpzdHJpbmdfdmlldz4gZmlsZWlyYXM7XG4gIHN0ZDo6c2l6ZV90IGluaWNpbyA9IDA7XG4gIHdoaWxlIChpbmljaW8gPD0gdGV4dG8uc2l6ZSgpKSB7XG4gICAgY29uc3Qgc3RkOjpzaXplX3QgZmltID0gdGV4dG8uZmluZCgnXFxuJywgaW5pY2lvKTtcbiAgICBzdGQ6OnN0cmluZ192aWV3IGxpbmhhID0gdGV4dG8uc3Vic3RyKFxuICAgICAgICBpbmljaW8sIGZpbSA9PSBzdGQ6OnN0cmluZ192aWV3OjpucG9zID8gc3RkOjpzdHJpbmdfdmlldzo6bnBvcyA6IGZpbSAtIGluaWNpbyk7XG4gICAgaWYgKCFsaW5oYS5lbXB0eSgpKSBmaWxlaXJhcy5wdXNoX2JhY2sobGluaGEpO1xuICAgIGlmIChmaW0gPT0gc3RkOjpzdHJpbmdfdmlldzo6bnBvcykgYnJlYWs7XG4gICAgaW5pY2lvID0gZmltICsgMTtcbiAgfVxuXG4gIGlmIChmaWxlaXJhcy5lbXB0eSgpKSByZXR1cm4gc3RkOjpudWxsb3B0OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`for (const auto& [nome, delta] : tabela)` - por referência, e `const` porque só se lê. Copiar por valor aqui seria copiar a tabela inteira a cada volta.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">src/main.cpp · ligação estruturada</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// ligação estruturada (C++17) sobre a tabela de comandos</span>
+<span class="tk-kw">static</span> <span class="tk-kw">const</span> <span class="tk-tipo">std::pair</span>&lt;<span class="tk-tipo">std::string_view</span>, deriva::vetor2&gt; tabela[] = {
+    {<span class="tk-str">&quot;norte&quot;</span>, {<span class="tk-num">0</span>, -<span class="tk-num">1</span>}}, {<span class="tk-str">&quot;sul&quot;</span>, {<span class="tk-num">0</span>, <span class="tk-num">1</span>}}, {<span class="tk-str">&quot;leste&quot;</span>, {<span class="tk-num">1</span>, <span class="tk-num">0</span>}},
+    {<span class="tk-str">&quot;oeste&quot;</span>, {-<span class="tk-num">1</span>, <span class="tk-num">0</span>}}, {<span class="tk-str">&quot;esperar&quot;</span>, {<span class="tk-num">0</span>, <span class="tk-num">0</span>}}};
+<span class="tk-kw">for</span> (<span class="tk-kw">const</span> <span class="tk-kw">auto</span>&amp; [nome, delta] : tabela) {
+  <span class="tk-kw">if</span> (linha == nome) {
+    passos.push_back({linha, delta});
+    <span class="tk-kw">break</span>;
+  }</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/src/main.cpp:78</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gbGlnYcOnw6NvIGVzdHJ1dHVyYWRhIChDKysxNykgc29icmUgYSB0YWJlbGEgZGUgY29tYW5kb3NcbnN0YXRpYyBjb25zdCBzdGQ6OnBhaXI8c3RkOjpzdHJpbmdfdmlldywgZGVyaXZhOjp2ZXRvcjI-IHRhYmVsYVtdID0ge1xuICAgIHtcIm5vcnRlXCIsIHswLCAtMX19LCB7XCJzdWxcIiwgezAsIDF9fSwge1wibGVzdGVcIiwgezEsIDB9fSxcbiAgICB7XCJvZXN0ZVwiLCB7LTEsIDB9fSwge1wiZXNwZXJhclwiLCB7MCwgMH19fTtcbmZvciAoY29uc3QgYXV0byYgW25vbWUsIGRlbHRhXSA6IHRhYmVsYSkge1xuICBpZiAobGluaGEgPT0gbm9tZSkge1xuICAgIHBhc3Nvcy5wdXNoX2JhY2soe2xpbmhhLCBkZWx0YX0pO1xuICAgIGJyZWFrO1xuICB9IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>É o caso que mais morde: `strlen(vista.data())` devolve o tamanho da string de origem, não o da vista. Para uma API de C o caminho é `std::string(vista)`, que copia de propósito - e aí o custo está declarado.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_string_view.cpp · a vista não termina em nul</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;caso 3: a vista NAO termina em nul&quot;</span>) {
+  <span class="tk-kw">const</span> <span class="tk-tipo">std::string</span> dono = <span class="tk-str">&quot;eclusa-norte&quot;</span>;
+  <span class="tk-kw">const</span> <span class="tk-tipo">std::string_view</span> prefixo = <span class="tk-tipo">std::string_view</span>(dono).substr(<span class="tk-num">0</span>, <span class="tk-num">6</span>);
+
+  REQUIRE(prefixo == <span class="tk-str">&quot;eclusa&quot;</span>);
+  REQUIRE(prefixo.size() == <span class="tk-num">6</span>);
+  <span class="tk-com">// O byte seguinte ao fim da vista é &#x27;-&#x27;, não &#x27;\0&#x27;. Passar `prefixo.data()`</span>
+  <span class="tk-com">// a uma função que espera `const char*` leria doze caracteres, não seis.</span>
+  REQUIRE(prefixo.data()[prefixo.size()] == <span class="tk-str">&#x27;-&#x27;</span>);
+  REQUIRE(<span class="tk-tipo">std::strlen</span>(prefixo.data()) == dono.size());   <span class="tk-com">// e não 6</span>
+
+  INFO(<span class="tk-str">&quot;para uma API de C, o caminho é std::string(prefixo), que copia de &quot;</span>
+       <span class="tk-str">&quot;propósito - e aí o custo está declarado&quot;</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_string_view.cpp:42</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiY2FzbyAzOiBhIHZpc3RhIE5BTyB0ZXJtaW5hIGVtIG51bFwiKSB7XG4gIGNvbnN0IHN0ZDo6c3RyaW5nIGRvbm8gPSBcImVjbHVzYS1ub3J0ZVwiO1xuICBjb25zdCBzdGQ6OnN0cmluZ192aWV3IHByZWZpeG8gPSBzdGQ6OnN0cmluZ192aWV3KGRvbm8pLnN1YnN0cigwLCA2KTtcblxuICBSRVFVSVJFKHByZWZpeG8gPT0gXCJlY2x1c2FcIik7XG4gIFJFUVVJUkUocHJlZml4by5zaXplKCkgPT0gNik7XG4gIC8vIE8gYnl0ZSBzZWd1aW50ZSBhbyBmaW0gZGEgdmlzdGEgw6kgJy0nLCBuw6NvICdcXDAnLiBQYXNzYXIgYHByZWZpeG8uZGF0YSgpYFxuICAvLyBhIHVtYSBmdW7Dp8OjbyBxdWUgZXNwZXJhIGBjb25zdCBjaGFyKmAgbGVyaWEgZG96ZSBjYXJhY3RlcmVzLCBuw6NvIHNlaXMuXG4gIFJFUVVJUkUocHJlZml4by5kYXRhKClbcHJlZml4by5zaXplKCldID09ICctJyk7XG4gIFJFUVVJUkUoc3RkOjpzdHJsZW4ocHJlZml4by5kYXRhKCkpID09IGRvbm8uc2l6ZSgpKTsgICAvLyBlIG7Do28gNlxuXG4gIElORk8oXCJwYXJhIHVtYSBBUEkgZGUgQywgbyBjYW1pbmhvIMOpIHN0ZDo6c3RyaW5nKHByZWZpeG8pLCBxdWUgY29waWEgZGUgXCJcbiAgICAgICBcInByb3DDs3NpdG8gLSBlIGHDrSBvIGN1c3RvIGVzdMOhIGRlY2xhcmFkb1wiKTtcbn0iLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>O atributo diz ao compilador o que `(void)x` dizia por gesto: o objeto existe pelo efeito do construtor e do destrutor, não pelo valor.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_ciclo_de_vida.cpp · [[maybe_unused]]</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// `[[maybe_unused]]` diz ao compilador o que `(void)x` dizia por gesto:</span>
+<span class="tk-com">// o objeto existe pelo efeito do construtor e do destrutor, não pelo</span>
+<span class="tk-com">// valor. O atributo é C++17 e é o lugar mais natural dele em todo o</span>
+<span class="tk-com">// Deriva (Aula 03).</span>
+[[maybe_unused]] <span class="tk-kw">const</span> marca_de_vida a(<span class="tk-str">&quot;a&quot;</span>);
+[[maybe_unused]] <span class="tk-kw">const</span> marca_de_vida b(<span class="tk-str">&quot;b&quot;</span>);
+{
+  [[maybe_unused]] <span class="tk-kw">const</span> marca_de_vida c(<span class="tk-str">&quot;c&quot;</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_ciclo_de_vida.cpp:22</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gYFtbbWF5YmVfdW51c2VkXV1gIGRpeiBhbyBjb21waWxhZG9yIG8gcXVlIGAodm9pZCl4YCBkaXppYSBwb3IgZ2VzdG86XG4vLyBvIG9iamV0byBleGlzdGUgcGVsbyBlZmVpdG8gZG8gY29uc3RydXRvciBlIGRvIGRlc3RydXRvciwgbsOjbyBwZWxvXG4vLyB2YWxvci4gTyBhdHJpYnV0byDDqSBDKysxNyBlIMOpIG8gbHVnYXIgbWFpcyBuYXR1cmFsIGRlbGUgZW0gdG9kbyBvXG4vLyBEZXJpdmEgKEF1bGEgMDMpLlxuW1ttYXliZV91bnVzZWRdXSBjb25zdCBtYXJjYV9kZV92aWRhIGEoXCJhXCIpO1xuW1ttYXliZV91bnVzZWRdXSBjb25zdCBtYXJjYV9kZV92aWRhIGIoXCJiXCIpO1xue1xuICBbW21heWJlX3VudXNlZF1dIGNvbnN0IG1hcmNhX2RlX3ZpZGEgYyhcImNcIik7XG59IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`[[nodiscard]]` numa comparação: chamar `a == b` e jogar o resultado fora é sempre erro, e agora o compilador diz isso.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">include/deriva/vetor2.hpp · v0.1</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-kw">struct</span> vetor2 {
+  <span class="tk-kw">int</span> x = <span class="tk-num">0</span>;
+  <span class="tk-kw">int</span> y = <span class="tk-num">0</span>;
+
+  [[nodiscard]] <span class="tk-kw">constexpr</span> <span class="tk-kw">bool</span> <span class="tk-kw">operator</span>==(<span class="tk-kw">const</span> vetor2&amp; o) <span class="tk-kw">const</span> <span class="tk-kw">noexcept</span> {
+    <span class="tk-kw">return</span> x == o.x &amp;&amp; y == o.y;
+  }
+  [[nodiscard]] <span class="tk-kw">constexpr</span> <span class="tk-kw">bool</span> <span class="tk-kw">operator</span>!=(<span class="tk-kw">const</span> vetor2&amp; o) <span class="tk-kw">const</span> <span class="tk-kw">noexcept</span> {
+    <span class="tk-kw">return</span> !(*<span class="tk-kw">this</span> == o);
+  }
+
+  <span class="tk-com">// v1.5 · Aula 15. Os compostos são MEMBROS porque modificam o objeto da</span>
+  <span class="tk-com">// esquerda; os binários são funções LIVRES, logo abaixo, porque tratam os</span>
+  <span class="tk-com">// dois lados igual. Escrever `+` em termos de `+=` é a forma que não</span>
+  <span class="tk-com">// duplica a regra.</span>
+  <span class="tk-kw">constexpr</span> vetor2&amp; <span class="tk-kw">operator</span>+=(<span class="tk-kw">const</span> vetor2&amp; o) <span class="tk-kw">noexcept</span> {
+    x += o.x;
+    y += o.y;
+    <span class="tk-kw">return</span> *<span class="tk-kw">this</span>;
+  }
+  <span class="tk-kw">constexpr</span> vetor2&amp; <span class="tk-kw">operator</span>-=(<span class="tk-kw">const</span> vetor2&amp; o) <span class="tk-kw">noexcept</span> {
+    x -= o.x;
+    y -= o.y;
+    <span class="tk-kw">return</span> *<span class="tk-kw">this</span>;
+  }
+  <span class="tk-kw">constexpr</span> vetor2&amp; <span class="tk-kw">operator</span>*=(<span class="tk-kw">int</span> k) <span class="tk-kw">noexcept</span> {
+    x *= k;
+    y *= k;
+    <span class="tk-kw">return</span> *<span class="tk-kw">this</span>;
+  }
+
+  <span class="tk-com">/// Distância de Manhattan, que é a métrica da grade: a sonda não anda em</span>
+  <span class="tk-com">/// diagonal, então a distância euclidiana mentiria sobre o número de turnos.</span>
+  [[nodiscard]] <span class="tk-kw">constexpr</span> <span class="tk-kw">int</span> manhattan(<span class="tk-kw">const</span> vetor2&amp; o) <span class="tk-kw">const</span> <span class="tk-kw">noexcept</span> {
+    <span class="tk-kw">const</span> <span class="tk-kw">int</span> dx = x &gt; o.x ? x - o.x : o.x - x;
+    <span class="tk-kw">const</span> <span class="tk-kw">int</span> dy = y &gt; o.y ? y - o.y : o.y - y;
+    <span class="tk-kw">return</span> dx + dy;
+  }
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/include/deriva/vetor2.hpp:15</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoic3RydWN0IHZldG9yMiB7XG4gIGludCB4ID0gMDtcbiAgaW50IHkgPSAwO1xuXG4gIFtbbm9kaXNjYXJkXV0gY29uc3RleHByIGJvb2wgb3BlcmF0b3I9PShjb25zdCB2ZXRvcjImIG8pIGNvbnN0IG5vZXhjZXB0IHtcbiAgICByZXR1cm4geCA9PSBvLnggJiYgeSA9PSBvLnk7XG4gIH1cbiAgW1tub2Rpc2NhcmRdXSBjb25zdGV4cHIgYm9vbCBvcGVyYXRvciE9KGNvbnN0IHZldG9yMiYgbykgY29uc3Qgbm9leGNlcHQge1xuICAgIHJldHVybiAhKCp0aGlzID09IG8pO1xuICB9XG5cbiAgLy8gdjEuNSDCtyBBdWxhIDE1LiBPcyBjb21wb3N0b3Mgc8OjbyBNRU1CUk9TIHBvcnF1ZSBtb2RpZmljYW0gbyBvYmpldG8gZGFcbiAgLy8gZXNxdWVyZGE7IG9zIGJpbsOhcmlvcyBzw6NvIGZ1bsOnw7VlcyBMSVZSRVMsIGxvZ28gYWJhaXhvLCBwb3JxdWUgdHJhdGFtIG9zXG4gIC8vIGRvaXMgbGFkb3MgaWd1YWwuIEVzY3JldmVyIGArYCBlbSB0ZXJtb3MgZGUgYCs9YCDDqSBhIGZvcm1hIHF1ZSBuw6NvXG4gIC8vIGR1cGxpY2EgYSByZWdyYS5cbiAgY29uc3RleHByIHZldG9yMiYgb3BlcmF0b3IrPShjb25zdCB2ZXRvcjImIG8pIG5vZXhjZXB0IHtcbiAgICB4ICs9IG8ueDtcbiAgICB5ICs9IG8ueTtcbiAgICByZXR1cm4gKnRoaXM7XG4gIH1cbiAgY29uc3RleHByIHZldG9yMiYgb3BlcmF0b3ItPShjb25zdCB2ZXRvcjImIG8pIG5vZXhjZXB0IHtcbiAgICB4IC09IG8ueDtcbiAgICB5IC09IG8ueTtcbiAgICByZXR1cm4gKnRoaXM7XG4gIH1cbiAgY29uc3RleHByIHZldG9yMiYgb3BlcmF0b3IqPShpbnQgaykgbm9leGNlcHQge1xuICAgIHggKj0gaztcbiAgICB5ICo9IGs7XG4gICAgcmV0dXJuICp0aGlzO1xuICB9XG5cbiAgLy8vIERpc3TDom5jaWEgZGUgTWFuaGF0dGFuLCBxdWUgw6kgYSBtw6l0cmljYSBkYSBncmFkZTogYSBzb25kYSBuw6NvIGFuZGEgZW1cbiAgLy8vIGRpYWdvbmFsLCBlbnTDo28gYSBkaXN0w6JuY2lhIGV1Y2xpZGlhbmEgbWVudGlyaWEgc29icmUgbyBuw7ptZXJvIGRlIHR1cm5vcy5cbiAgW1tub2Rpc2NhcmRdXSBjb25zdGV4cHIgaW50IG1hbmhhdHRhbihjb25zdCB2ZXRvcjImIG8pIGNvbnN0IG5vZXhjZXB0IHtcbiAgICBjb25zdCBpbnQgZHggPSB4ID4gby54ID8geCAtIG8ueCA6IG8ueCAtIHg7XG4gICAgY29uc3QgaW50IGR5ID0geSA-IG8ueSA_IHkgLSBvLnkgOiBvLnkgLSB5O1xuICAgIHJldHVybiBkeCArIGR5O1xuICB9XG59OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-ciclo"><div class="slide__cab"><span class="slide__n">07</span><h2>Rastreador de ciclo de vida</h2></div><p>Ordem exata de construção e destruição, escopos, desenrolar por exceção, referência pendente. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="ciclo" tabindex="0"></section></section>
+<section class="slide" id="deriva"><div class="slide__cab"><span class="slide__n">08</span><h2>O Deriva nesta aula</h2></div><aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ LABORATÓRIO · LAB-02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><strong>C++17 na prática: string_view, ligações estruturadas e [[nodiscard]]</strong></p><p>Faça este laboratório antes desta aula. O portão de correção é: a armadilha de tempo de vida do string_view, reproduzida e explicada.</p><p><a href="laboratorios.html#lab-02">Ver o LAB-02 na página dos laboratórios</a></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">09</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Leia <code>exemplos/deriva/include/deriva/grade.hpp</code> e classifique cada membro como atributo ou método. Quantos atributos de instância há, quantos métodos, e quantos construtores? Depois faça o mesmo com <code>vetor2.hpp</code> e explique por que ele não tem atributo privado nenhum.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Construa duas grades de dimensões diferentes num <code>main()</code>, escreva um glifo numa célula de cada uma, e imprima as duas. Quais mensagens foram enviadas, e quem é o receptor de cada uma? Por que a escrita numa não alcança a outra, se as duas executam o mesmo código de <code>em()</code>?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Explique com um exemplo concreto por que dois objetos da mesma classe compartilham código mas não compartilham dados.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Pesquise a diferença entre <em>early binding</em> (ligação estática) e <em>late binding</em> (ligação dinâmica). Qual delas implementa o conceito de mensagem OO de forma mais fiel? Por quê?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 2 do livro v1 e de <code>unidade-1/aula02-conceitos-fundamentais</code>.</p><p>O capítulo com maior déficit do livro. Entram std::string_view com a armadilha de tempo de vida, ligações estruturadas, [[nodiscard]] e [[maybe_unused]] - hoje com zero ocorrências no livro inteiro.</p></div></details>
+  <nav class="nav-pe">
+    <a href="aula-02.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Infraestrutura: CMake, FetchContent, gdb</div></a>
+    <div class="meio">AULA 03 / 26</div>
+    <a href="aula-04.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Git, LLM e a rubrica</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

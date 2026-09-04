@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POO em C++ — UFPB 2026.1</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div id="reading-progress"></div>
+
+  <div class="site-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+        <h1><span class="emoji">🎵</span> POO em C++</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <a href="index.html" class="nav-link active">🏠 Início</a>
+          <a href="sintonia/index.html" class="nav-link">🎵 Trilha Sintonia</a>
+          <a href="llms/index.html" class="nav-link">🤖 LLMs</a>
+          <a href="referencias.html" class="nav-link">📚 Referências</a>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+          <div class="nav-section-title">Unidade I</div>
+          <a href="unidade-1/index.html" class="nav-link">→ Fundamentos OO</a>
+          <a href="unidade-1/aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e
+            OO</a>
+          <a href="unidade-1/aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos
+            fundamentais</a>
+          <a href="unidade-1/aula03-classificacao-linguagens.html" class="nav-link"><span
+              class="num">03.</span>Classificação de linguagens</a>
+          <a href="unidade-1/aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python
+            → C++</a>
+          <a href="unidade-1/aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+          <a href="unidade-1/aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como
+            copiloto</a>
+          <a href="unidade-1/aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+          <a href="unidade-1/aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e
+            objetos</a>
+          <a href="unidade-1/aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+          <div class="nav-section-title">Unidade II</div>
+          <a href="unidade-2/index.html" class="nav-link">→ Herança e Polimorfismo</a>
+          <a href="unidade-2/aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra
+            dos 0/3/5</a>
+          <a href="unidade-2/aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+          <a href="unidade-2/aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+          <a href="unidade-2/aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga
+            de operadores</a>
+          <a href="unidade-2/aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com
+            Catch2</a>
+          <a href="unidade-2/aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança
+            simples</a>
+          <a href="unidade-2/aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança
+            múltipla</a>
+          <a href="unidade-2/aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções
+            virtuais</a>
+          <a href="unidade-2/aula18-polimorfismo-dinamico.html" class="nav-link"><span
+              class="num">18.</span>Polimorfismo dinâmico</a>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-section">
+          <div class="nav-section-title">Unidade III</div>
+          <a href="unidade-3/index.html" class="nav-link">→ Abstração e Engenharia</a>
+          <a href="unidade-3/aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e
+            CRTP</a>
+          <a href="unidade-3/aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e
+            Ranges</a>
+          <a href="unidade-3/aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de
+            erros</a>
+          <a href="unidade-3/aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+          <a href="unidade-3/aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+          <a href="unidade-3/aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+          <a href="unidade-3/aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+          <a href="unidade-3/aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de
+            projeto</a>
+          <a href="unidade-3/aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo -->
+    <div class="main-content">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-eyebrow">DINF00078 — Programação Orientada a Objetos</div>
+        <h1>
+          Programação<br>
+          <span>Orientada a Objetos</span><br>
+          em C++
+        </h1>
+        <p class="hero-sub">
+          Material interativo da disciplina — 27 aulas em 3 unidades,
+          código compilável, diagramas UML, exercícios e integração com LLMs.
+        </p>
+        <div class="hero-meta">
+          Prof. <span>Carlos Eduardo C. F. Batista</span> &nbsp;·&nbsp;
+          UFPB / CI / DI / LAViD &nbsp;·&nbsp;
+          Semestre <span>2026.1</span>
+        </div>
+      </section>
+
+      <!-- Cards das unidades -->
+      <div class="units-grid">
+        <a href="unidade-1/index.html" class="unit-card">
+          <div class="unit-card-num">Unidade I</div>
+          <h3>Fundamentos do Paradigma OO e Entrada em C++</h3>
+          <p>Da programação estruturada à OO. Classes, ciclo de vida, Git, UML e LLMs como copiloto.</p>
+          <div class="unit-card-lessons">9 aulas · P1: 28/mai</div>
+        </a>
+        <a href="unidade-2/index.html" class="unit-card">
+          <div class="unit-card-num">Unidade II</div>
+          <h3>Ciclo de Vida, Herança e Polimorfismo</h3>
+          <p>RAII, smart pointers, move semantics, herança simples e múltipla, vtables e RTTI.</p>
+          <div class="unit-card-lessons">9 aulas · P2: 07/jul</div>
+        </a>
+        <a href="unidade-3/index.html" class="unit-card">
+          <div class="unit-card-num">Unidade III</div>
+          <h3>Abstração Genérica e Engenharia OO</h3>
+          <p>Templates, SOLID, padrões de projeto, concorrência, serialização e Qt.</p>
+          <div class="unit-card-lessons">9 aulas · P3: 11/ago</div>
+        </a>
+        <a href="sintonia/index.html" class="unit-card">
+          <div class="unit-card-num">🎵 Sintonia</div>
+          <h3>Trilha do Projeto Evolutivo</h3>
+          <p>Acompanhe o mini-DAW crescer de v0.1 a v2.5 ao longo do semestre.</p>
+          <div class="unit-card-lessons">14 versões · v0.1 → v2.5</div>
+        </a>
+        <a href="llms/index.html" class="unit-card">
+          <div class="unit-card-num">🤖 LLMs</div>
+          <h3>Uso Crítico de Assistentes</h3>
+          <p>Prompts, análise de código gerado por LLM e exercícios de revisão crítica.</p>
+          <div class="unit-card-lessons">Prompts · Exercícios · Gabaritos</div>
+        </a>
+        <a href="referencias.html" class="unit-card">
+          <div class="unit-card-num">📚</div>
+          <h3>Referências Bibliográficas</h3>
+          <p>Stroustrup, Meyers, GoF, Josuttis, cppreference, Qt Docs e muito mais.</p>
+          <div class="unit-card-lessons">Básicas · Complementares · Online</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="kbd-hint">
+    <kbd>←</kbd><kbd>→</kbd> navegar &nbsp; <kbd>?</kbd> ajuda
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

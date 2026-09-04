@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 14 — Testes Automatizados com Catch2 | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link active"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 14 — Testes Automatizados com Catch2</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula13-sobrecarga-operadores.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula15-heranca-simples.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 14 · 18/jun</span>
+          <h2 class="slide-title hero-title">Testes Automatizados com Catch2 v3</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Estruturar testes com <code>TEST_CASE</code> e <code>SECTION</code></li><li>Usar <code>REQUIRE</code>, <code>CHECK</code>, <code>REQUIRE_THROWS_AS</code> e <code>Catch::Approx</code></li><li>Integrar Catch2 com CMake e GitHub Actions</li><li>Aplicar TDD: escrever testes antes da implementação</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v2.5 — 72 testes passando</div>
+            <p>Os 72 testes do repositório Sintonia usam Catch2 v3. Execute: <code>ctest --test-dir build --output-on-failure</code></p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="estrutura">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Estrutura de Testes Catch2</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">TEST_CASE, SECTION, REQUIRE — padrões idiomáticos</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.hpp>
+#include "sintonia/audio_buffer.hpp"
+
+using Catch::Approx;
+
+TEST_CASE("audio_buffer: construção básica", "[audio_buffer][construção]") {
+    // Arrange
+    audio_buffer buf{512, 44100.0f};
+
+    // Assert — REQUIRE falha e para o teste
+    REQUIRE(buf.size()        == 512);
+    REQUIRE(buf.sample_rate() == Approx(44100.0f));
+    REQUIRE(buf.peak_level()  == Approx(0.0f));
+}
+
+TEST_CASE("audio_buffer: semântica de cópia", "[audio_buffer][cópia]") {
+    audio_buffer original{4, 44100.0f};
+    original[0] = 0.5f;
+
+    SECTION("cópia é independente do original") {
+        auto copia = original;
+        copia[0] = 0.9f;               // modifica a cópia
+        REQUIRE(original[0] == Approx(0.5f));  // original inalterado
+    }
+
+    SECTION("cópia tem mesmos valores") {
+        auto copia = original;
+        REQUIRE(copia[0] == Approx(0.5f));
+    }
+}</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="tipos-assert">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Tipos de Asserção</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Macro</th><th>Comportamento</th><th>Quando usar</th></tr></thead><tbody><tr><td>REQUIRE(expr)</td><td>Falha → para o TEST_CASE</td><td>Pré-condições, estado básico</td></tr><tr><td>CHECK(expr)</td><td>Falha → continua o teste</td><td>Verificações independentes</td></tr><tr><td>REQUIRE_THROWS_AS(expr, tipo)</td><td>Requer exceção do tipo exato</td><td>Validação de erros</td></tr><tr><td>REQUIRE_NOTHROW(expr)</td><td>Requer que não lance</td><td>Operações seguras</td></tr><tr><td>Approx(v)</td><td>Comparação float com tolerância</td><td>Qualquer float/double</td></tr></tbody></table>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Exemplos de uso</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Float: sempre use Approx
+REQUIRE(buf.rms_level() == Approx(0.707f).epsilon(0.001));
+
+// Exceção do tipo correto
+REQUIRE_THROWS_AS(buf[9999], std::out_of_range);
+
+// Não lança
+REQUIRE_NOTHROW(buf.clear());
+
+// CHECK: continua após falha (útil para múltiplas verificações)
+CHECK(buf.size()        == 512);
+CHECK(buf.sample_rate() == Approx(44100.0f));</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="cmake-ci">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Integração CMake e CI</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cmake</span>
+              <span class="code-caption">CMakeLists.txt — configuração dos testes</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cmake"># FetchContent baixa Catch2 automaticamente
+FetchContent_Declare(Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+                              GIT_TAG v3.5.2)
+FetchContent_MakeAvailable(Catch2)
+
+add_executable(sintonia_tests
+    tests/test_sample.cpp
+    tests/test_audio_buffer.cpp)
+target_link_libraries(sintonia_tests PRIVATE sintonia_core Catch2::Catch2WithMain)
+
+# Registra testes no CTest (permite ctest e CI)
+include(Catch)
+catch_discover_tests(sintonia_tests)</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Tags para filtrar testes</div>
+              <p><code>ctest -R audio_buffer</code> roda só testes com 'audio_buffer' no nome. <code>./sintonia_tests '[sample]'</code> filtra por tag Catch2.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Gere testes Catch2 v3 para a classe <code>track</code> do Sintonia. Cubra: construção, render com ganho, render silenciada, render com efeito, semântica de cópia e movimento. Use Approx para floats e REQUIRE_THROWS_AS para erros."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs esquecem: Approx para floats, a versão const de métodos, testes de exceção com o tipo correto, e testes de estado de objetos movidos. Verifique que cada SECTION é independente.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Escreva testes Catch2 para <code>wav_reader</code> de <code>extras/wav-io/</code>. Cubra: load de arquivo existente, load de arquivo inexistente (optional), round-trip write→read.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Aplique TDD: escreva primeiro os testes para uma nova função <code>audio_buffer::trim_silence(float threshold)</code> que remove silêncio do início e fim. Depois implemente a função.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Configure o filtro de tags no CMakeLists.txt para criar suítes separadas: <code>[unit]</code> (roda rápido, sem I/O) e <code>[integration]</code> (pode ser lento). Adicione as tags nos testes existentes.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Meça a cobertura de testes usando gcov/lcov. Identifique quais branches do <code>corrector.py</code> — digo, do <code>effect_chain</code> — não estão cobertos e escreva testes para eles.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula13-sobrecarga-operadores.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Sobrecarga de Operadores</span></div>
+      </a>
+      <a href="aula15-heranca-simples.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Herança Simples</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

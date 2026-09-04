@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 04 — Transição C/Python → C++ | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e OO</a>
+<a href="aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos fundamentais</a>
+<a href="aula03-classificacao-linguagens.html" class="nav-link"><span class="num">03.</span>Classificação de linguagens</a>
+<a href="aula04-transicao-cpp.html" class="nav-link active"><span class="num">04.</span>Transição C/Python→C++</a>
+<a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+<a href="aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como copiloto</a>
+<a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+<a href="aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e objetos</a>
+<a href="aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 04 — Transição C/Python → C++</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula03-classificacao-linguagens.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula05-git-github.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 04 · 07/mai</span>
+          <h2 class="slide-title hero-title">Transição Python/C → C++ Moderno</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Configurar o ambiente: GCC, CMake, GDB, sanitizers</li><li>Compreender o modelo de compilação C++ (pré-processamento, compilação, link)</li><li>Usar namespaces, streams e tipos modernos</li><li>Comparar C++ com C e Python nas construções mais comuns</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="ambiente">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Configurando o Ambiente</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">bash</span>
+              <span class="code-caption">Instalação e verificação (Ubuntu/Debian)</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-bash"># Compilador e ferramentas
+sudo apt install -y build-essential g++-12 cmake git ninja-build
+
+# Verificar
+g++ --version   # deve mostrar 12.x
+cmake --version # deve mostrar 3.20+
+
+# Primeiro programa
+echo '#include <iostream>
+int main() { std::cout << "Olá, C++17!\n"; }' > hello.cpp
+g++ -std=c++17 -Wall -Wextra hello.cpp -o hello && ./hello
+
+# Com CMake
+mkdir meu_projeto && cd meu_projeto && cmake -B build
+cmake --build build</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Sanitizers são seus amigos</div>
+              <p><code>-fsanitize=address,undefined</code> detecta memory leaks, buffer overflows e comportamento indefinido em tempo de execução. Use sempre em desenvolvimento.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="compilacao">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Modelo de Compilação</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Etapa</th><th>Entrada</th><th>Saída</th><th>Ferramenta</th></tr></thead><tbody><tr><td>Pré-processamento</td><td>arquivo.cpp + headers</td><td>arquivo.ii (expandido)</td><td>cpp</td></tr><tr><td>Compilação</td><td>arquivo.ii</td><td>arquivo.o (objeto)</td><td>g++</td></tr><tr><td>Linkagem</td><td>*.o + bibliotecas</td><td>executável</td><td>ld (via g++)</td></tr><tr><td>CMake</td><td>CMakeLists.txt</td><td>Makefile/Ninja</td><td>cmake</td></tr></tbody></table>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">bash</span>
+              <span class="code-caption">Compilação manual vs. CMake</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-bash"># Manual — um arquivo
+g++ -std=c++17 -Wall -c sample.cpp -o sample.o
+g++ -std=c++17 -Wall -c main.cpp   -o main.o
+g++ sample.o main.o -o sintonia
+
+# Com CMake — múltiplos arquivos (preferível)
+cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --parallel</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="c-para-cpp">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">De C e Python para C++</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Equivalências: Python/C → C++17</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Python: print("hello")       C: printf("hello\n")
+std::cout << "hello" << '\n';  // C++ — sem '\n' faltando
+
+// Python: x = [1, 2, 3]        C: int arr[] = {1,2,3};
+std::vector<int> v = {1, 2, 3}; // C++ — dinâmico, seguro
+
+// Python: for x in lista:      C: for(int i=0;i<n;i++)
+for (const auto& x : v) { }    // C++ range-based for
+
+// Python: s = "olá"            C: char s[10] = "ola";
+std::string s = "olá";          // C++ — não precisa tamanho fixo
+
+// Python: None                 C: NULL
+nullptr                          // C++ — tipado, mais seguro
+
+// Python: def f(x: int) -> int:
+int f(int x) { return x * 2; } // C++ — tipos obrigatórios</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Tenho experiência em Python e estou aprendendo C++17. Mostre as 10 principais diferenças que vão me pegar de surpresa, com exemplos de código nos dois lados. Foque em: gerenciamento de memória, tipos, includes, e comportamento de strings."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs tendem a listar diferenças óbvias (ponto e vírgula, chaves) e ignorar as perigosas: undefined behavior, object slicing, e a diferença entre cópia e referência em tipos não-primitivos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Configure o ambiente de desenvolvimento seguindo <code>sintonia/docs/setup/README.md</code>. Compile o projeto Sintonia completo e execute <code>ctest</code>. Reporte o resultado.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Crie um <code>CMakeLists.txt</code> mínimo que compile dois arquivos <code>.cpp</code> em um executável, com flags <code>-std=c++17 -Wall -Wextra</code> e sanitizers habilitados em modo Debug.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Traduza o seguinte código C para C++17 moderno (sem <code>malloc</code>, sem arrays crus, sem <code>printf</code>): <code>int* arr = malloc(10*sizeof(int)); for(int i=0;i&lt;10;i++) arr[i]=i; free(arr);</code></span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Compile um programa com <code>-fsanitize=address</code> que acessa memória além dos limites de um vetor. Interprete a mensagem do AddressSanitizer e corrija o bug.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula03-classificacao-linguagens.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Classificação de Linguagens</span></div>
+      </a>
+      <a href="aula05-git-github.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Git e GitHub</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+%% v0.2 - Aula 06 - a grade isolada, com os membros que ela declara
+%% Este arquivo e a FONTE do diagrama. O material o recebe por
+%% ancora, declarada em `conteudo/trechos.py`, e nao digitado:
+%% diagrama digitado no texto pode afirmar uma hierarquia que o
+%% codigo nao tem, e ninguem percebe.
+%% ancora: a grade e os seus membros
+
+classDiagram
+  class grade {
+    -int largura_
+    -int altura_
+    -vector~celula~ celulas_
+    +grade(int largura, int altura)
+    +largura() int
+    +altura() int
+    +dentro(vetor2 p) bool
+    +em(vetor2 p) celula&
+    +bytes_das_celulas() size_t
+  }

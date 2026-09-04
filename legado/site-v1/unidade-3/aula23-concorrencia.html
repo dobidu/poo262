@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 23 — Concorrência em C++ | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link active"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 23 — Concorrência em C++</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula22-stl.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula24-serializacao.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 23 · 23/jul</span>
+          <h2 class="slide-title hero-title">Concorrência: std::thread, mutex e lock_guard</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Criar e sincronizar threads com <code>std::thread</code> e <code>std::mutex</code></li><li>Usar <code>std::lock_guard</code> e <code>std::unique_lock</code> para RAII de locks</li><li>Identificar race conditions e deadlocks</li><li>Conhecer <code>std::async</code> e <code>std::future</code></li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="thread-mutex">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Thread e Mutex</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Produção paralela de buffers de áudio</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <thread>
+#include <mutex>
+#include <vector>
+
+class multi_track_renderer {
+    std::mutex results_mutex_;
+    std::vector<audio_buffer> rendered_;
+
+public:
+    // Renderiza N tracks em paralelo
+    std::vector<audio_buffer> render_all(const std::vector<track>& tracks) {
+        std::vector<std::thread> threads;
+        rendered_.resize(tracks.size());
+
+        for (std::size_t i = 0; i < tracks.size(); ++i) {
+            threads.emplace_back([this, &tracks, i] {
+                auto buf = tracks[i].render();  // independente — sem lock
+
+                std::lock_guard<std::mutex> lock{results_mutex_}; // RAII
+                rendered_[i] = std::move(buf);
+                // lock liberado automaticamente ao sair do escopo
+            });
+        }
+
+        for (auto& t : threads) t.join();  // espera todas terminarem
+        return std::move(rendered_);
+    }
+};</code></pre>
+          </div>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Race condition — sutil e perigoso</div>
+              <p>Acessar <code>rendered_[i]</code> sem o mutex seria uma race condition: múltiplas threads lendo/escrevendo a mesma memória simultaneamente → comportamento indefinido. Compile com <code>-fsanitize=thread</code> para detectar.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="async">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">std::async e std::future</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Async para tarefas independentes</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <future>
+
+// std::async: lança em thread separada, retorna future
+auto future_buf = std::async(std::launch::async, [&track]() {
+    return track.render();  // executa em background
+});
+
+// Faz outro trabalho enquanto a thread processa...
+do_other_work();
+
+// Bloqueia aqui até o resultado estar pronto
+audio_buffer result = future_buf.get();
+
+// parallel_transform manual para processar M buffers em N threads
+std::vector<std::future<audio_buffer>> futures;
+for (const auto& t : tracks)
+    futures.push_back(std::async(std::launch::async,
+                                 [&t]{ return t.render(); }));
+
+std::vector<audio_buffer> results;
+for (auto& f : futures)
+    results.push_back(f.get());</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente um processador de áudio multi-thread em C++17 que processa N arquivos WAV em paralelo usando std::async. Garanta: sem race conditions, sem deadlocks, liberação de recursos mesmo com exceções."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente introduzem deadlocks ao usar múltiplos mutexes (locking em ordem diferente em threads diferentes) ou esquecem de chamar join(). Sempre compile com <code>-fsanitize=thread</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Implemente uma versão paralela de <code>project::mix_down()</code> que renderiza todas as tracks simultaneamente com <code>std::async</code>. Meça o speedup em relação à versão serial.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Introduza uma race condition deliberada (compartilhe um <code>vector</code> sem mutex). Compile com <code>-fsanitize=thread</code> e observe o relatório. Corrija com mutex.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente um deadlock simples com dois mutexes. Explique por que ocorre. Corrija usando <code>std::lock(m1, m2)</code> ou <code>std::scoped_lock</code>.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Implemente um pool de threads reutilizável (<code>thread_pool</code>) que processa tarefas de renderização de áudio. Use <code>std::condition_variable</code> para sincronização.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula22-stl.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">STL Panorâmica</span></div>
+      </a>
+      <a href="aula24-serializacao.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Serialização</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 27 — Qt na Prática e LLMs no Ciclo OO | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link active"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 27 — Qt na Prática e LLMs no Ciclo OO</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula26-design-patterns.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="../referencias.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 27 · 06/ago</span>
+          <h2 class="slide-title hero-title">Qt, Signals/Slots e LLMs no Ciclo Completo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Compreender o modelo de objetos Qt (QObject, signals/slots)</li><li>Separar domínio de apresentação com injeção de dependência</li><li>Usar LLMs no ciclo completo: modelagem → código → testes → refatoração</li><li>Consolidar o semestre: o que aprendemos e o que vem a seguir</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v2.4 — Interface Qt</div>
+            <p><code>looper</code> com interface Qt: signals/slots conectam UI ao domínio sem acoplamento. Requer Qt6 — instale conforme <code>docs/setup/README.md</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="qobject">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">QObject e Signals/Slots</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Mixer Qt — signals/slots conectam UI ao domínio</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <QMainWindow>
+#include <QSlider>
+#include <QPushButton>
+
+// Classe QObject: macros Q_OBJECT habilita signals/slots e reflection
+class mixer_window : public QMainWindow {
+    Q_OBJECT  // macro obrigatória para signals/slots
+public:
+    explicit mixer_window(audio_engine& engine, QWidget* parent = nullptr);
+
+signals:  // declarações — implementação gerada pelo MOC
+    void play_requested();
+    void volume_changed(float volume);
+
+private slots:  // recebe signals
+    void on_play_clicked()          { emit play_requested(); }
+    void on_volume_slider(int val)  { emit volume_changed(val / 100.0f); }
+
+private:
+    audio_engine& engine_;  // referência — não possui
+};
+
+// Conectar signals a slots: sem acoplamento direto entre objetos
+connect(&window,  &mixer_window::play_requested,
+        &engine,  &audio_engine::play);
+connect(&window,  &mixer_window::volume_changed,
+        &engine,  &audio_engine::set_master_volume);
+// Quando window emite play_requested → engine.play() é chamado
+// window não sabe que engine existe; engine não sabe sobre window</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="separacao">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Separação Domínio/Apresentação</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Camada</th><th>Responsabilidade</th><th>Depende de</th></tr></thead><tbody><tr><td>Domínio (audio_engine)</td><td>Lógica de áudio, projetos, tracks</td><td>C++ puro, STL</td></tr><tr><td>Repositório (json_repository)</td><td>Persistência</td><td>nlohmann/json</td></tr><tr><td>Apresentação (mixer_window)</td><td>UI, eventos, signals/slots</td><td>Qt6, domínio</td></tr><tr><td>Injeção</td><td>Conecta as camadas</td><td>main.cpp</td></tr></tbody></table>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">main.cpp — ponto de composição</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">int main(int argc, char* argv[]) {
+    QApplication app{argc, argv};
+
+    // Domínio: sem dependência de Qt
+    json_repository repo;
+    audio_engine engine{repo};  // DIP: engine depende da abstração
+
+    // Apresentação: recebe engine por referência
+    mixer_window window{engine};
+    window.show();
+
+    return app.exec();
+}</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="retrospectiva">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Retrospectiva do Semestre</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Unidade</th><th>Conceitos-chave</th><th>Sintonia</th></tr></thead><tbody><tr><td>I — Fundamentos</td><td>Encapsulamento, ciclo de vida, UML, LLMs, Git</td><td>v0.1→v0.3</td></tr><tr><td>II — Herança</td><td>Smart pointers, move, operadores, herança, polimorfismo</td><td>v1.0→v1.4</td></tr><tr><td>III — Abstração</td><td>Templates, SOLID, padrões, concorrência, serialização, Qt</td><td>v2.0→v2.5</td></tr></tbody></table>
+        <p>O projeto Sintonia percorreu 27 aulas: de duas classes simples a um mini-DAW com 72 testes automatizados, serialização JSON, cadeia de efeitos polimórfica, padrões de projeto SOLID e interface Qt.</p>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">O que estudar em seguida</div>
+              <p>Concorrência avançada (coroutines C++20), GPU computing com CUDA/OpenCL, C++ Modules (C++20), Boost.Asio para rede assíncrona, e o ecossistema de bibliotecas de áudio (RtAudio, PortAudio, JUCE).</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Faço programação de áudio em C++ há um semestre. Quais são as 5 áreas mais importantes para continuar evoluindo? Para cada área: (1) o que aprender, (2) recurso recomendado, (3) projeto prático para praticar."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>Ao usar LLMs para roadmaps de aprendizado, peça sempre fontes verificáveis. LLMs podem sugerir recursos desatualizados ou inexistentes. Verifique cada recomendação antes de seguir.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Instale Qt6 conforme <code>docs/setup/README.md</code>. Compile e execute o stub da interface Qt do Sintonia. Adicione um slider de volume que conecta ao <code>audio_config::set_master_volume()</code> via signal/slot.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Reimplemente o Observer do <code>transport</code> usando signals/slots do Qt em vez de ponteiros de interface pura. Compare as duas abordagens: qual é mais flexível? Qual tem menor overhead?</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Crie um plugin simples para o Sintonia usando shared library (SO/DLL) que implementa a interface <code>effect</code>. Carregue dinamicamente em runtime com <code>dlopen</code>/<code>LoadLibrary</code>.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Escreva um relatório de uma página: o que você aprendeu no Sintonia v0.1→v2.5 que é diretamente aplicável a um sistema de software real? Cite 3 padrões/princípios e como os usaria num projeto próprio.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula26-design-patterns.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Padrões de Projeto</span></div>
+      </a>
+      <a href="../referencias.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Referências</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

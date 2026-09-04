@@ -1,0 +1,48 @@
+%% v0.3 - Aula 06 - o diagrama de classes do mapa: composicao, nao heranca
+%% Este arquivo e a FONTE do diagrama. O material o recebe por
+%% ancora, declarada em `conteudo/trechos.py`, e nao digitado:
+%% diagrama digitado no texto pode afirmar uma hierarquia que o
+%% codigo nao tem, e ninguem percebe.
+%% ancora: mapa TEM uma grade
+
+classDiagram
+  class mapa {
+    -string nome_
+    -grade grade_
+    -vetor2 entrada_
+    -marca_de_vida marca_
+    +carregar(path) optional~mapa~
+    +de_texto(string_view, string) optional~mapa~
+    +despejar() string
+  }
+  class grade {
+    -int largura_
+    -int altura_
+    -vector~celula~ celulas_
+    +dentro(vetor2) bool
+    +em(vetor2) celula&
+  }
+  class celula {
+    +int energia
+    +int massa
+    +char glifo
+    +char sigla
+  }
+  class vetor2 {
+    +int x
+    +int y
+    +manhattan(vetor2) int
+  }
+  class marca_de_vida {
+    -string nome_
+  }
+  class instrumento {
+    +anotar(string_view, string_view) void
+    +traco() vector~string~
+  }
+  mapa "1" *-- "1" grade
+  mapa "1" *-- "1" vetor2 : entrada
+  mapa "1" *-- "1" marca_de_vida
+  grade "1" *-- "largura x altura" celula
+  grade ..> vetor2 : parametro
+  marca_de_vida ..> instrumento

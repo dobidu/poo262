@@ -1,0 +1,28 @@
+%% v0.3 - Aula 06 - o diagrama de sequencia de mapa::carregar
+%% Este arquivo e a FONTE do diagrama. O material o recebe por
+%% ancora, declarada em `conteudo/trechos.py`, e nao digitado:
+%% diagrama digitado no texto pode afirmar uma hierarquia que o
+%% codigo nao tem, e ninguem percebe.
+%% ancora: carregar, passo a passo
+
+sequenceDiagram
+  participant m as main()
+  participant mp as mapa (estatico)
+  participant g as grade
+  m->>mp: carregar(caminho)
+  mp->>mp: exists() e is_regular_file()
+  alt arquivo ausente ou irregular
+    mp-->>m: nullopt
+  else arquivo lido
+    mp->>mp: de_texto(texto, nome)
+    mp->>mp: parte em fileiras (string_view, sem alocar)
+    alt fileira de largura divergente
+      mp-->>m: nullopt
+    else fileiras consistentes
+      mp->>g: grade(largura, altura)
+      g-->>mp: grade construida
+      mp->>g: em(p) para cada celula
+      mp->>mp: acha a entrada '@'
+      mp-->>m: optional~mapa~ com valor
+    end
+  end

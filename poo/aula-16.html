@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 16 - Testes com Catch2 e replay determinístico · POO · UFPB</title>
+<meta name="description" content="Aula 16 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Testes com Catch2 e replay determinístico.">
+<meta property="og:title" content="Aula 16 - Testes com Catch2 e replay determinístico · POO · UFPB">
+<meta property="og:description" content="Aula 16 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Testes com Catch2 e replay determinístico.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-15.html">
+<link rel="next" href="aula-17.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE II</span><span class="sep">/</span><span class="atual">AULA 16</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a16">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16" aria-current="page"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Testes com Catch2 e replay determinístico</h1>
+    <p class="sub">UNIDADE II · AULA 16 DE 26 · CAP. 16 DO LIVRO · DERIVA v1.6 · LAB-09</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Estruturar testes com <code>TEST_CASE</code> e <code>SECTION</code>, e dizer o que cada seção reexecuta</li><li>Escolher entre <code>REQUIRE</code>, <code>CHECK</code> e <code>REQUIRE_THROWS_AS</code> pelo que cada um faz depois da falha</li><li>Escrever teste que falha quando o comportamento muda, e não quando a implementação muda</li><li>Usar o replay determinístico como portão de refatoração</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Testes automatizados com Catch2 v3</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · v1.6 · o campo de visão testado, e o replay</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>A v1.6 escreve as suítes de campo de visão e de caminho, e liga o replay determinístico. O portão do Deriva passa a ter quatro condições, e duas delas são desta aula: <code>ctest</code> com 188 testes verdes, e o despejo idêntico byte a byte com semente fixa.</p><p>Rodar é <code>ctest --test-dir build --output-on-failure</code>, ou <code>make verifica</code> para as quatro condições de uma vez.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<p>O campo de visão é o primeiro alvo dos testes, e não o último, porque é função pura: mesma entrada, mesmo conjunto de células visíveis, sem montar o mundo e sem tocar no terminal. A implementação é Bresenham em inteiros, sem um ponto flutuante e sem arredondamento que dependa de plataforma, e é essa propriedade que o replay compra.</p></section>
+<section class="slide" id="estrutura"><div class="slide__cab"><span class="slide__n">02</span><h2>TEST_CASE, SECTION e o que cada seção reexecuta</h2></div><p>Um <code>TEST_CASE</code> tem nome em prosa e etiquetas, e o nome é o que aparece na falha, de forma que ele deve dizer o que a classe promete e não qual método foi chamado. Lido de cima a baixo, o arquivo de teste de <code>grade</code> é a documentação de <code>grade</code>, com a diferença de ser executável.</p>
+<p>O detalhe de <code>SECTION</code> que a prova cobra: o corpo do <code>TEST_CASE</code> roda uma vez <strong>por seção folha</strong>, e não uma vez para todas. O que está escrito antes das seções é arranjo, e cada ramo entra num objeto recém-montado. É isso que torna as seções independentes, e é exatamente a propriedade que se perde quando alguém guarda estado entre elas para não repetir a montagem.</p>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · Etiquetas filtram, e o filtro é ferramenta de depuração</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><code>ctest -R mapa</code> roda só os testes cujo nome registrado casa com <code>mapa</code>, e <code>./build/testes "*copiar*"</code> filtra pelo nome do caso dentro do binário do Catch2. É assim que se lê um número medido sem rodar a suíte inteira, e é o que o material faz para exibir o vazamento do ciclo da Aula 13.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="tipos-assert"><div class="slide__cab"><span class="slide__n">03</span><h2>As asserções, e o que cada uma faz depois de falhar</h2></div><p>A escolha entre as macros é sobre o que acontece <em>depois</em> da falha. <code>REQUIRE</code> interrompe o caso, e serve para pré-condição: se a montagem falhou, o resto do teste não tem sentido e as falhas seguintes só produziriam ruído. <code>CHECK</code> continua, e serve para verificações independentes, quando você quer o relatório completo numa única execução.</p>
+<div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Macro</th><th>O que faz na falha</th><th>Quando usar</th></tr></thead><tbody><tr><td><code>REQUIRE(expr)</code></td><td>interrompe o <code>TEST_CASE</code></td><td>pré-condição, estado de que o resto depende</td></tr><tr><td><code>CHECK(expr)</code></td><td>registra e continua</td><td>verificações independentes entre si</td></tr><tr><td><code>REQUIRE_FALSE(expr)</code></td><td>interrompe</td><td>a negação, sem o <code>!</code> que se perde na leitura</td></tr><tr><td><code>REQUIRE_THROWS_AS(expr, tipo)</code></td><td>interrompe</td><td>erro de programação, com o tipo exato exigido</td></tr><tr><td><code>REQUIRE_NOTHROW(expr)</code></td><td>interrompe</td><td>operação que a classe promete não lançar</td></tr></tbody></table></div>
+<aside class="callout" data-t="info"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · Por que Catch::Approx não aparece na suíte do Deriva</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Comparar ponto flutuante com <code>==</code> compara a representação, e não o valor pretendido, e é para isso que existe <code>Catch::Approx</code>. No Deriva ele não aparece uma vez, porque o domínio é inteiro: a grade tem coordenadas inteiras, o raio é distância de Manhattan e o campo de visão é Bresenham em inteiros. A ausência é decisão de projeto, e é ela que torna o despejo comparável byte a byte em qualquer máquina.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · Teste que afirma implementação não é teste</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>O teste tem de falhar quando o <strong>comportamento</strong> muda, e não quando a implementação muda. Um teste que afirma o número de chamadas internas, ou o valor de um membro privado alcançado por artifício, trava a refatoração em vez de a proteger, e é o item R7 da rubrica. O critério prático: se você reescrever o corpo do método mantendo a promessa, o teste tem de continuar verde.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="replay"><div class="slide__cab"><span class="slide__n">04</span><h2>O replay determinístico como portão de refatoração</h2></div><p>Teste de unidade afirma promessa por promessa. O replay afirma a saída inteira: semente fixa, roteiro de teclas gravado em arquivo, despejo comparado com <code>diff</code> contra o esperado. É a condição 3 das quatro do portão, e o que ela protege não é uma função, é o comportamento observável do programa completo.</p>
+<p>Para que isso funcione, o sorteio do Deriva não é <code>std::mt19937</code> nem <code>std::random_device</code>: é um gerador escrito para ser reproduzível byte a byte em qualquer máquina. Aleatoriedade de verdade seria pior aqui, porque tornaria o oráculo inútil.</p>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · Regravar o esperado é uma decisão, e tem de ser tomada em voz alta</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Existe um alvo que regrava o arquivo esperado, e usá-lo é declarar que a saída <em>deveria</em> mudar. Numa refatoração é justamente o que não se pode fazer: refatoração correta é a que não muda a saída, e é assim que a Aula 24 verifica a sua. Se o <code>diff</code> aparecer durante uma refatoração, o defeito está no código novo, e não no esperado.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · A dependência de teste entra como SYSTEM, e com versão fixa</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>O Catch2 chega por <code>FetchContent</code> marcado <code>SYSTEM</code>, para que aviso vindo do cabeçalho da dependência não conte na condição de zero warning, que existe para incidir sobre o seu código. E a etiqueta de versão é fixa, para que a suíte não mude de comportamento sem que ninguém tenha mexido nela.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Em C++17 com Catch2 v3: escreva a suíte de uma função pura <code>visiveis(mapa, posicao, raio)</code> que devolve o conjunto de células vistas. Cubra a origem, a borda exata do raio, a parede que é vista e bloqueia o que está atrás, e a posição fora do mapa. Use <code>SECTION</code> para os ramos que partilham o mesmo arranjo, e não afirme nada sobre a ordem interna do conjunto."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>O erro central é gerar teste que afirma a implementação: contagem de chamadas, ordem interna de um contêiner não ordenado, valor de campo privado. Depois vêm os esquecimentos: o caso de fronteira exata, o tipo errado em <code>REQUIRE_THROWS_AS</code>, e o estado do objeto de origem depois de um movimento, que a Aula 14 mostra que não se afirma. Peça sempre o caso que <em>falharia</em> se a promessa fosse quebrada.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">7 trechos do Deriva, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>Nenhum ponto flutuante, nenhum arredondamento dependente de plataforma. É essa propriedade que o replay compra, e é por isso que o campo de visão é o PRIMEIRO alvo dos testes e não o último: função pura se testa sem montar o mundo.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">src/fov.cpp · Bresenham em inteiros</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-tipo">std::vector</span>&lt;vetor2&gt; linha(vetor2 a, vetor2 b) {
+  <span class="tk-com">// Bresenham em inteiros. Nenhum ponto flutuante, nenhum arredondamento</span>
+  <span class="tk-com">// dependente de plataforma: a mesma entrada dá a mesma linha em qualquer</span>
+  <span class="tk-com">// máquina, e é essa propriedade que o replay da Aula 16 compra.</span>
+  <span class="tk-tipo">std::vector</span>&lt;vetor2&gt; pontos;
+  <span class="tk-kw">int</span> x = a.x, y = a.y;
+  <span class="tk-kw">const</span> <span class="tk-kw">int</span> dx = <span class="tk-tipo">std::abs</span>(b.x - a.x), dy = <span class="tk-tipo">std::abs</span>(b.y - a.y);
+  <span class="tk-kw">const</span> <span class="tk-kw">int</span> sx = a.x &lt; b.x ? <span class="tk-num">1</span> : -<span class="tk-num">1</span>, sy = a.y &lt; b.y ? <span class="tk-num">1</span> : -<span class="tk-num">1</span>;
+  <span class="tk-kw">int</span> erro = dx - dy;
+  <span class="tk-kw">for</span> (;;) {
+    pontos.push_back({x, y});
+    <span class="tk-kw">if</span> (x == b.x &amp;&amp; y == b.y) <span class="tk-kw">break</span>;
+    <span class="tk-kw">const</span> <span class="tk-kw">int</span> e2 = <span class="tk-num">2</span> * erro;
+    <span class="tk-kw">if</span> (e2 &gt; -dy) { erro -= dy; x += sx; }
+    <span class="tk-kw">if</span> (e2 &lt; dx) { erro += dx; y += sy; }
+  }</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/src/fov.cpp:7</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoic3RkOjp2ZWN0b3I8dmV0b3IyPiBsaW5oYSh2ZXRvcjIgYSwgdmV0b3IyIGIpIHtcbiAgLy8gQnJlc2VuaGFtIGVtIGludGVpcm9zLiBOZW5odW0gcG9udG8gZmx1dHVhbnRlLCBuZW5odW0gYXJyZWRvbmRhbWVudG9cbiAgLy8gZGVwZW5kZW50ZSBkZSBwbGF0YWZvcm1hOiBhIG1lc21hIGVudHJhZGEgZMOhIGEgbWVzbWEgbGluaGEgZW0gcXVhbHF1ZXJcbiAgLy8gbcOhcXVpbmEsIGUgw6kgZXNzYSBwcm9wcmllZGFkZSBxdWUgbyByZXBsYXkgZGEgQXVsYSAxNiBjb21wcmEuXG4gIHN0ZDo6dmVjdG9yPHZldG9yMj4gcG9udG9zO1xuICBpbnQgeCA9IGEueCwgeSA9IGEueTtcbiAgY29uc3QgaW50IGR4ID0gc3RkOjphYnMoYi54IC0gYS54KSwgZHkgPSBzdGQ6OmFicyhiLnkgLSBhLnkpO1xuICBjb25zdCBpbnQgc3ggPSBhLnggPCBiLnggPyAxIDogLTEsIHN5ID0gYS55IDwgYi55ID8gMSA6IC0xO1xuICBpbnQgZXJybyA9IGR4IC0gZHk7XG4gIGZvciAoOzspIHtcbiAgICBwb250b3MucHVzaF9iYWNrKHt4LCB5fSk7XG4gICAgaWYgKHggPT0gYi54ICYmIHkgPT0gYi55KSBicmVhaztcbiAgICBjb25zdCBpbnQgZTIgPSAyICogZXJybztcbiAgICBpZiAoZTIgPiAtZHkpIHsgZXJybyAtPSBkeTsgeCArPSBzeDsgfVxuICAgIGlmIChlMiA8IGR4KSB7IGVycm8gKz0gZHg7IHkgKz0gc3k7IH1cbiAgfSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Não é `std::mt19937` nem `std::random_device`: precisa ser reproduzível byte a byte em qualquer máquina, porque é sobre isso que o replay se apoia. Aleatoriedade de verdade seria pior aqui.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">src/main.cpp · o sorteio que não sorteia</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// Gerador congruente linear, com constantes de Numerical Recipes.</span>
+<span class="tk-com">///</span>
+<span class="tk-com">/// Não é `std::mt19937` nem, muito menos, `std::random_device`: precisa ser</span>
+<span class="tk-com">/// reproduzível byte a byte em qualquer máquina, porque é sobre isso que o</span>
+<span class="tk-com">/// replay da Aula 16 se apoia. Aleatoriedade de verdade seria pior aqui.</span>
+<span class="tk-kw">class</span> sorteio {
+ <span class="tk-kw">public</span>:
+  <span class="tk-kw">explicit</span> sorteio(<span class="tk-kw">unsigned</span> semente) <span class="tk-kw">noexcept</span> : estado_(semente) {}
+
+  [[nodiscard]] <span class="tk-kw">unsigned</span> proximo() <span class="tk-kw">noexcept</span> {
+    estado_ = estado_ * <span class="tk-num">1664525u</span> + <span class="tk-num">1013904223u</span>;
+    <span class="tk-kw">return</span> estado_;
+  }
+  [[nodiscard]] <span class="tk-kw">int</span> ate(<span class="tk-kw">int</span> limite) <span class="tk-kw">noexcept</span> {
+    <span class="tk-kw">return</span> limite &lt;= <span class="tk-num">0</span> ? <span class="tk-num">0</span> : <span class="tk-kw">static_cast</span>&lt;<span class="tk-kw">int</span>&gt;(proximo() % <span class="tk-kw">static_cast</span>&lt;<span class="tk-kw">unsigned</span>&gt;(limite));
+  }
+
+ <span class="tk-kw">private</span>:
+  <span class="tk-kw">unsigned</span> estado_;
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/src/main.cpp:31</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIEdlcmFkb3IgY29uZ3J1ZW50ZSBsaW5lYXIsIGNvbSBjb25zdGFudGVzIGRlIE51bWVyaWNhbCBSZWNpcGVzLlxuLy8vXG4vLy8gTsOjbyDDqSBgc3RkOjptdDE5OTM3YCBuZW0sIG11aXRvIG1lbm9zLCBgc3RkOjpyYW5kb21fZGV2aWNlYDogcHJlY2lzYSBzZXJcbi8vLyByZXByb2R1esOtdmVsIGJ5dGUgYSBieXRlIGVtIHF1YWxxdWVyIG3DoXF1aW5hLCBwb3JxdWUgw6kgc29icmUgaXNzbyBxdWUgb1xuLy8vIHJlcGxheSBkYSBBdWxhIDE2IHNlIGFwb2lhLiBBbGVhdG9yaWVkYWRlIGRlIHZlcmRhZGUgc2VyaWEgcGlvciBhcXVpLlxuY2xhc3Mgc29ydGVpbyB7XG4gcHVibGljOlxuICBleHBsaWNpdCBzb3J0ZWlvKHVuc2lnbmVkIHNlbWVudGUpIG5vZXhjZXB0IDogZXN0YWRvXyhzZW1lbnRlKSB7fVxuXG4gIFtbbm9kaXNjYXJkXV0gdW5zaWduZWQgcHJveGltbygpIG5vZXhjZXB0IHtcbiAgICBlc3RhZG9fID0gZXN0YWRvXyAqIDE2NjQ1MjV1ICsgMTAxMzkwNDIyM3U7XG4gICAgcmV0dXJuIGVzdGFkb187XG4gIH1cbiAgW1tub2Rpc2NhcmRdXSBpbnQgYXRlKGludCBsaW1pdGUpIG5vZXhjZXB0IHtcbiAgICByZXR1cm4gbGltaXRlIDw9IDAgPyAwIDogc3RhdGljX2Nhc3Q8aW50Pihwcm94aW1vKCkgJSBzdGF0aWNfY2FzdDx1bnNpZ25lZD4obGltaXRlKSk7XG4gIH1cblxuIHByaXZhdGU6XG4gIHVuc2lnbmVkIGVzdGFkb187XG59OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Semente fixa, roteiro gravado, `diff` contra o esperado. Regravar o esperado é uma DECISÃO - numa refatoração, é justamente o que não se pode fazer.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>make</span><span class="arq">Makefile · o portão de replay</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com"># (3) replay: despejo idêntico byte a byte. É o oráculo das Aulas 16, 24 e 25.</span>
+replay:
+	@./$(BUILD)/deriva --replay roteiro.txt --semente $(SEMENTE) &gt; $(BUILD)/replay.out
+	@diff -u esperado.txt $(BUILD)/replay.out &gt; $(BUILD)/replay.diff || \
+	  { cat $(BUILD)/replay.diff; echo <span class="tk-str">&quot;verifica: FALHA (3/4 replay) - a saida mudou&quot;</span>; exit 1; }
+	@echo <span class="tk-str">&quot;  (3/4) replay      OK  identico byte a byte (semente $(SEMENTE))&quot;</span>
+</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/Makefile:39</span></div></div><p>`SYSTEM` para que o aviso da dependência não conte no portão, e `GIT_TAG` fixo para que a suíte não mude de comportamento sem que ninguém tenha mexido nela.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cmake</span><span class="arq">CMakeLists.txt · Catch2 como SYSTEM, com tag fixa</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>FetchContent_Declare(Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG v3.5.2
+  GIT_SHALLOW TRUE
+  SYSTEM
+)
+FetchContent_MakeAvailable(Catch2)
+
+enable_testing()
+add_executable(testes
+  testes/test_vetor2.cpp
+  testes/test_celula.cpp
+  testes/test_grade.cpp
+  testes/test_mapa.cpp
+  testes/test_ciclo_de_vida.cpp
+  testes/test_leiaute.cpp
+  testes/test_posse.cpp
+  testes/test_string_view.cpp
+  testes/test_move_string.cpp
+  testes/test_corrida.cpp
+  testes/test_entidade.cpp
+  testes/test_mundo.cpp
+  testes/test_estacao.cpp
+  testes/test_operadores.cpp
+  testes/test_fov.cpp
+  testes/test_diamante.cpp
+  testes/test_inspetor.cpp
+  testes/test_generico.cpp
+  testes/test_erro.cpp
+  testes/test_inventario.cpp
+  testes/test_partida.cpp
+  testes/test_concorrencia.cpp
+  testes/test_padroes.cpp
+  testes/test_comparativo.cpp
+  testes/test_revisao_ia.cpp
+  testes/test_tipos.cpp
+  testes/test_uml.cpp
+  testes/test_encaminhamento.cpp
+  testes/test_padroes_extra.cpp
+  testes/test_solid.cpp
+)
+find_package(Threads REQUIRED)
+target_link_libraries(testes PRIVATE deriva_nucleo deriva_revisao Catch2::Catch2WithMain Threads::Threads)
+<span class="tk-com"># o teste do codigo gerado inclui o cabecalho com o defeito plantado</span>
+target_compile_options(testes PRIVATE -Wall -Wextra -Wpedantic -Wno-non-virtual-dtor)
+
+include(CTest)
+include(Catch)
+catch_discover_tests(testes)</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/CMakeLists.txt:142</span></div></div><p>Ele não procura defeito: ele diz o que a classe promete. Lido de cima a baixo, é a documentação de `grade` - e é executável.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_grade.cpp · o teste como especificação</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;grade conhece seus limites&quot;</span>) {
+  <span class="tk-kw">const</span> grade g(<span class="tk-num">20</span>, <span class="tk-num">10</span>);
+  REQUIRE(g.largura() == <span class="tk-num">20</span>);
+  REQUIRE(g.altura() == <span class="tk-num">10</span>);
+  REQUIRE(g.dentro({<span class="tk-num">0</span>, <span class="tk-num">0</span>}));
+  REQUIRE(g.dentro({<span class="tk-num">19</span>, <span class="tk-num">9</span>}));
+  REQUIRE_FALSE(g.dentro({<span class="tk-num">20</span>, <span class="tk-num">9</span>}));
+  REQUIRE_FALSE(g.dentro({-<span class="tk-num">1</span>, <span class="tk-num">0</span>}));
+}
+
+TEST_CASE(<span class="tk-str">&quot;dimensao nao-positiva e erro de programacao&quot;</span>) {
+  REQUIRE_THROWS_AS(grade(<span class="tk-num">0</span>, <span class="tk-num">5</span>), <span class="tk-tipo">std::invalid_argument</span>);
+  REQUIRE_THROWS_AS(grade(<span class="tk-num">5</span>, -<span class="tk-num">1</span>), <span class="tk-tipo">std::invalid_argument</span>);</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_grade.cpp:11</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiZ3JhZGUgY29uaGVjZSBzZXVzIGxpbWl0ZXNcIikge1xuICBjb25zdCBncmFkZSBnKDIwLCAxMCk7XG4gIFJFUVVJUkUoZy5sYXJndXJhKCkgPT0gMjApO1xuICBSRVFVSVJFKGcuYWx0dXJhKCkgPT0gMTApO1xuICBSRVFVSVJFKGcuZGVudHJvKHswLCAwfSkpO1xuICBSRVFVSVJFKGcuZGVudHJvKHsxOSwgOX0pKTtcbiAgUkVRVUlSRV9GQUxTRShnLmRlbnRybyh7MjAsIDl9KSk7XG4gIFJFUVVJUkVfRkFMU0UoZy5kZW50cm8oey0xLCAwfSkpO1xufVxuXG5URVNUX0NBU0UoXCJkaW1lbnNhbyBuYW8tcG9zaXRpdmEgZSBlcnJvIGRlIHByb2dyYW1hY2FvXCIpIHtcbiAgUkVRVUlSRV9USFJPV1NfQVMoZ3JhZGUoMCwgNSksIHN0ZDo6aW52YWxpZF9hcmd1bWVudCk7XG4gIFJFUVVJUkVfVEhST1dTX0FTKGdyYWRlKDUsIC0xKSwgc3RkOjppbnZhbGlkX2FyZ3VtZW50KTsiLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Vazio, torto e ausente: os três devolvem `optional` vazio. Ausência de resultado não é exceção, e o tipo diz isso.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_mapa.cpp · as três fronteiras</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;ausencia de resultado nao e excecao&quot;</span>) {
+  REQUIRE_FALSE(mapa::de_texto(<span class="tk-str">&quot;&quot;</span>, <span class="tk-str">&quot;vazio&quot;</span>).has_value());
+  REQUIRE_FALSE(mapa::de_texto(<span class="tk-str">&quot;###\n##\n&quot;</span>, <span class="tk-str">&quot;torto&quot;</span>).has_value());
+  REQUIRE_FALSE(mapa::carregar(<span class="tk-str">&quot;nao/existe/em/lugar/algum.txt&quot;</span>).has_value());
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_mapa.cpp:44</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiYXVzZW5jaWEgZGUgcmVzdWx0YWRvIG5hbyBlIGV4Y2VjYW9cIikge1xuICBSRVFVSVJFX0ZBTFNFKG1hcGE6OmRlX3RleHRvKFwiXCIsIFwidmF6aW9cIikuaGFzX3ZhbHVlKCkpO1xuICBSRVFVSVJFX0ZBTFNFKG1hcGE6OmRlX3RleHRvKFwiIyMjXFxuIyNcXG5cIiwgXCJ0b3J0b1wiKS5oYXNfdmFsdWUoKSk7XG4gIFJFUVVJUkVfRkFMU0UobWFwYTo6Y2FycmVnYXIoXCJuYW8vZXhpc3RlL2VtL2x1Z2FyL2FsZ3VtLnR4dFwiKS5oYXNfdmFsdWUoKSk7XG59IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>O corpo do `TEST_CASE` roda uma vez POR seção, e não uma vez para as duas: cada ramo entra num mapa recém-montado. É o que torna as seções independentes, e é a propriedade que se perde ao guardar estado entre elas.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_fov.cpp · `SECTION` refaz o arranjo em cada ramo</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;a parede e vista e bloqueia o que esta atras&quot;</span>) {
+  <span class="tk-kw">const</span> <span class="tk-kw">auto</span> m = mapa::de_texto(kSala, <span class="tk-str">&quot;sala&quot;</span>);
+  <span class="tk-kw">const</span> <span class="tk-kw">auto</span> v = visiveis(*m, {<span class="tk-num">1</span>, <span class="tk-num">2</span>}, <span class="tk-num">6</span>);
+
+  REQUIRE(v.count(vetor2{<span class="tk-num">4</span>, <span class="tk-num">2</span>}) == <span class="tk-num">1</span>);   <span class="tk-com">// a coluna: vista, porque bloqueia</span>
+  REQUIRE(v.count(vetor2{<span class="tk-num">5</span>, <span class="tk-num">2</span>}) == <span class="tk-num">0</span>);   <span class="tk-com">// logo atras dela: sombra</span>
+
+  SECTION(<span class="tk-str">&quot;mas se ve em volta da coluna, por cima e por baixo&quot;</span>) {
+    REQUIRE(v.count(vetor2{<span class="tk-num">4</span>, <span class="tk-num">1</span>}) == <span class="tk-num">1</span>);
+    REQUIRE(v.count(vetor2{<span class="tk-num">4</span>, <span class="tk-num">3</span>}) == <span class="tk-num">1</span>);
+    REQUIRE(v.count(vetor2{<span class="tk-num">6</span>, <span class="tk-num">1</span>}) == <span class="tk-num">1</span>);   <span class="tk-com">// na borda do raio, dist 6</span>
+  }
+  SECTION(<span class="tk-str">&quot;o raio e de Manhattan, e a borda e exata&quot;</span>) {
+    REQUIRE(vetor2{<span class="tk-num">1</span>, <span class="tk-num">2</span>}.manhattan({<span class="tk-num">6</span>, <span class="tk-num">1</span>}) == <span class="tk-num">6</span>);
+    REQUIRE(v.count(vetor2{<span class="tk-num">6</span>, <span class="tk-num">1</span>}) == <span class="tk-num">1</span>);
+    REQUIRE(vetor2{<span class="tk-num">1</span>, <span class="tk-num">2</span>}.manhattan({<span class="tk-num">7</span>, <span class="tk-num">1</span>}) == <span class="tk-num">7</span>);
+    REQUIRE(v.count(vetor2{<span class="tk-num">7</span>, <span class="tk-num">1</span>}) == <span class="tk-num">0</span>);   <span class="tk-com">// um passo alem, e ja nao se ve</span></code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_fov.cpp:45</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiYSBwYXJlZGUgZSB2aXN0YSBlIGJsb3F1ZWlhIG8gcXVlIGVzdGEgYXRyYXNcIikge1xuICBjb25zdCBhdXRvIG0gPSBtYXBhOjpkZV90ZXh0byhrU2FsYSwgXCJzYWxhXCIpO1xuICBjb25zdCBhdXRvIHYgPSB2aXNpdmVpcygqbSwgezEsIDJ9LCA2KTtcblxuICBSRVFVSVJFKHYuY291bnQodmV0b3IyezQsIDJ9KSA9PSAxKTsgICAvLyBhIGNvbHVuYTogdmlzdGEsIHBvcnF1ZSBibG9xdWVpYVxuICBSRVFVSVJFKHYuY291bnQodmV0b3IyezUsIDJ9KSA9PSAwKTsgICAvLyBsb2dvIGF0cmFzIGRlbGE6IHNvbWJyYVxuXG4gIFNFQ1RJT04oXCJtYXMgc2UgdmUgZW0gdm9sdGEgZGEgY29sdW5hLCBwb3IgY2ltYSBlIHBvciBiYWl4b1wiKSB7XG4gICAgUkVRVUlSRSh2LmNvdW50KHZldG9yMns0LCAxfSkgPT0gMSk7XG4gICAgUkVRVUlSRSh2LmNvdW50KHZldG9yMns0LCAzfSkgPT0gMSk7XG4gICAgUkVRVUlSRSh2LmNvdW50KHZldG9yMns2LCAxfSkgPT0gMSk7ICAgLy8gbmEgYm9yZGEgZG8gcmFpbywgZGlzdCA2XG4gIH1cbiAgU0VDVElPTihcIm8gcmFpbyBlIGRlIE1hbmhhdHRhbiwgZSBhIGJvcmRhIGUgZXhhdGFcIikge1xuICAgIFJFUVVJUkUodmV0b3IyezEsIDJ9Lm1hbmhhdHRhbih7NiwgMX0pID09IDYpO1xuICAgIFJFUVVJUkUodi5jb3VudCh2ZXRvcjJ7NiwgMX0pID09IDEpO1xuICAgIFJFUVVJUkUodmV0b3IyezEsIDJ9Lm1hbmhhdHRhbih7NywgMX0pID09IDcpO1xuICAgIFJFUVVJUkUodi5jb3VudCh2ZXRvcjJ7NywgMX0pID09IDApOyAgIC8vIHVtIHBhc3NvIGFsZW0sIGUgamEgbmFvIHNlIHZlIiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-refator"><div class="slide__cab"><span class="slide__n">07</span><h2>Diferenciador de refatoração</h2></div><p>Antes/depois, grafo de acoplamento, e o diff do despejo que prova invariância. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="refator" tabindex="0"></section></section>
+<section class="slide" id="deriva"><div class="slide__cab"><span class="slide__n">08</span><h2>O Deriva nesta aula</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · O QUE VOCÊ ENTREGA NESTA AULA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><span class="versao">v1.6</span> testes de FOV e caminho + replay determinístico. <span style="color:var(--apagado)">Catch2, semente fixa, roteiro gravado, despejo idêntico byte a byte</span> · <span style="color:var(--ok)">✓ 5 novos, 57 no total, medidos</span> <span style="color:var(--apagado)">· mais 3 replays comparados byte a byte</span></p><p style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado)">A versão anterior e a seguinte estão na <a href="trilha.html">trilha completa</a>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside><aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ LABORATÓRIO · LAB-09</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><strong>Catch2 e o replay determinístico como especificação</strong></p><p>Faça este laboratório antes desta aula. O portão de correção é: escrever o teste que trava a refatoração antes de refatorar.</p><p><a href="laboratorios.html#lab-09">Ver o LAB-09 na página dos laboratórios</a></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">09</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Escreva a suíte de <code>mapa::carregar</code> a partir de arquivo: arquivo existente, arquivo inexistente e arquivo com linha de largura diferente das outras. Os três casos de ausência devolvem <code>optional</code> vazio, e nenhum deles é exceção. Depois diga por que os testes do Deriva preferem <code>de_texto</code> a <code>carregar</code>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Aplique TDD a uma função nova de <code>mapa</code>, que devolva as células de parede adjacentes a uma posição. Escreva primeiro os testes, incluindo o caso de canto, e só então a implementação. Registre quantas vezes o teste falhou por motivo que você não havia previsto.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Pegue um teste da suíte que afirme implementação em vez de comportamento, ou escreva um. Refatore o método correspondente sem mudar a promessa, e mostre o teste ficando vermelho sem que nada tenha se quebrado. Depois reescreva o teste para que ele volte a proteger, e não a travar.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Mude uma linha do render que altere a saída em um único caractere, e rode o replay. O <code>diff</code> aponta o quê, e em que linha? Depois desfaça, e explique por que o replay pega o que a suíte de unidade não pegaria.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 14 do livro v1 e de <code>unidade-2/aula14-testes-catch2</code>.</p><p>O teste como especificação executável. Entra o replay: semente fixa, roteiro gravado, despejo idêntico byte a byte. É o oráculo das Aulas 24 e 25. Os trechos saem de `CMakeLists.txt`, do `Makefile`, de `src/fov.cpp`, de `src/main.cpp` e das suítes de `grade`, `mapa` e campo de visão.</p></div></details>
+  <nav class="nav-pe">
+    <a href="aula-15.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Sobrecarga de operadores</div></a>
+    <div class="meio">AULA 16 / 26</div>
+    <a href="aula-17.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Herança múltipla e o diamante</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

@@ -1,0 +1,549 @@
+/* =============================================================
+   POO v2 · pagina.css
+   T1 página de aula · T2 moldura de interativo · T4 callouts
+   T6 navegação · T7 exercícios · T8 selo C++20 · T9 diagramas
+   ============================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--vazio);
+  color: var(--leitura);
+  font-family: var(--humana);
+  font-size: var(--t-prosa);
+  line-height: var(--lh-prosa);
+  -webkit-font-smoothing: antialiased;
+  /* vinheta estática nas bordas - sem animação, é fósforo, não CRT */
+  background-image: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%);
+  background-attachment: fixed;
+}
+::selection { background: var(--fosforo); color: var(--vazio); }
+
+a { color: var(--frio); text-decoration: none; border-bottom: 1px solid rgba(95,195,214,.4); }
+a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); }
+
+/* Foco visível NA estética: moldura em fósforo, não o outline
+   padrão do navegador.                                          */
+:focus-visible { outline: 2px solid var(--fosforo); outline-offset: 2px; }
+
+.pular { position: absolute; left: -9999px; }
+.pular:focus {
+  position: static; display: inline-block; margin: var(--e2);
+  padding: var(--e1) var(--e2); background: var(--fosforo); color: var(--vazio);
+  font-family: var(--maquina); font-size: var(--t-rot);
+}
+
+/* =============================================================
+   MOLDURA DE BOX-DRAWING
+   Topo e base são caracteres REAIS (─ │ ┌ ┐ └ ┘ ├ ┤ ╭ ╮ ╰ ╯),
+   com o título embutido na moldura superior como em TUI de
+   verdade. As laterais são régua de 1px na mesma cor: alinhar
+   uma coluna de │ à altura variável do conteúdo não sobrevive a
+   reflow, e legibilidade vence pureza (regra 1 do brief).
+   Tudo aqui é decorativo → aria-hidden, fora do fluxo de leitura.
+   ============================================================= */
+
+.painel { border-inline: var(--rule-w) solid var(--grade); background: var(--painel); }
+.painel--sistema { border-color: var(--grade-alta); background: var(--painel-alto); }
+
+.moldura {
+  display: flex; align-items: center; gap: 0;
+  font-family: var(--maquina); font-size: var(--t-rot);
+  line-height: 1; letter-spacing: .04em;
+  color: var(--grade-alta);
+  user-select: none; white-space: nowrap; overflow: hidden;
+}
+.moldura--sistema { color: var(--grade-alta); }
+.moldura__canto { flex: 0 0 auto; }
+.moldura__regua { flex: 1 1 auto; overflow: hidden; }
+.moldura__titulo {
+  flex: 0 0 auto; padding: 0 .35em;
+  color: var(--fosforo); letter-spacing: .16em; font-weight: 600;
+}
+.moldura__nota { flex: 0 0 auto; padding: 0 .35em; color: var(--apagado); letter-spacing: .1em; }
+
+/* =============================================================
+   T1 · PÁGINA DE AULA
+   ============================================================= */
+
+.pg { max-width: var(--pagina-max); margin: 0 auto; }
+
+.barra {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e3);
+  height: calc(46px * var(--s)); padding: 0 var(--goteira);
+  background: var(--vazio); border-bottom: var(--rule-w) solid var(--grade);
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em;
+  color: var(--apagado);
+}
+.migalha { display: flex; align-items: center; gap: .5em; min-width: 0; }
+.migalha b { color: var(--fosforo); font-weight: 500; }
+.migalha .sep { color: var(--fantasma); }
+.migalha .atual { color: var(--leitura); overflow: hidden; text-overflow: ellipsis; }
+
+.badge-ufpb {
+  display: inline-flex; align-items: center; gap: .4em;
+  padding: 3px 7px; background: var(--ufpb); color: #fff;
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .12em;
+}
+
+.ferramentas { display: flex; gap: var(--e1); align-items: center; }
+.tecla {
+  height: calc(30px * var(--s)); min-width: calc(30px * var(--s)); padding: 0 var(--e1);
+  background: transparent; border: var(--rule-w) solid var(--grade);
+  color: var(--apagado); font-family: var(--maquina); font-size: var(--t-rot);
+  letter-spacing: .1em; cursor: pointer; transition: color 120ms ease-out, border-color 120ms ease-out;
+}
+.tecla:hover { color: var(--fosforo); border-color: var(--fosforo); }
+.tecla[aria-pressed="true"] { color: var(--fosforo); border-color: var(--fosforo); }
+@media (pointer: coarse) { .tecla { height: var(--tap); min-width: var(--tap); } }
+
+.aula { display: grid; grid-template-columns: var(--arvore) minmax(0, 1fr); gap: 0; }
+
+/* ---- T6 · árvore das 26 aulas ------------------------------- */
+.arvore {
+  border-right: var(--rule-w) solid var(--grade);
+  padding: var(--e3) 0 var(--e5);
+  position: sticky; top: calc(46px * var(--s));
+  align-self: start; max-height: calc(100vh - 46px * var(--s));
+  overflow-y: auto;
+  font-family: var(--maquina); font-size: var(--t-est);
+}
+.arvore__unidade { padding: var(--e3) var(--e3) var(--e1); }
+.arvore__unidade:first-child { padding-top: 0; }
+.arvore__rot { color: var(--fosforo); letter-spacing: .16em; font-size: var(--t-rot); }
+.arvore__medidor { margin-top: 4px; color: var(--fantasma); letter-spacing: .08em; }
+.arvore__medidor b { color: var(--apagado); font-weight: 400; }
+.arvore ol { list-style: none; margin: var(--e1) 0 0; padding: 0; }
+.arvore a {
+  display: flex; gap: .6em; align-items: baseline;
+  min-height: calc(28px * var(--s)); padding: 4px var(--e3) 4px var(--e3);
+  border: none; color: var(--apagado); line-height: 1.4;
+}
+.arvore a:hover { background: var(--painel); color: var(--leitura); }
+.arvore a .galho { color: var(--fantasma); }
+.arvore a .num { color: var(--fantasma); }
+.arvore a[data-visitada="1"] { color: var(--leitura); }
+.arvore a[data-visitada="1"] .num::after { content: "·"; color: var(--ok); margin-left: .3em; }
+.arvore a[aria-current="page"] {
+  background: var(--fosforo-lav); color: var(--fosforo-alto);
+  box-shadow: inset 2px 0 0 var(--fosforo);
+}
+.arvore a[aria-current="page"] .galho, .arvore a[aria-current="page"] .num { color: var(--fosforo); }
+
+.gaveta-abre { display: none; }
+
+/* ---- corpo de slides --------------------------------------- */
+.corpo { padding: 0 var(--goteira) var(--e5); min-width: 0; }
+
+.cabeca-aula { padding: var(--e5) 0 var(--e4); border-bottom: var(--rule-w) solid var(--grade); }
+.cabeca-aula h1 {
+  margin: 0; font-family: var(--humana); font-size: var(--t-h1);
+  line-height: 1.2; font-weight: 600; letter-spacing: -.01em;
+  max-width: 30ch; text-wrap: balance; color: var(--leitura);
+}
+.cabeca-aula .sub {
+  margin: var(--e2) 0 0; font-family: var(--maquina); font-size: var(--t-est);
+  color: var(--apagado); letter-spacing: .08em;
+}
+.progresso { display: flex; gap: 3px; margin-top: var(--e3); }
+.progresso i {
+  flex: 1 1 0; height: 3px; background: var(--grade);
+}
+.progresso i[data-vista="1"] { background: var(--fosforo); }
+.progresso i[data-atual="1"] { background: var(--fosforo-alto); }
+
+.slide { padding: var(--e5) 0 0; scroll-margin-top: calc(60px * var(--s)); }
+.slide__cab { display: flex; align-items: baseline; gap: var(--e2); }
+.slide__n {
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em;
+  color: var(--fosforo); flex: 0 0 auto;
+}
+.slide h2 {
+  margin: 0; font-family: var(--humana); font-size: var(--t-h2);
+  line-height: 1.25; font-weight: 600; color: var(--leitura);
+  max-width: 34ch; text-wrap: balance;
+}
+.slide p { max-width: var(--medida); text-wrap: pretty; }
+.slide p code, .slide li code, td code {
+  font-family: var(--maquina); font-size: .88em; color: var(--fosforo-alto);
+  background: var(--painel-alto); padding: .1em .35em;
+}
+.slide ul, .slide ol { max-width: var(--medida); }
+
+/* ---- bloco de código -------------------------------------- */
+.codigo { margin: var(--e3) 0 0; }
+.codigo__cab {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e2);
+  padding: var(--e1) var(--e2);
+  background: var(--painel-alto); border: var(--rule-w) solid var(--grade); border-bottom: none;
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .1em; color: var(--apagado);
+}
+.codigo__cab .arq { color: var(--leitura); }
+.codigo__acoes { display: flex; gap: var(--e1); align-items: center; }
+.codigo pre {
+  margin: 0; padding: var(--e3) var(--e2);
+  background: var(--painel-alto); border: var(--rule-w) solid var(--grade);
+  overflow-x: auto;                    /* NUNCA quebra linha de C++ */
+  font-family: var(--maquina); font-size: var(--t-cod); line-height: var(--lh-cod);
+  color: var(--leitura); tab-size: 4;
+}
+.codigo pre code { white-space: pre; }
+.codigo__pe {
+  display: flex; gap: var(--e2); flex-wrap: wrap;
+  padding: var(--e1) var(--e2);
+  background: var(--painel); border: var(--rule-w) solid var(--grade); border-top: none;
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .08em;
+}
+/* estado do trecho: compila × quebrado de propósito - glifo + rótulo */
+.codigo[data-estado="ok"] .codigo__cab { border-color: var(--ok); }
+.codigo[data-estado="ok"] pre, .codigo[data-estado="ok"] .codigo__pe { border-color: var(--ok); }
+.codigo[data-estado="falha"] .codigo__cab,
+.codigo[data-estado="falha"] pre,
+.codigo[data-estado="falha"] .codigo__pe { border-color: var(--falha); }
+.selo-estado { font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .1em; }
+.selo-estado[data-t="ok"] { color: var(--ok); }
+.selo-estado[data-t="falha"] { color: var(--falha); }
+
+.linha-erro { display: block; background: var(--falha-lav); box-shadow: inset 3px 0 0 var(--falha); }
+.linha-ok   { display: block; background: var(--ok-lav);    box-shadow: inset 3px 0 0 var(--ok); }
+
+/* realce de sintaxe: dois tons + os semânticos, sem arco-íris  */
+.tk-kw  { color: var(--fosforo); }
+.tk-tipo{ color: var(--fosforo-alto); }
+.tk-str { color: var(--ok); }
+.tk-num { color: var(--frio); }
+.tk-com { color: var(--fantasma); font-style: italic; }
+.tk-pre { color: var(--apagado); }
+.tk-c20 { color: var(--outro); }
+
+/* ---- T8 · selo C++20 -------------------------------------- */
+.c20 {
+  display: inline-flex; align-items: center; gap: .3em;
+  padding: 1px 5px; border: 1px solid var(--outro); color: var(--outro);
+  background: var(--outro-lav);
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .1em;
+  vertical-align: middle; white-space: nowrap;
+}
+h2 .c20, h1 .c20 { margin-left: .5em; }
+.arvore a .c20 { padding: 0 3px; border-color: var(--outro); }
+
+/* =============================================================
+   T4 · CALLOUTS (5 tipos)
+   Distinguíveis sem cor: cada um tem marcador textual próprio na
+   moldura, além da cor e do glifo.
+   ============================================================= */
+.callout {
+  margin: var(--e3) 0 0; max-width: var(--medida);
+  border-inline: var(--rule-w) solid var(--grade);
+  background: var(--painel);
+}
+.callout__corpo { padding: var(--e2); }
+.callout__corpo p { margin: 0; max-width: none; }
+.callout__corpo p + p { margin-top: var(--e2); }
+.callout .moldura__titulo { letter-spacing: .18em; }
+
+.callout[data-t="warn"]   { border-color: var(--falha); background: var(--falha-lav); }
+.callout[data-t="warn"]   .moldura, .callout[data-t="warn"] .moldura__titulo { color: var(--falha); }
+.callout[data-t="llm"]    { border-color: var(--frio); background: var(--frio-lav); }
+.callout[data-t="llm"]    .moldura, .callout[data-t="llm"] .moldura__titulo { color: var(--frio); }
+.callout[data-t="tip"]    { border-color: var(--ok); background: var(--ok-lav); }
+.callout[data-t="tip"]    .moldura, .callout[data-t="tip"] .moldura__titulo { color: var(--ok); }
+.callout[data-t="info"]   { border-color: var(--grade-alta); }
+.callout[data-t="info"]   .moldura, .callout[data-t="info"] .moldura__titulo { color: var(--apagado); }
+
+/* o deriva costura as 26 aulas ao projeto: tratamento mais forte */
+.callout[data-t="deriva"] {
+  border: var(--rule-w) solid var(--fosforo);
+  background: var(--fosforo-lav);
+}
+.callout[data-t="deriva"] .moldura, .callout[data-t="deriva"] .moldura__titulo { color: var(--fosforo); }
+.callout[data-t="deriva"] .callout__corpo { border-top: none; }
+.callout[data-t="deriva"] .versao {
+  display: inline-block; margin-right: .5em; padding: 0 5px;
+  background: var(--fosforo); color: var(--vazio);
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .08em;
+}
+
+/* =============================================================
+   T2 · MOLDURA DE EXEMPLO INTERATIVO
+   Cantos retos (painel de sistema). Cinco partes do contrato:
+   moldura+título · palco · controles · estado interno · legenda.
+   ============================================================= */
+.interativo {
+  margin: var(--e4) 0 0;
+  border-inline: var(--rule-w) solid var(--grade-alta);
+  background: var(--painel-alto);
+}
+.int__palco {
+  padding: var(--e3) var(--e2);
+  min-height: calc(190px * var(--s));
+  display: flex; flex-direction: column; justify-content: center; gap: var(--e2);
+  overflow-x: auto;
+}
+.int__controles {
+  display: flex; align-items: center; gap: var(--e3); flex-wrap: wrap;
+  padding: var(--e2); background: var(--painel);
+  border-top: var(--rule-w) solid var(--grade);
+}
+.grupo { display: flex; gap: var(--e1); }
+.bt {
+  min-width: var(--tap); height: var(--tap); padding: 0 var(--e2);
+  display: inline-flex; align-items: center; justify-content: center; gap: .4em;
+  background: var(--painel-alto); border: var(--rule-w) solid var(--grade-alta);
+  color: var(--leitura); font-family: var(--maquina); font-size: var(--t-est); white-space: nowrap;
+  cursor: pointer; transition: color 120ms ease-out, border-color 120ms ease-out, background-color 120ms ease-out;
+}
+.bt:hover { border-color: var(--fosforo); color: var(--fosforo); }
+.bt--primario { background: var(--fosforo); border-color: var(--fosforo); color: var(--vazio); font-weight: 600; }
+.bt--primario:hover { background: var(--fosforo-alto); border-color: var(--fosforo-alto); color: var(--vazio); }
+.bt[aria-disabled="true"] { opacity: .4; cursor: default; }
+.bt[aria-disabled="true"]:hover { border-color: var(--grade-alta); color: var(--leitura); }
+
+.cenarios { display: flex; align-items: center; gap: var(--e1); flex-wrap: wrap; }
+.cenarios__rot { font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em; color: var(--apagado); }
+.cen {
+  height: var(--tap); padding: 0 var(--e2); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: .4em;
+  background: transparent; font-family: var(--maquina); font-size: var(--t-est); cursor: pointer;
+  border: var(--rule-w) solid var(--grade-alta); color: var(--apagado);
+}
+.cen[data-t="falha"] { border-color: var(--falha); color: var(--falha); }
+.cen[data-t="falha"][aria-pressed="true"] { background: var(--falha); color: var(--vazio); font-weight: 600; }
+.cen[data-t="ok"] { border-color: var(--ok); color: var(--ok); }
+.cen[data-t="ok"][aria-pressed="true"] { background: var(--ok); color: var(--vazio); font-weight: 600; }
+
+.medidor { margin-left: auto; display: flex; gap: var(--e2); font-family: var(--maquina); font-size: var(--t-est); color: var(--apagado); }
+.medidor b { color: var(--leitura); font-weight: 500; }
+
+/* painel de estado interno: o que a execução real NÃO mostra.
+   Espaço de verdade, não um cantinho.                          */
+.int__estado {
+  border-top: var(--rule-w) solid var(--grade);
+  padding: var(--e2);
+  font-family: var(--maquina); font-size: var(--t-est); line-height: 1.9;
+}
+.int__estado table { width: 100%; border-collapse: collapse; }
+.int__estado th {
+  text-align: left; font-weight: 400; color: var(--apagado);
+  letter-spacing: .1em; font-size: var(--t-rot);
+  padding: 0 var(--e2) 0 0; white-space: nowrap; vertical-align: top;
+  width: 1%;
+}
+.int__estado td { color: var(--leitura); padding: 0; }
+.int__estado td .mudou { color: var(--fosforo-alto); background: var(--fosforo-lav); }
+.int__estado td .morto { color: var(--fantasma); text-decoration: line-through; }
+.int__estado td .aviso { color: var(--falha); }
+.int__estado td .bom { color: var(--ok); }
+
+.int__legenda {
+  border-top: var(--rule-w) solid var(--grade);
+  padding: var(--e2);
+  display: flex; gap: var(--e2); align-items: flex-start;
+}
+.int__legenda .rot {
+  flex: 0 0 auto; font-family: var(--maquina); font-size: var(--t-rot);
+  letter-spacing: .14em; color: var(--fosforo); padding-top: 2px;
+}
+.int__legenda p { margin: 0; font-family: var(--rotulo); font-size: calc(14px * var(--s)); max-width: 76ch; color: var(--leitura); }
+
+/* peças do palco, compartilhadas pelos 8 interativos ---------- */
+.caixa {
+  border: var(--rule-w) solid var(--grade-alta); background: var(--painel);
+  font-family: var(--maquina); font-size: var(--t-est); min-width: 0;
+}
+.caixa__cab {
+  padding: 3px var(--e1); border-bottom: var(--rule-w) solid var(--grade);
+  color: var(--apagado); font-size: var(--t-rot); letter-spacing: .12em;
+  display: flex; justify-content: space-between; gap: var(--e1);
+}
+.caixa__corpo { padding: var(--e1); }
+.caixa[data-realce="1"] { border-color: var(--fosforo); }
+.caixa[data-realce="falha"] { border-color: var(--falha); }
+.caixa[data-realce="ok"] { border-color: var(--ok); }
+.caixa[data-morta="1"] { opacity: .45; }
+
+.fila { display: flex; gap: var(--e2); align-items: flex-start; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: var(--e1); min-width: 0; }
+.seta { color: var(--fosforo); font-family: var(--maquina); align-self: center; }
+.seta[data-t="falha"] { color: var(--falha); }
+
+/* faixa de bytes do inspetor de objeto ----------------------- */
+.bytes { display: flex; flex-wrap: wrap; gap: 2px; }
+.bytes i {
+  width: calc(13px * var(--s)); height: calc(17px * var(--s));
+  background: var(--grade); font-style: normal;
+}
+.bytes i[data-b="m"] { background: var(--fosforo); }
+.bytes i[data-b="p"] { background: repeating-linear-gradient(45deg, var(--falha) 0 2px, transparent 2px 4px); border: 1px solid var(--falha); }
+.bytes i[data-b="v"] { background: var(--frio); }
+
+/* =============================================================
+   T7 · EXERCÍCIOS - resolução nunca visível de saída
+   ============================================================= */
+.exercicio { margin: var(--e3) 0 0; border-inline: var(--rule-w) solid var(--grade); background: var(--painel); }
+.exercicio__corpo { padding: var(--e2); }
+.exercicio__corpo > p:first-child { margin-top: 0; }
+.exercicio__n { font-family: var(--maquina); color: var(--fosforo); letter-spacing: .1em; }
+.exercicio details { margin-top: var(--e2); border-top: var(--rule-w) solid var(--grade); }
+.exercicio summary {
+  cursor: pointer; list-style: none; min-height: var(--tap);
+  display: flex; align-items: center; gap: .5em;
+  font-family: var(--maquina); font-size: var(--t-est); color: var(--fosforo);
+  letter-spacing: .1em;
+}
+.exercicio summary::-webkit-details-marker { display: none; }
+.exercicio summary::before { content: "[+]"; color: var(--fantasma); }
+.exercicio details[open] summary::before { content: "[\2212]"; }
+.exercicio details[open] summary { color: var(--fosforo-alto); }
+
+/* =============================================================
+   T9 · DIAGRAMA DE CLASSES (3 a 8 classes)
+   ============================================================= */
+.uml { display: flex; flex-direction: column; gap: var(--e3); align-items: center; }
+.uml__nivel { display: flex; gap: var(--e3); align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+.classe {
+  border: var(--rule-w) solid var(--grade-alta); background: var(--painel);
+  font-family: var(--maquina); font-size: var(--t-est); min-width: calc(150px * var(--s));
+}
+.classe__nome {
+  padding: var(--e1); border-bottom: var(--rule-w) solid var(--grade-alta);
+  color: var(--leitura); text-align: center; font-weight: 500;
+}
+.classe__estereo { display: block; color: var(--apagado); font-size: var(--t-rot); letter-spacing: .1em; }
+.classe__membros { padding: var(--e1); color: var(--apagado); border-bottom: var(--rule-w) solid var(--grade); }
+.classe__metodos { padding: var(--e1); color: var(--leitura); }
+.classe__metodos .virt { color: var(--fosforo); }
+.classe__metodos .pura { color: var(--fosforo); font-style: italic; }
+.classe[data-tipo="interface"] { border-style: dashed; border-color: var(--frio); }
+.classe[data-tipo="interface"] .classe__estereo { color: var(--frio); }
+.classe[data-tipo="abstrata"] .classe__nome { font-style: italic; }
+.classe[data-tipo="abstrata"] { border-color: var(--fosforo); }
+.classe[data-sel="1"] { box-shadow: 0 0 0 2px var(--fosforo); }
+.uml__liga { font-family: var(--maquina); color: var(--grade-alta); font-size: var(--t-est); line-height: 1; text-align: center; }
+.uml__liga b { color: var(--apagado); font-weight: 400; letter-spacing: .1em; font-size: var(--t-rot); }
+.uml__legenda {
+  display: flex; gap: var(--e3); flex-wrap: wrap;
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .08em;
+}
+
+/* =============================================================
+   T5 · TRILHA DERIVA
+   ============================================================= */
+.trilha { display: flex; flex-direction: column; }
+.versao {
+  display: grid; grid-template-columns: calc(96px * var(--s)) 1fr;
+  gap: 0 var(--e3); padding: var(--e2) 0;
+  border-bottom: var(--rule-w) solid var(--grade);
+}
+.versao__tag {
+  font-family: var(--maquina); font-size: var(--t-est); letter-spacing: .06em;
+  color: var(--fosforo); white-space: nowrap;
+}
+.versao__tag .aula { display: block; color: var(--fantasma); font-size: var(--t-rot); margin-top: 3px; }
+.versao__o { min-width: 0; }
+.versao__entrega { font-family: var(--rotulo); font-size: calc(15px * var(--s)); color: var(--leitura); }
+.versao__conc { margin-top: 4px; font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .04em; }
+.versao__testes { margin-top: 6px; font-family: var(--maquina); font-size: var(--t-rot); color: var(--ok); letter-spacing: .08em; }
+
+/* variante deliberadamente quebrada: recurso pedagógico, não erro */
+.versao--quebrada { background: var(--falha-lav); box-shadow: inset 3px 0 0 var(--falha); padding-left: var(--e2); }
+.versao--quebrada .versao__tag { color: var(--falha); }
+.versao--quebrada .versao__testes { color: var(--falha); }
+.versao--quebrada .aviso-proposito {
+  display: inline-block; margin-bottom: 4px; padding: 1px 5px;
+  background: var(--falha); color: var(--vazio);
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .1em;
+}
+
+/* =============================================================
+   NAVEGAÇÃO DE RODAPÉ + PÉ INSTITUCIONAL
+   ============================================================= */
+.nav-pe {
+  margin-top: var(--e5); border-top: var(--rule-w) solid var(--grade);
+  display: grid; grid-template-columns: 1fr auto 1fr; font-family: var(--maquina);
+}
+.nav-pe a { border: none; padding: var(--e3) var(--goteira); color: var(--apagado); display: block; }
+.nav-pe a:hover { background: var(--painel); color: var(--fosforo); }
+.nav-pe a:last-child { text-align: right; }
+.nav-pe .tecla-rot { font-size: var(--t-rot); letter-spacing: .14em; color: var(--fantasma); }
+.nav-pe .alvo { font-size: calc(15px * var(--s)); margin-top: 5px; }
+.nav-pe .meio {
+  border-inline: var(--rule-w) solid var(--grade); padding: var(--e3);
+  display: flex; align-items: center; font-size: var(--t-est); color: var(--fantasma); letter-spacing: .1em;
+}
+.pe {
+  padding: var(--e4) var(--goteira);
+  border-top: var(--rule-w) solid var(--grade);
+  display: flex; gap: var(--e3); align-items: center; flex-wrap: wrap;
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--fantasma); letter-spacing: .08em;
+}
+
+/* =============================================================
+   T11 · ESTADOS VAZIOS - mensagem de sistema é nativa do idioma
+   ============================================================= */
+.vazio-sistema {
+  margin: var(--e5) auto; max-width: 60ch;
+  border-inline: var(--rule-w) solid var(--grade-alta); background: var(--painel-alto);
+}
+.vazio-sistema__corpo { padding: var(--e3) var(--e2); font-family: var(--maquina); font-size: var(--t-est); color: var(--apagado); }
+.vazio-sistema__corpo b { color: var(--falha); font-weight: 400; }
+.cursor { color: var(--fosforo); }
+@media (prefers-reduced-motion: no-preference) {
+  .cursor { animation: pisca 1s step-end infinite; }
+}
+@keyframes pisca { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+
+/* =============================================================
+   RESPONSIVO - de 360px a projetor. O v1 tinha uma @media só.
+   ============================================================= */
+@media (max-width: 1100px) {
+  :root { --arvore: 240px; }
+}
+@media (max-width: 860px) {
+  :root { --goteira: 16px; }
+  .aula { grid-template-columns: minmax(0, 1fr); }
+  .gaveta-abre {
+    display: inline-flex; align-items: center; gap: .4em;
+    height: var(--tap); padding: 0 var(--e2);
+    background: transparent; border: var(--rule-w) solid var(--grade-alta);
+    color: var(--fosforo); font-family: var(--maquina); font-size: var(--t-est); cursor: pointer;
+  }
+  .arvore {
+    position: fixed; inset: calc(46px * var(--s)) 0 0 0; z-index: 30;
+    max-height: none; background: var(--vazio);
+    border-right: none; border-top: var(--rule-w) solid var(--grade);
+    padding: var(--e3) 0 var(--e5); display: none;
+  }
+  .arvore[data-aberta="1"] { display: block; }
+  .arvore a { min-height: var(--tap); }
+  .cabeca-aula h1 { font-size: calc(26px * var(--s)); }
+  .int__controles { flex-direction: column; align-items: stretch; }
+  .grupo { display: grid; grid-template-columns: 1fr 1.4fr 1fr; }
+  .cenarios { display: grid; grid-template-columns: 1fr 1fr; }
+  .cenarios__rot { grid-column: 1 / -1; }
+  .cen, .bt { height: 48px; }
+  .medidor { margin-left: 0; }
+  .nav-pe { grid-template-columns: 1fr 1fr; }
+  .nav-pe .meio { display: none; }
+  .migalha .unid { display: none; }
+  .int__estado th { width: auto; display: block; padding-top: var(--e1); }
+  .int__estado td { display: block; }
+}
+
+/* =============================================================
+   MOVIMENTO - nada essencial depende dele
+   ============================================================= */
+.caixa, .bt, .cen, .classe { transition: border-color 200ms ease-out, background-color 200ms ease-out, opacity 200ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  body { background: #fff; color: #000; background-image: none; }
+  .barra, .arvore, .ferramentas, .int__controles, .nav-pe { display: none; }
+  .interativo, .codigo, .callout { break-inside: avoid; }
+}

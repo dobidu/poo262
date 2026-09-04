@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 01 - Da programação procedural à orientação a objetos · POO · UFPB</title>
+<meta name="description" content="Aula 01 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Da programação procedural à orientação a objetos.">
+<meta property="og:title" content="Aula 01 - Da programação procedural à orientação a objetos · POO · UFPB">
+<meta property="og:description" content="Aula 01 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Da programação procedural à orientação a objetos.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="index.html">
+<link rel="next" href="aula-02.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE I</span><span class="sep">/</span><span class="atual">AULA 01</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a01">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01" aria-current="page"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Da programação procedural à orientação a objetos</h1>
+    <p class="sub">UNIDADE I · AULA 01 DE 26 · CAP. 1 DO LIVRO</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Entender por que o software precisa de mecanismos para controlar complexidade</li><li>Contrastar programação procedural com OO</li><li>Identificar os quatro pilares da OO: encapsulamento, abstração, herança, polimorfismo</li><li>Situar C++ no cenário de linguagens OO</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Gerenciamento de Complexidade e o Paradigma OO</h2></div></section>
+<section class="slide" id="complexidade"><div class="slide__cab"><span class="slide__n">02</span><h2>Por que Complexidade é o Problema Central</h2></div><p>Software é a atividade humana com maior número de estados possíveis por unidade de volume. Um programa com 300 variáveis booleanas tem mais estados do que átomos no universo observável. Gerenciar essa complexidade é o problema central da engenharia de software.</p>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · Sintomas de complexidade descontrolada</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Código que ninguém entende sem o autor; módulos que quebram quando você toca em outro módulo; bugs que surgem em partes não modificadas; medo de alterar código existente.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Técnica</th><th>Como reduz complexidade</th><th>Limitação</th></tr></thead><tbody><tr><td>Decomposição procedural</td><td>Divide em funções</td><td>Estado global, acoplamento</td></tr><tr><td>Módulos (C)</td><td>Agrupa funções relacionadas</td><td>Difícil representar estado por instância</td></tr><tr><td>OO</td><td>Agrupa dados + comportamento + estado por objeto</td><td>Curva de aprendizado, overengineering</td></tr></tbody></table></div></section>
+<section class="slide" id="paradigmas"><div class="slide__cab"><span class="slide__n">03</span><h2>Paradigmas de Programação</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Paradigma</th><th>Base</th><th>Exemplos</th></tr></thead><tbody><tr><td>Procedural</td><td>Sequência de instruções, funções</td><td>C, Pascal, FORTRAN</td></tr><tr><td>OO</td><td>Objetos com estado e comportamento</td><td>C++, Java, Python, Ruby</td></tr><tr><td>Funcional</td><td>Funções puras, sem estado mutável</td><td>Haskell, Erlang, Clojure</td></tr><tr><td>Multiparadigma</td><td>Combina paradigmas</td><td>C++17, Python, Rust</td></tr></tbody></table></div>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · C++ é multiparadigma</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>C++ suporta programação procedural (herança de C), OO (classes, herança, polimorfismo) e funcional (lambdas, std::function, algoritmos da STL). Isso é poder - e responsabilidade.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="quatro-pilares"><div class="slide__cab"><span class="slide__n">04</span><h2>Os Quatro Pilares da OO</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Pilar</th><th>Definição</th><th>Benefício</th></tr></thead><tbody><tr><td>Encapsulamento</td><td>Agrupar dados e operações; esconder implementação</td><td>Invariantes garantidas; interface estável</td></tr><tr><td>Abstração</td><td>Expor apenas o essencial; esconder detalhes</td><td>Reduz carga cognitiva</td></tr><tr><td>Herança</td><td>Reutilizar e especializar comportamento</td><td>Evita duplicação</td></tr><tr><td>Polimorfismo</td><td>Mesmo código opera sobre tipos diferentes</td><td>Extensibilidade</td></tr></tbody></table></div>
+<aside class="callout" data-t="info"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · Ordem de importância</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Encapsulamento e abstração são os mais importantes no dia a dia. Herança é a mais usada em excesso. Polimorfismo é o mais poderoso quando bem aplicado.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste Tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Explique o princípio de encapsulamento com um exemplo real em C++17. Mostre: (1) como a ausência de encapsulamento causa problemas, (2) como encapsulamento os resolve. Use snake_case e comentários em português."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>LLMs tendem a usar exemplos triviais demais (getter/setter puro), que não demonstram o valor real do encapsulamento. Peça invariante concreta, tal como a do construtor de <code>grade</code>: largura e altura positivas, e o vetor de células com exatamente largura × altura elementos.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">5 trechos do Deriva, 2 deliberadamente quebrados, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>Cinco regras que só existem na cabeça de quem chama, e nenhuma delas está escrita no código. A métrica da Aula 01 não é elegância: é quantas maneiras de errar o desenho permite - sete aqui, uma na versão OO.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">comparativo/grade_procedural.hpp · a grade em estilo C</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// A grade da estação em estilo C: dado exposto, funções livres, e o</span>
+<span class="tk-com">/// contrato inteiro na cabeça de quem chama.</span>
+<span class="tk-com">///</span>
+<span class="tk-com">/// Isto não é caricatura. É a forma que o C permite e que o C++ herdou, e</span>
+<span class="tk-com">/// funciona - com uma condição: que todo mundo lembre das regras. As regras</span>
+<span class="tk-com">/// são cinco, e nenhuma delas está escrita no código.</span>
+<span class="tk-com">///</span>
+<span class="tk-com">///   1. chame `criar` antes de qualquer outra coisa;</span>
+<span class="tk-com">///   2. chame `destruir` exatamente uma vez, e nunca depois de copiar;</span>
+<span class="tk-com">///   3. não copie a struct - ela leva o ponteiro, e não os dados;</span>
+<span class="tk-com">///   4. não escreva em `largura` nem `altura` depois de criada;</span>
+<span class="tk-com">///   5. confira o limite antes de indexar, porque ninguém confere por você.</span>
+<span class="tk-kw">struct</span> grade_c {
+  <span class="tk-kw">int</span> largura;
+  <span class="tk-kw">int</span> altura;
+  <span class="tk-kw">char</span>* celulas;
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/comparativo/grade_procedural.hpp:10</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIEEgZ3JhZGUgZGEgZXN0YcOnw6NvIGVtIGVzdGlsbyBDOiBkYWRvIGV4cG9zdG8sIGZ1bsOnw7VlcyBsaXZyZXMsIGUgb1xuLy8vIGNvbnRyYXRvIGludGVpcm8gbmEgY2FiZcOnYSBkZSBxdWVtIGNoYW1hLlxuLy8vXG4vLy8gSXN0byBuw6NvIMOpIGNhcmljYXR1cmEuIMOJIGEgZm9ybWEgcXVlIG8gQyBwZXJtaXRlIGUgcXVlIG8gQysrIGhlcmRvdSwgZVxuLy8vIGZ1bmNpb25hIC0gY29tIHVtYSBjb25kacOnw6NvOiBxdWUgdG9kbyBtdW5kbyBsZW1icmUgZGFzIHJlZ3Jhcy4gQXMgcmVncmFzXG4vLy8gc8OjbyBjaW5jbywgZSBuZW5odW1hIGRlbGFzIGVzdMOhIGVzY3JpdGEgbm8gY8OzZGlnby5cbi8vL1xuLy8vICAgMS4gY2hhbWUgYGNyaWFyYCBhbnRlcyBkZSBxdWFscXVlciBvdXRyYSBjb2lzYTtcbi8vLyAgIDIuIGNoYW1lIGBkZXN0cnVpcmAgZXhhdGFtZW50ZSB1bWEgdmV6LCBlIG51bmNhIGRlcG9pcyBkZSBjb3BpYXI7XG4vLy8gICAzLiBuw6NvIGNvcGllIGEgc3RydWN0IC0gZWxhIGxldmEgbyBwb250ZWlybywgZSBuw6NvIG9zIGRhZG9zO1xuLy8vICAgNC4gbsOjbyBlc2NyZXZhIGVtIGBsYXJndXJhYCBuZW0gYGFsdHVyYWAgZGVwb2lzIGRlIGNyaWFkYTtcbi8vLyAgIDUuIGNvbmZpcmEgbyBsaW1pdGUgYW50ZXMgZGUgaW5kZXhhciwgcG9ycXVlIG5pbmd1w6ltIGNvbmZlcmUgcG9yIHZvY8OqLlxuc3RydWN0IGdyYWRlX2Mge1xuICBpbnQgbGFyZ3VyYTtcbiAgaW50IGFsdHVyYTtcbiAgY2hhciogY2VsdWxhcztcbn07IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Copiar a struct leva o ponteiro, não os dados, e ninguém avisa. A versão C++ faz a cópia profunda pela regra do zero, sem escrever uma linha - e é essa diferença, e não a sintaxe, que o capítulo defende.</p><div class="codigo" data-estado="falha"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_comparativo.cpp · a cópia que não copia</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;em C, a copia da struct compartilha o buffer, e ninguem avisa&quot;</span>) {
+  grade_c a = criar(<span class="tk-num">4</span>, <span class="tk-num">3</span>);
+  escrever(&amp;a, <span class="tk-num">0</span>, <span class="tk-num">0</span>, <span class="tk-str">&#x27;@&#x27;</span>);
+
+  grade_c b = a;                     <span class="tk-com">// copia a struct: leva o PONTEIRO</span>
+  escrever(&amp;b, <span class="tk-num">0</span>, <span class="tk-num">0</span>, <span class="tk-str">&#x27;#&#x27;</span>);
+
+  REQUIRE(em(&amp;a, <span class="tk-num">0</span>, <span class="tk-num">0</span>) == <span class="tk-str">&#x27;#&#x27;</span>);      <span class="tk-com">// a &quot;original&quot; mudou</span>
+  REQUIRE(a.celulas == b.celulas);   <span class="tk-com">// porque e o mesmo buffer</span>
+
+  destruir(&amp;a);
+  <span class="tk-com">// destruir(&amp;b) aqui seria a segunda liberacao. Nao a chamamos - e o fato de</span>
+  <span class="tk-com">// termos de LEMBRAR disso e o defeito.</span>
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="falha">▲ QUEBRADO DE PROPÓSITO</span> · <span class="arq">exemplos/deriva/testes/test_comparativo.cpp:21</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiZW0gQywgYSBjb3BpYSBkYSBzdHJ1Y3QgY29tcGFydGlsaGEgbyBidWZmZXIsIGUgbmluZ3VlbSBhdmlzYVwiKSB7XG4gIGdyYWRlX2MgYSA9IGNyaWFyKDQsIDMpO1xuICBlc2NyZXZlcigmYSwgMCwgMCwgJ0AnKTtcblxuICBncmFkZV9jIGIgPSBhOyAgICAgICAgICAgICAgICAgICAgIC8vIGNvcGlhIGEgc3RydWN0OiBsZXZhIG8gUE9OVEVJUk9cbiAgZXNjcmV2ZXIoJmIsIDAsIDAsICcjJyk7XG5cbiAgUkVRVUlSRShlbSgmYSwgMCwgMCkgPT0gJyMnKTsgICAgICAvLyBhIFwib3JpZ2luYWxcIiBtdWRvdVxuICBSRVFVSVJFKGEuY2VsdWxhcyA9PSBiLmNlbHVsYXMpOyAgIC8vIHBvcnF1ZSBlIG8gbWVzbW8gYnVmZmVyXG5cbiAgZGVzdHJ1aXIoJmEpO1xuICAvLyBkZXN0cnVpcigmYikgYXF1aSBzZXJpYSBhIHNlZ3VuZGEgbGliZXJhY2FvLiBOYW8gYSBjaGFtYW1vcyAtIGUgbyBmYXRvIGRlXG4gIC8vIHRlcm1vcyBkZSBMRU1CUkFSIGRpc3NvIGUgbyBkZWZlaXRvLlxufSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Dez quilobytes vazam e o teste passa, porque o vazamento não tem sintoma. É o argumento inteiro do contador de instâncias da Aula 07.</p><div class="codigo" data-estado="falha"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_comparativo.cpp · o vazamento que passa no teste</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;em C, esquecer destruir nao produz sintoma nenhum hoje&quot;</span>) {
+  {
+    grade_c g = criar(<span class="tk-num">100</span>, <span class="tk-num">100</span>);
+    escrever(&amp;g, <span class="tk-num">0</span>, <span class="tk-num">0</span>, <span class="tk-str">&#x27;@&#x27;</span>);
+    <span class="tk-com">// sem `destruir(&amp;g)`: 10 KB vazam, e o programa termina bem</span>
+  }</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="falha">▲ QUEBRADO DE PROPÓSITO</span> · <span class="arq">exemplos/deriva/testes/test_comparativo.cpp:63</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiZW0gQywgZXNxdWVjZXIgZGVzdHJ1aXIgbmFvIHByb2R1eiBzaW50b21hIG5lbmh1bSBob2plXCIpIHtcbiAge1xuICAgIGdyYWRlX2MgZyA9IGNyaWFyKDEwMCwgMTAwKTtcbiAgICBlc2NyZXZlcigmZywgMCwgMCwgJ0AnKTtcbiAgICAvLyBzZW0gYGRlc3RydWlyKCZnKWA6IDEwIEtCIHZhemFtLCBlIG8gcHJvZ3JhbWEgdGVybWluYSBiZW1cbiAgfSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>As seis maneiras de errar que somem não somem por disciplina de quem escreve: somem porque o compilador passou a impedi-las.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_comparativo.cpp · sete contra uma</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// A metrica da Aula 01 nao e elegancia: e quantas maneiras de errar o desenho</span>
+<span class="tk-com">// permite. Sete contra uma, e as seis que somem nao somem por disciplina do</span>
+<span class="tk-com">// programador - somem porque o compilador passou a impedi-las.</span>
+TEST_CASE(<span class="tk-str">&quot;a versao OO fecha seis das sete maneiras de errar&quot;</span>) {
+  REQUIRE(maneiras_de_errar_em_c() == <span class="tk-num">7</span>);
+  REQUIRE(maneiras_de_errar_em_cpp() == <span class="tk-num">1</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_comparativo.cpp:13</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gQSBtZXRyaWNhIGRhIEF1bGEgMDEgbmFvIGUgZWxlZ2FuY2lhOiBlIHF1YW50YXMgbWFuZWlyYXMgZGUgZXJyYXIgbyBkZXNlbmhvXG4vLyBwZXJtaXRlLiBTZXRlIGNvbnRyYSB1bWEsIGUgYXMgc2VpcyBxdWUgc29tZW0gbmFvIHNvbWVtIHBvciBkaXNjaXBsaW5hIGRvXG4vLyBwcm9ncmFtYWRvciAtIHNvbWVtIHBvcnF1ZSBvIGNvbXBpbGFkb3IgcGFzc291IGEgaW1wZWRpLWxhcy5cblRFU1RfQ0FTRShcImEgdmVyc2FvIE9PIGZlY2hhIHNlaXMgZGFzIHNldGUgbWFuZWlyYXMgZGUgZXJyYXJcIikge1xuICBSRVFVSVJFKG1hbmVpcmFzX2RlX2VycmFyX2VtX2MoKSA9PSA3KTtcbiAgUkVRVUlSRShtYW5laXJhc19kZV9lcnJhcl9lbV9jcHAoKSA9PSAxKTtcbn0iLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Em C, `largura` é pública e mexer nela corrompe a indexação. Aqui a garantia é de compilação, e não de lembrança.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_comparativo.cpp · o campo público virou invariante</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;em C++, a dimensao e invariante, e o tipo diz isso&quot;</span>) {
+  <span class="tk-kw">const</span> grade g(<span class="tk-num">4</span>, <span class="tk-num">3</span>);
+  REQUIRE(g.largura() == <span class="tk-num">4</span>);
+  <span class="tk-com">// `g.largura() = 2;` nao compila: o retorno e por valor, e nao ha setter.</span>
+  <span class="tk-kw">static_assert</span>(!<span class="tk-tipo">std::is_assignable_v</span>&lt;<span class="tk-kw">decltype</span>(g.largura()), <span class="tk-kw">int</span>&gt;);
+  SUCCEED(<span class="tk-str">&quot;a invariante e garantida em compilacao, nao por lembranca&quot;</span>);</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_comparativo.cpp:55</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiZW0gQysrLCBhIGRpbWVuc2FvIGUgaW52YXJpYW50ZSwgZSBvIHRpcG8gZGl6IGlzc29cIikge1xuICBjb25zdCBncmFkZSBnKDQsIDMpO1xuICBSRVFVSVJFKGcubGFyZ3VyYSgpID09IDQpO1xuICAvLyBgZy5sYXJndXJhKCkgPSAyO2AgbmFvIGNvbXBpbGE6IG8gcmV0b3JubyBlIHBvciB2YWxvciwgZSBuYW8gaGEgc2V0dGVyLlxuICBzdGF0aWNfYXNzZXJ0KCFzdGQ6OmlzX2Fzc2lnbmFibGVfdjxkZWNsdHlwZShnLmxhcmd1cmEoKSksIGludD4pO1xuICBTVUNDRUVEKFwiYSBpbnZhcmlhbnRlIGUgZ2FyYW50aWRhIGVtIGNvbXBpbGFjYW8sIG5hbyBwb3IgbGVtYnJhbmNhXCIpOyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-refator"><div class="slide__cab"><span class="slide__n">07</span><h2>Diferenciador de refatoração</h2></div><p>Antes/depois, grafo de acoplamento, e o diff do despejo que prova invariância. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="refator" tabindex="0"></section></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">08</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Leia a grade em estilo C de <code>exemplos/deriva/comparativo/grade_procedural.hpp</code>, e as cinco regras que o comentário de cabeçalho dela lista. Para cada regra, descreva um cenário concreto em que a violação produziria um defeito difícil de encontrar, e diga se algum aviso do compilador o pegaria.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Escreva, em papel e sem compilar, a declaração da classe que você poria no lugar de <code>struct grade_c { int largura; int altura; char* celulas; }</code>: quais membros ficam privados, quais métodos são <code>const</code>, e qual método você não escreveria por não haver invariante a proteger. Guarde a folha - na Aula 07 você a compara com <code>include/deriva/grade.hpp</code>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Pesquise: qual é a diferença entre <em>abstração de dados</em> (ADT) e <em>classe</em> em C++? Dê um exemplo de ADT que não é implementado como classe.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>A métrica desta aula não é elegância: é quantas maneiras de errar o desenho permite. Leia <code>maneiras_de_errar_em_c()</code> e <code>maneiras_de_errar_em_cpp()</code> em <code>exemplos/deriva/comparativo/grade_procedural.cpp</code>, e explique, uma por uma, as maneiras que a versão OO fecha - nomeando em cada caso o mecanismo da linguagem que a fecha, e não a disciplina de quem programa.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 1 do livro v1 e de <code>unidade-1/aula01-complexidade-oo</code>.</p><p>Exemplo comparativo migra de “Sistema de Alunos” para o Deriva.</p></div></details>
+  <nav class="nav-pe">
+    <a href="index.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Índice das 26 aulas</div></a>
+    <div class="meio">AULA 01 / 26</div>
+    <a href="aula-02.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Infraestrutura: CMake, FetchContent, gdb</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

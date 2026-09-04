@@ -1,0 +1,30 @@
+%% v0.1 - Aula 07 - vetor2, celula e o que a ordem de declaracao custa
+%% Este arquivo e a FONTE do diagrama. O material o recebe por
+%% ancora, declarada em `conteudo/trechos.py`, e nao digitado:
+%% diagrama digitado no texto pode afirmar uma hierarquia que o
+%% codigo nao tem, e ninguem percebe.
+%% ancora: os agregados e o leiaute
+
+classDiagram
+  class vetor2 {
+    +int x
+    +int y
+    +operator==(vetor2) bool
+    +manhattan(vetor2) int
+  }
+  class celula {
+    +int energia
+    +int massa
+    +char glifo
+    +char sigla
+  }
+  class celula_ingenua {
+    +char glifo
+    +int energia
+    +char sigla
+    +int massa
+  }
+  class contador_mapa {
+    +int vivos$
+    +int criados$
+  }

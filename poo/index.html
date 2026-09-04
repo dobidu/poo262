@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programação Orientada a Objetos em C++ · POO · UFPB</title>
+<meta name="description" content="Material interativo de Programação Orientada a Objetos em C++17 - UFPB, Centro de Informática. 26 aulas em 3 unidades, com oito tipos de exemplo interativo e o sistema Deriva.">
+<meta property="og:title" content="Programação Orientada a Objetos em C++ · POO · UFPB">
+<meta property="og:description" content="26 aulas, 130 slides, 112 exercícios e oito instrumentos que mostram o que a execução real não mostra: vtable, leiaute de objeto, contagem de referências.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="next" href="aula-01.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<link rel="stylesheet" href="css/index.css">
+<script src="js/app.js" defer></script>
+<script src="js/heroi-vtable.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="atual">2026.2</span>
+  </div>
+  <div class="ferramentas">
+    
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<main class="capa">
+  <section class="abertura" data-abertura aria-label="Sequência de inicialização">
+    <div data-post><span class="fa">$</span> <span class="am">deriva</span> --init</div>
+    <div data-post><span class="fa">…</span> UFPB · CENTRO DE INFORMÁTICA · DEPARTAMENTO DE INFORMÁTICA</div>
+    <div data-post><span class="fa">…</span> PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</div>
+    <div data-post><span class="fa">…</span> alvo de linguagem <span class="fr">C++17</span> <span class="fa">(-std=c++17 -Wall -Wextra -Wpedantic)</span></div>
+    <div data-post><span class="fa">…</span> ftxui v5.0.0 <span class="ok">OK</span> · catch2 <span class="ok">OK</span> · make verifica <span class="ok">OK</span></div>
+    <div data-post><span class="fa">…</span> 26 aulas · 130 slides · 112 exercícios · 20 versões do Deriva · 12 laboratórios</div>
+    <div data-post><span class="fa">…</span> sonda de inspeção <span class="am">montada</span> - a estação orbital não responde</div>
+    <div data-post><span class="ok">▸</span> sistema pronto <span class="cursor">█</span></div>
+    <button class="saltar" type="button" data-saltar>pressione qualquer tecla para saltar</button>
+  </section>
+
+  <div class="capa__tit">
+    <h1>Programação <em>Orientada a Objetos</em> em C++</h1>
+    <p class="linha">A disciplina se organiza através de um sistema único, construído do começo
+    ao fim do semestre: o <strong>Deriva</strong>, um roguelike de terminal no qual uma sonda de
+    inspeção percorre uma estação orbital abandonada. Cada aula entrega uma versão que compila e,
+    nas aulas em que o defeito ensina mais que o acerto, também uma variante deliberadamente
+    quebrada, acompanhada do roteiro de observação.</p>
+    <div class="capa__meta">
+      <span>Prof. <b>Carlos Eduardo C. F. Batista</b></span>
+      <span>alvo <b>C++17</b></span>
+      <span><b>26</b> aulas · <b>3</b> unidades · <b>3</b> anexos</span>
+      <span><b>112</b> exercícios</span>
+      <span><b>12</b> laboratórios</span>
+      <span><b>28</b> interativos em <b>8</b> tipos</span>
+    </div>
+  </div>
+
+  <section class="heroi" data-heroi-vtable aria-label="Animação: uma chamada virtual sendo resolvida pela vtable">
+    <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">DESPACHO DINÂMICO</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ entidade* → desenhar() ├</span><span class="moldura__canto">─┐</span></div>
+    <div class="hv__palco" data-heroi-palco></div>
+    <div class="hv__terminal">
+      <span class="rot">TERMINAL DA ESTAÇÃO</span>
+      <span class="hv__saida" data-heroi-saida></span>
+    </div>
+    <div class="hv__controles">
+      <button class="bt" type="button" data-heroi="virtual" aria-pressed="true">✓ virtual LIGADO</button>
+      <button class="bt" type="button" data-heroi="modo">││ PASSO A PASSO</button>
+      <button class="bt bt--primario" type="button" data-heroi="passo" hidden>PASSO ▶</button>
+      <span class="hv__est" data-heroi-est></span>
+    </div>
+    <div class="heroi__legenda">
+      <span class="rot">ONDE OLHAR</span>
+      <p>O que interessa aqui é o caminho da chamada, e não a disposição dos blocos: com
+      <code>virtual</code>, a chamada entra no objeto, lê o <code>vptr</code> e alcança a
+      função definida pela classe real. <strong>Desligue o <code>virtual</code></strong> e o
+      caminho tracejado deixa de entrar no objeto, e as três entidades saem como
+      <code>·</code>, porque a decisão passou a ser tomada pelo tipo do ponteiro, sem que o
+      compilador emita um único warning. O mecanismo é desenvolvido na
+      <a href="aula-11.html">Aula 11</a>.</p>
+    </div>
+    <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+  </section>
+
+  <h2 id="conteudo" style="font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.18em;color:var(--fosforo);margin:var(--e5) 0 0;font-weight:500">├─ AS 26 AULAS</h2>
+  <div class="unidades"><section class="unidade">
+  <div class="moldura" aria-hidden="true"><span class="moldura__canto">╭─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">UNIDADE I</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ Fundamentos ├</span><span class="moldura__canto">─╮</span></div>
+  <div class="unidade__corpo">
+    <p class="unidade__tema" style="margin-top:0">Da programação procedural ao objeto: infraestrutura, fundamentos de C++17, Git e revisão de código gerado por IA, tipos, UML, classes, ciclo de vida e as operações especiais.</p>
+    <ol><li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int">▶</span></a></li><li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int">▶</span></a></li><li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int">▶</span></a></li><li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int">▶</span></a></li><li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int">▶</span></a></li><li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int">▶</span></a></li><li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int">▶</span></a></li><li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int">▶</span></a></li><li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int">▶</span></a></li></ol>
+  </div>
+  <div class="unidade__pe" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div>
+</section><section class="unidade">
+  <div class="moldura" aria-hidden="true"><span class="moldura__canto">╭─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">UNIDADE II</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ Hierarquias, posse e despacho ├</span><span class="moldura__canto">─╮</span></div>
+  <div class="unidade__corpo">
+    <p class="unidade__tema" style="margin-top:0">Herança antes de ponteiro inteligente: virtuais, posse exclusiva e compartilhada, movimento e a regra dos cinco, operadores, testes com replay, diamante e RTTI.</p>
+    <ol><li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int">▶</span></a></li><li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int">▶</span></a></li><li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int">▶</span></a></li><li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int">▶</span></a></li><li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int">▶</span></a></li><li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int">▶</span></a></li><li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int">▶</span></a></li><li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int">▶</span></a></li><li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int">▶</span></a></li></ol>
+  </div>
+  <div class="unidade__pe" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div>
+</section><section class="unidade">
+  <div class="moldura" aria-hidden="true"><span class="moldura__canto">╭─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">UNIDADE III</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ Genericidade, robustez e projeto ├</span><span class="moldura__canto">─╮</span></div>
+  <div class="unidade__corpo">
+    <p class="unidade__tema" style="margin-top:0">Templates e CRTP com alvo concreto, erros, STL e lambdas, concorrência, serialização, SOLID verificado por replay, padrões e um segundo front-end sobre o mesmo núcleo.</p>
+    <ol><li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int">▶</span></a></li><li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int">▶</span></a></li><li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int">▶</span></a></li><li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int">▶</span></a></li><li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int">▶</span></a></li><li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int">▶</span></a></li><li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int">▶</span></a></li><li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int">▶</span></a></li></ol>
+  </div>
+  <div class="unidade__pe" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div>
+</section></div>
+  <div class="atalhos"><a class="atalho" href="trilha.html"><span class="atalho__rot">▸ TRILHA</span><span class="atalho__nome">As 20 versões do Deriva</span><span class="atalho__nota">v0.0 → v2.7 · 4 variantes quebradas de propósito, 4 já escritas</span></a><a class="atalho" href="galeria.html"><span class="atalho__rot">▸ INTERATIVOS</span><span class="atalho__nome">Os oito instrumentos</span><span class="atalho__nota">leiaute · ciclo de vida · despacho · move · posse · SOLID · compilação · rubrica</span></a><a class="atalho" href="laboratorios.html"><span class="atalho__rot">▸ LABORATÓRIOS</span><span class="atalho__nome">Doze, antes das aulas que os exigem</span><span class="atalho__nota">esqueleto · solução de referência · portão executável</span></a><a class="atalho" href="rubrica.html"><span class="atalho__rot">▸ RUBRICA</span><span class="atalho__nome">Revisão de código OO gerado por IA</span><span class="atalho__nota">os sete itens das três caças ao bug</span></a><a class="atalho" href="verifica.html"><span class="atalho__rot">▸ PORTÃO</span><span class="atalho__nome">make verifica</span><span class="atalho__nota">warning · ctest · replay · contadores em zero</span></a><a class="atalho" href="plano-de-ensino.html"><span class="atalho__rot">▸ PLANO</span><span class="atalho__nome">Plano de ensino 2026.2</span><span class="atalho__nota">15 semanas · 12 laboratórios · avaliação</span></a><a class="atalho" href="exercicios.html"><span class="atalho__rot">▸ EXERCÍCIOS</span><span class="atalho__nome">112 itens, aula por aula</span><span class="atalho__nota">de todas as 26, numa página</span></a><a class="atalho" href="glossario.html"><span class="atalho__rot">▸ REFERÊNCIA</span><span class="atalho__nome">Glossário e bibliografia</span><span class="atalho__nota">10 verbetes · 9 referências auditadas</span></a></div>
+</main>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 09 — Ciclo de Vida de Objetos | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e OO</a>
+<a href="aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos fundamentais</a>
+<a href="aula03-classificacao-linguagens.html" class="nav-link"><span class="num">03.</span>Classificação de linguagens</a>
+<a href="aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python→C++</a>
+<a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+<a href="aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como copiloto</a>
+<a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+<a href="aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e objetos</a>
+<a href="aula09-ciclo-de-vida.html" class="nav-link active"><span class="num">09.</span>Ciclo de vida</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 09 — Ciclo de Vida de Objetos</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula08-classes-objetos.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="../unidade-2/aula10-raii-rule-of-five.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 09 · 26/mai</span>
+          <h2 class="slide-title hero-title">Ciclo de Vida: Construtores, Destrutores e RAII</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Compreender todos os tipos de construtores em C++</li><li>Usar listas de inicialização corretamente</li><li>Entender a ordem de construção e destruição</li><li>Aplicar RAII como idioma fundamental</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v0.2 — AudioBuffer com ciclo de vida</div>
+            <p>Implementamos <code>audio_buffer</code> com construtor parametrizado, de cópia e de movimento. A regra do zero em ação: <code>std::vector</code> gerencia tudo.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="construtores">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Tipos de Construtores</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Todos os construtores de audio_buffer</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class audio_buffer {
+public:
+    // 1. Padrão — cria buffer vazio
+    audio_buffer() noexcept = default;
+
+    // 2. Parametrizado — cria buffer de tamanho n
+    explicit audio_buffer(std::size_t n, float sr = 44100.0f)
+        : data_(n, 0.0f), sample_rate_{sr}  // lista de inicialização
+    {
+        if (sr <= 0.0f)
+            throw std::invalid_argument("sample_rate deve ser positivo");
+    }
+
+    // 3. Cópia — regra do zero: compilador gera corretamente
+    audio_buffer(const audio_buffer&) = default;
+
+    // 4. Movimento — eficiente: transfere sem copiar dados
+    audio_buffer(audio_buffer&&) noexcept = default;
+
+    // 5. Destrutor — regra do zero: vector limpa automaticamente
+    ~audio_buffer() = default;
+private:
+    std::vector<float> data_;
+    float sample_rate_ = 44100.0f;
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="lista-init">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Listas de Inicialização</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Por que lista de inicialização, não assignment</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ❌ Ineficiente: default-inicializa e depois atribui
+audio_buffer::audio_buffer(std::size_t n, float sr) {
+    data_ = std::vector<float>(n, 0.0f); // cópia extra!
+    sample_rate_ = sr;
+}
+
+// ✅ Correto: inicializa diretamente
+audio_buffer::audio_buffer(std::size_t n, float sr)
+    : data_(n, 0.0f),   // constrói data_ com n zeros
+      sample_rate_{sr}  // {} inicialização uniforme
+{ }
+
+// Ordem de inicialização: SEMPRE a ordem de declaração na classe
+// (não a ordem da lista — isso é uma armadilha!)</code></pre>
+          </div>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Armadilha da ordem de inicialização</div>
+              <p>A lista de inicialização executa na ordem em que os membros foram <strong>declarados na classe</strong>, não na ordem em que aparecem na lista. Se um membro depende de outro, declare-os na ordem correta.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="raii">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">RAII — Resource Acquisition Is Initialization</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">RAII em ação: recurso adquirido no construtor</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Sem RAII (estilo C — perigoso)
+void processar(const std::string& path) {
+    FILE* f = fopen(path.c_str(), "r");
+    // Se lançar exceção aqui → LEAK
+    processa(f);
+    fclose(f);    // pode não executar
+}
+
+// Com RAII (estilo C++ — seguro)
+void processar(const std::string& path) {
+    std::ifstream f{path};      // abre no construtor
+    if (!f) throw std::runtime_error{"não abriu"};
+    processa(f);
+    // f.~ifstream() fecha automaticamente — mesmo com exceção
+}
+
+// audio_buffer usa RAII: data_ (vector) é adquirido no construtor
+// e liberado no destrutor — zero código manual</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente em C++17 uma classe RAII que gerencia uma conexão a um banco de dados SQLite. Deve abrir no construtor, fechar no destrutor, e não permitir cópia (mas permitir movimento). Convenções: snake_case, noexcept onde aplicável."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente esquecem <code>noexcept</code> no destrutor e no construtor de movimento, e confundem 'delete por cópia' com 'não-copiável'. Sem <code>noexcept</code> no move, std::vector não usará movimento.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Adicione prints nos construtores e destrutor de <code>audio_buffer</code>. Crie e destrua 3 objetos em diferentes escopos. Mapeie a ordem exata de construção e destruição.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Implemente a classe <code>scoped_temp_dir</code> usando RAII: cria um diretório temporário no construtor, remove no destrutor. Deve funcionar mesmo se uma exceção for lançada.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Compare o custo de cópia vs. movimento de um <code>audio_buffer</code> com 1 milhão de samples. Use <code>std::chrono</code> para medir. Quantas vezes o movimento é mais rápido?</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Por que <code>explicit</code> é importante no construtor parametrizado de <code>audio_buffer(std::size_t n)</code>? Demonstre o bug que ocorre sem <code>explicit</code> numa chamada como <code>void f(audio_buffer b); f(42);</code>.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula08-classes-objetos.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Classes e Objetos</span></div>
+      </a>
+      <a href="../unidade-2/aula10-raii-rule-of-five.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">RAII e Regra dos 0/3/5</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 26 — Padrões de Projeto | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link active"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 26 — Padrões de Projeto</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula25-solid.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula27-qt-llms.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 26 · 04/ago</span>
+          <h2 class="slide-title hero-title">Padrões de Projeto Canônicos no Sintonia</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Implementar e reconhecer Strategy, Observer, Factory Method, Decorator, Composite e Singleton</li><li>Identificar qual padrão resolve qual problema</li><li>Ver cada padrão em ação no código do Sintonia</li><li>Evitar overengineering: quando NÃO usar padrões</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v2.3 — Todos os padrões</div>
+            <p>Os padrões desta aula estão implementados em <code>include/sintonia/effects/</code> e <code>include/sintonia/patterns/</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="creacionais">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Factory Method e Singleton</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Factory Method — effect_factory</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Factory Method: cria objetos sem expor o tipo concreto
+class effect_factory {
+public:
+    // Cria pelo nome — extensível sem modificar o código chamador
+    static std::unique_ptr<effect> create(const std::string& type) {
+        if (type == "gain")   return std::make_unique<gain_effect>(1.0f);
+        if (type == "reverb") return std::make_unique<reverb_effect>(0.5f, 0.3f);
+        if (type == "delay")  return std::make_unique<delay_effect>(250.0f, 0.5f, 0.3f);
+        throw std::invalid_argument{"efeito desconhecido: " + type};
+    }
+    // Overloads convenience com parâmetros
+    static auto make_gain  (float f)           { return std::make_unique<gain_effect>(f); }
+    static auto make_reverb(float r, float w)  { return std::make_unique<reverb_effect>(r,w); }
+};
+
+// Singleton — audio_config (configuração global única)
+class audio_config {
+public:
+    static audio_config& instance() {
+        static audio_config inst;  // C++11: thread-safe, construído uma vez
+        return inst;
+    }
+    float master_volume() const noexcept { return vol_; }
+    void set_master_volume(float v) {
+        if (v < 0.0f || v > 2.0f) throw std::domain_error{"volume fora do range"};
+        vol_ = v;
+    }
+private:
+    audio_config() = default;  // privado: impede instanciação direta
+    float vol_ = 1.0f;
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="estruturais">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Decorator e Composite</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Decorator e Composite na cadeia de efeitos</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// DECORATOR: adiciona comportamento sem modificar a classe base
+class metering_decorator : public effect {
+    std::unique_ptr<effect> inner_;
+    float last_in_peak_  = 0.0f;
+    float last_out_peak_ = 0.0f;
+public:
+    explicit metering_decorator(std::unique_ptr<effect> e)
+        : effect{e->name() + "_metered"}, inner_{std::move(e)} {}
+
+    void process(audio_buffer& buf) override {
+        last_in_peak_ = buf.peak_level();
+        inner_->process(buf);           // delega para o efeito real
+        last_out_peak_ = buf.peak_level();
+    }
+    float last_input_peak()  const noexcept { return last_in_peak_; }
+    float last_output_peak() const noexcept { return last_out_peak_; }
+    std::unique_ptr<effect> clone() const override {
+        return std::make_unique<metering_decorator>(inner_->clone());
+    }
+};
+
+// COMPOSITE: trata grupo de efeitos como um único efeito
+class effect_group : public effect {
+    std::vector<std::unique_ptr<effect>> effects_;
+public:
+    explicit effect_group(std::string name) : effect{std::move(name)} {}
+    void add(std::unique_ptr<effect> e) { effects_.push_back(std::move(e)); }
+    void process(audio_buffer& buf) override {
+        for (auto& e : effects_) if (e->enabled()) e->process(buf);
+    }
+    std::unique_ptr<effect> clone() const override; // deep clone
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="comportamentais">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Observer e Strategy</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Observer — transport notifica UI</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Observer: transport notifica listeners sem acoplamento direto
+class transport_observer {
+public:
+    virtual void on_play()           = 0;
+    virtual void on_stop()           = 0;
+    virtual void on_seek(double pos) = 0;
+    virtual ~transport_observer()    = default;
+};
+
+class transport {
+    std::vector<transport_observer*> observers_;
+public:
+    void add_observer(transport_observer* o)    { observers_.push_back(o); }
+    void remove_observer(transport_observer* o) {
+        observers_.erase(std::remove(observers_.begin(), observers_.end(), o),
+                         observers_.end());
+    }
+    void play() {
+        // Notifica todos os observers — transport não sabe quem são
+        for (auto* o : observers_) o->on_play();
+    }
+};
+
+// Qualquer objeto pode ser observer (UI, logger, gravador...)
+class ui_controller : public transport_observer {
+    void on_play()           override { update_play_button(); }
+    void on_stop()           override { update_stop_button(); }
+    void on_seek(double pos) override { update_position_display(pos); }
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente o padrão Chain of Responsibility para a cadeia de efeitos: cada efeito decide se processa o buffer ou passa para o próximo. Como isso difere do Composite implementado no Sintonia?"</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente confundem padrões: Decorator com Proxy, Composite com Facade, Factory Method com Abstract Factory. Peça que o LLM explique a diferença entre dois padrões antes de implementar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Implemente o padrão Command para operações de edição de projeto (adicionar/remover track), com suporte a Undo/Redo. Cada comando deve ser uma classe.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>O Singleton de <code>audio_config</code> usa um local static. Por que essa implementação é thread-safe em C++11+? Seria thread-safe em C++03? Pesquise o problema do double-checked locking.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Adicione logging a qualquer efeito sem modificar as classes existentes usando o padrão Decorator. O decorator deve logar nome do efeito, tempo de execução e modificação no peak_level.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>O padrão Template Method aparece em <code>effect::process()</code> do Sintonia? Identifique onde ele está implicitamente ou implemento explicitamente.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula25-solid.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">SOLID</span></div>
+      </a>
+      <a href="aula27-qt-llms.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Qt e LLMs</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 21 — Tratamento de Erros | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link active"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 21 — Tratamento de Erros</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula20-concepts-ranges.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula22-stl.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 21 · 16/jul</span>
+          <h2 class="slide-title hero-title">Tratamento de Erros: Exceções, optional e variant</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Criar hierarquias de exceções semânticas</li><li>Usar <code>std::optional</code> para resultados que podem falhar</li><li>Usar <code>std::variant</code> para tipos alternativos</li><li>Decidir entre exceções, optional e código de retorno</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v2.1 — Erros modernos</div>
+            <p><code>wav_reader::load()</code> retorna <code>std::optional&lt;vector&lt;float&gt;&gt;</code>: falhas esperadas sem exceção. Veja <code>extras/wav-io/wav_reader.hpp</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="excecoes">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Hierarquia de Exceções</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Hierarquia semântica de exceções do Sintonia</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <stdexcept>
+#include <string>
+
+// Base: todos os erros do Sintonia
+class sintonia_error : public std::runtime_error {
+public:
+    explicit sintonia_error(const std::string& msg)
+        : std::runtime_error{"[Sintonia] " + msg} {}
+};
+
+// Erros específicos — capturáveis individualmente
+class file_error   : public sintonia_error {
+    using sintonia_error::sintonia_error;
+};
+class format_error : public sintonia_error {
+    using sintonia_error::sintonia_error;
+};
+class audio_error  : public sintonia_error {
+    using sintonia_error::sintonia_error;
+};
+
+// Captura em cascata (específico primeiro)
+try {
+    auto buf = wav_reader::load_or_throw("input.wav");
+} catch (const format_error& e) {
+    std::cerr << "Formato inválido: " << e.what() << "\n";
+} catch (const file_error& e) {
+    std::cerr << "Arquivo não encontrado: " << e.what() << "\n";
+} catch (const sintonia_error& e) {
+    std::cerr << "Erro Sintonia: " << e.what() << "\n";
+}</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="optional-variant">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">optional e variant</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">optional para falha esperada; variant para tipos alternativos</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <optional>
+#include <variant>
+
+// optional: sucesso ou ausência — sem informação de erro
+std::optional<audio_buffer> wav_reader::load(const std::string& path) noexcept {
+    try {
+        wav_reader r{path};
+        return r.read_as_buffer();
+    } catch (...) {
+        return std::nullopt;  // qualquer falha → nullopt
+    }
+}
+
+// Uso com optional:
+auto result = wav_reader::load("input.wav");
+if (result) {
+    process(*result);          // deref segura
+} else {
+    std::cerr << "Falha ao carregar\n";
+}
+// Ou: result.value_or(audio_buffer{}) — com fallback
+
+// variant: um de N tipos alternativos
+using load_result = std::variant<audio_buffer, std::string>;  // buffer ou mensagem de erro
+
+load_result load_with_error(const std::string& path) noexcept {
+    try {
+        wav_reader r{path};
+        return r.read_as_buffer();
+    } catch (const std::exception& e) {
+        return std::string{e.what()};  // retorna o erro como string
+    }
+}
+
+// Uso com variant:
+std::visit([](auto&& v) {
+    using T = std::decay_t<decltype(v)>;
+    if constexpr (std::is_same_v<T, audio_buffer>)
+        process(v);
+    else
+        std::cerr << "Erro: " << v << "\n";
+}, load_with_error("input.wav"));</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="quando-usar">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Quando Usar Cada Abordagem</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Situação</th><th>Abordagem</th><th>Razão</th></tr></thead><tbody><tr><td>Erro verdadeiramente excepcional (bug, corrupção)</td><td>Exceção</td><td>Propaga pela pilha automaticamente</td></tr><tr><td>Falha esperada sem informação de erro</td><td>std::optional</td><td>Eficiente, sem overhead de exceção</td></tr><tr><td>Falha esperada com informação de erro</td><td>std::variant ou expected</td><td>Tipo no retorno força tratamento</td></tr><tr><td>Performance crítica (hot path)</td><td>Código de retorno ou optional</td><td>Sem stack unwinding</td></tr><tr><td>API de biblioteca pública</td><td>optional ou expected</td><td>Não força exceções em callers</td></tr></tbody></table></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Refatore <code>wav_reader::load</code> para retornar <code>std::variant&lt;audio_buffer, std::string&gt;</code> em vez de lançar exceções. Mostre como o chamador trata ambos os casos com std::visit."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente: confundem <code>std::optional</code> com nullable pointer, esquecem que <code>std::visit</code> precisa ser exaustivo (cobrir todos os tipos), e não mencionam <code>std::expected</code> (C++23) como alternativa.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Refatore <code>sample::set_amplitude()</code> para usar <code>std::optional&lt;sample&gt;</code> como retorno em vez de lançar <code>std::domain_error</code>. Quando cada abordagem é mais adequada?</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Implemente uma função <code>parse_config(std::string_view)</code> que retorna <code>std::variant&lt;Config, ParseError&gt;</code>. Use <code>std::visit</code> para tratar os dois casos.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Compare o overhead de exceção vs. optional em um loop de 1M iterações onde 10% das operações falham. Use <code>std::chrono</code> e interprete os resultados.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Implemente <code>std::expected&lt;audio_buffer, std::string&gt;</code> manualmente (polyfill) usando <code>std::variant</code> e operador <code>*</code> para acessar o valor de sucesso.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula20-concepts-ranges.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Concepts e Ranges</span></div>
+      </a>
+      <a href="aula22-stl.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">STL Panorâmica</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

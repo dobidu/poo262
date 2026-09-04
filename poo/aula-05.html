@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 05 - Classificação de linguagens e sistemas de tipos · POO · UFPB</title>
+<meta name="description" content="Aula 05 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Classificação de linguagens e sistemas de tipos.">
+<meta property="og:title" content="Aula 05 - Classificação de linguagens e sistemas de tipos · POO · UFPB">
+<meta property="og:description" content="Aula 05 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Classificação de linguagens e sistemas de tipos.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-04.html">
+<link rel="next" href="aula-06.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE I</span><span class="sep">/</span><span class="atual">AULA 05</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a05">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05" aria-current="page"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Classificação de linguagens e sistemas de tipos</h1>
+    <p class="sub">UNIDADE I · AULA 05 DE 26 · CAP. 5 DO LIVRO</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Distinguir linguagens baseadas em objetos de linguagens OO completas</li><li>Comparar sistemas de tipos: estático vs. dinâmico, forte vs. fraco</li><li>Compreender single dispatch vs. multiple dispatch</li><li>Posicionar C++ no espectro de linguagens</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Classificação de Linguagens Baseadas em Objetos</h2></div></section>
+<section class="slide" id="classificacao"><div class="slide__cab"><span class="slide__n">02</span><h2>Baseada em Objetos vs. OO</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Característica</th><th>Baseada em Objetos</th><th>Orientada a Objetos</th></tr></thead><tbody><tr><td>Encapsulamento</td><td>sim</td><td>sim</td></tr><tr><td>Objetos e classes</td><td>sim</td><td>sim</td></tr><tr><td>Herança</td><td>não</td><td>sim</td></tr><tr><td>Polimorfismo</td><td>não</td><td>sim</td></tr><tr><td>Exemplo</td><td>Ada 83, primeiras versões do Visual Basic</td><td>C++, Java, Python, Ruby, Smalltalk</td></tr></tbody></table></div>
+<aside class="callout" data-t="info"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · JavaScript moderno é OO</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>JavaScript com ES6+ tem herança via prototype chain e polimorfismo. É considerado OO - mas com um modelo diferente do C++. Python também é OO completo.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="tipos"><div class="slide__cab"><span class="slide__n">03</span><h2>Sistemas de Tipos</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Dimensão</th><th>Opção A</th><th>Opção B</th></tr></thead><tbody><tr><td>Quando checar</td><td>Estático (compilação)</td><td>Dinâmico (execução)</td></tr><tr><td>Conversão implícita</td><td>Fraco (C)</td><td>Forte (Python, Haskell)</td></tr><tr><td>Declaração</td><td>Explícita (C++)</td><td>Inferida (auto, var)</td></tr></tbody></table></div>
+<div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">C++ - tipagem estática e forte (com nuances)</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-kw">int</span> x = <span class="tk-num">42</span>;
+<span class="tk-com">// x = &quot;hello&quot;; // ERRO em compilação - sistema de tipos estático</span>
+<span class="tk-kw">auto</span> y = <span class="tk-num">3.14</span>;  <span class="tk-com">// tipo inferido em compilação - ainda estático</span>
+<span class="tk-kw">float</span> f = x;    <span class="tk-com">// conversão implícita int→float - ponto fraco de C</span></code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiaW50IHggPSA0Mjtcbi8vIHggPSBcImhlbGxvXCI7IC8vIEVSUk8gZW0gY29tcGlsYcOnw6NvIC0gc2lzdGVtYSBkZSB0aXBvcyBlc3TDoXRpY29cbmF1dG8geSA9IDMuMTQ7ICAvLyB0aXBvIGluZmVyaWRvIGVtIGNvbXBpbGHDp8OjbyAtIGFpbmRhIGVzdMOhdGljb1xuZmxvYXQgZiA9IHg7ICAgIC8vIGNvbnZlcnPDo28gaW1wbMOtY2l0YSBpbnTihpJmbG9hdCAtIHBvbnRvIGZyYWNvIGRlIEMiLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="dispatch"><div class="slide__cab"><span class="slide__n">04</span><h2>Single vs. Multiple Dispatch</h2></div><p>Em C++, a resolução de método virtual depende <strong>apenas do tipo do receptor</strong> (single dispatch). Em linguagens com multiple dispatch (Julia, Common Lisp), depende dos tipos de todos os argumentos.</p>
+<p>A diferença aparece quando a resposta depende de <strong>dois</strong> objetos, e no Deriva o caso é a colisão: sonda contra parede, sonda contra sonda, parede contra parede. A função <code>resolver(const colisao&amp;, const colisao&amp;)</code>, extraída mais abaixo nesta página, faz esse despacho à mão, perguntando o tipo de cada operando com <code>dynamic_cast</code> - justamente porque <code>virtual</code> responde por um só. O nome dela é a prova do ponto: se houvesse despacho múltiplo, ela não existiria.</p>
+<p>Com N tipos, aquela função cresce com N², e é esse crescimento que faz o padrão Visitor existir. O contorno que C++17 oferece para o mesmo problema é <code>std::visit</code> sobre <code>std::variant</code>, que cobra em compilação o tratamento de todas as alternativas; a Aula 20 mostra onde isso ajuda e onde atrapalha.</p></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste Tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Compare os sistemas de tipos de C++, Python e Java em uma tabela. Para cada um: estático/dinâmico, forte/fraco, single/multiple dispatch, garbage collected. Mostre um exemplo de erro de tipo em cada linguagem."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>LLMs frequentemente classificam C++ como 'fortemente tipado' sem mencionar as conversões implícitas problemáticas (int→float→double) e os C-style casts que quebram a segurança de tipos.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">3 trechos do Deriva, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>Duas perguntas de tipo, uma por operando, porque `virtual` resolve por um só. Com N tipos esta função cresce com N², e é esse crescimento que faz o Visitor existir. Se houvesse despacho múltiplo, a função não existiria.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">tipos/despacho.cpp · C++ tem despacho simples</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-tipo">std::string</span> resolver(<span class="tk-kw">const</span> colisao&amp; a, <span class="tk-kw">const</span> colisao&amp; b) {
+  <span class="tk-com">// Duas perguntas de tipo, uma para cada operando, porque `virtual` resolve</span>
+  <span class="tk-com">// por um só. Com N tipos, esta função cresce com N² - e é exatamente esse</span>
+  <span class="tk-com">// crescimento que faz o Visitor existir.</span>
+  <span class="tk-kw">const</span> <span class="tk-kw">bool</span> a_sonda = <span class="tk-kw">dynamic_cast</span>&lt;<span class="tk-kw">const</span> sonda_c*&gt;(&amp;a) != <span class="tk-kw">nullptr</span>;
+  <span class="tk-kw">const</span> <span class="tk-kw">bool</span> b_sonda = <span class="tk-kw">dynamic_cast</span>&lt;<span class="tk-kw">const</span> sonda_c*&gt;(&amp;b) != <span class="tk-kw">nullptr</span>;
+
+  <span class="tk-kw">if</span> (a_sonda &amp;&amp; b_sonda) <span class="tk-kw">return</span> <span class="tk-str">&quot;sonda x sonda: as duas param&quot;</span>;
+  <span class="tk-kw">if</span> (a_sonda &amp;&amp; !b_sonda) <span class="tk-kw">return</span> <span class="tk-str">&quot;sonda x parede: a sonda para&quot;</span>;
+  <span class="tk-kw">if</span> (!a_sonda &amp;&amp; b_sonda) <span class="tk-kw">return</span> <span class="tk-str">&quot;parede x sonda: a sonda para&quot;</span>;
+  <span class="tk-kw">return</span> <span class="tk-str">&quot;parede x parede: nada acontece&quot;</span>;
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/tipos/despacho.cpp:11</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoic3RkOjpzdHJpbmcgcmVzb2x2ZXIoY29uc3QgY29saXNhbyYgYSwgY29uc3QgY29saXNhbyYgYikge1xuICAvLyBEdWFzIHBlcmd1bnRhcyBkZSB0aXBvLCB1bWEgcGFyYSBjYWRhIG9wZXJhbmRvLCBwb3JxdWUgYHZpcnR1YWxgIHJlc29sdmVcbiAgLy8gcG9yIHVtIHPDsy4gQ29tIE4gdGlwb3MsIGVzdGEgZnVuw6fDo28gY3Jlc2NlIGNvbSBOwrIgLSBlIMOpIGV4YXRhbWVudGUgZXNzZVxuICAvLyBjcmVzY2ltZW50byBxdWUgZmF6IG8gVmlzaXRvciBleGlzdGlyLlxuICBjb25zdCBib29sIGFfc29uZGEgPSBkeW5hbWljX2Nhc3Q8Y29uc3Qgc29uZGFfYyo-KCZhKSAhPSBudWxscHRyO1xuICBjb25zdCBib29sIGJfc29uZGEgPSBkeW5hbWljX2Nhc3Q8Y29uc3Qgc29uZGFfYyo-KCZiKSAhPSBudWxscHRyO1xuXG4gIGlmIChhX3NvbmRhICYmIGJfc29uZGEpIHJldHVybiBcInNvbmRhIHggc29uZGE6IGFzIGR1YXMgcGFyYW1cIjtcbiAgaWYgKGFfc29uZGEgJiYgIWJfc29uZGEpIHJldHVybiBcInNvbmRhIHggcGFyZWRlOiBhIHNvbmRhIHBhcmFcIjtcbiAgaWYgKCFhX3NvbmRhICYmIGJfc29uZGEpIHJldHVybiBcInBhcmVkZSB4IHNvbmRhOiBhIHNvbmRhIHBhcmFcIjtcbiAgcmV0dXJuIFwicGFyZWRlIHggcGFyZWRlOiBuYWRhIGFjb250ZWNlXCI7XG59IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Sem `explicit`, trinta graus Celsius viraria trinta Fahrenheit em silêncio. Com ele, o compilador exige a conversão escrita - e é aí que o sistema de tipos fica forte.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">tipos/despacho.hpp · forte por padrão, fraco por convite</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-kw">struct</span> fahrenheit {
+  <span class="tk-com">// Sem `explicit`, `fahrenheit f = 30.0;` compilaria, e 30 graus Celsius</span>
+  <span class="tk-com">// viraria 30 Fahrenheit em silêncio. Com ele, o compilador exige a</span>
+  <span class="tk-com">// conversão escrita - e é aí que o sistema de tipos fica forte.</span>
+  <span class="tk-kw">explicit</span> fahrenheit(<span class="tk-kw">double</span> v) : valor(v) {}
+  <span class="tk-kw">double</span> valor;
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/tipos/despacho.hpp:33</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoic3RydWN0IGZhaHJlbmhlaXQge1xuICAvLyBTZW0gYGV4cGxpY2l0YCwgYGZhaHJlbmhlaXQgZiA9IDMwLjA7YCBjb21waWxhcmlhLCBlIDMwIGdyYXVzIENlbHNpdXNcbiAgLy8gdmlyYXJpYSAzMCBGYWhyZW5oZWl0IGVtIHNpbMOqbmNpby4gQ29tIGVsZSwgbyBjb21waWxhZG9yIGV4aWdlIGFcbiAgLy8gY29udmVyc8OjbyBlc2NyaXRhIC0gZSDDqSBhw60gcXVlIG8gc2lzdGVtYSBkZSB0aXBvcyBmaWNhIGZvcnRlLlxuICBleHBsaWNpdCBmYWhyZW5oZWl0KGRvdWJsZSB2KSA6IHZhbG9yKHYpIHt9XG4gIGRvdWJsZSB2YWxvcjtcbn07IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Em Rust ou Scala o trait é construção da linguagem; aqui é um template que responde sobre um tipo. O teste o aplica a `sonda` e a `mapa`, e a resposta vem sem executar nada.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">tipos/despacho.hpp · trait em C++ é template, não construção</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-kw">struct</span> tem_glifo : <span class="tk-tipo">std::false_type</span> {};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/tipos/despacho.hpp:66</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoic3RydWN0IHRlbV9nbGlmbyA6IHN0ZDo6ZmFsc2VfdHlwZSB7fTsiLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-virtual"><div class="slide__cab"><span class="slide__n">07</span><h2>Despachante</h2></div><p>Vptr e vtable, tipo estático versus dinâmico, resolução de sobrecarga, dynamic_cast. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="virtual" tabindex="0"></section></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">08</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Compile e teste: <code>int x = 42; void* p = &amp;x double* d = (double*)p; std::cout &lt;&lt; *d;</code>. O que acontece? Por que isso é um problema de sistema de tipos?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Python é tipado dinamicamente mas fortemente tipado. Demonstre isso: mostre um erro que Python lança em tempo de execução por incompatibilidade de tipos, mas que C++ detectaria em compilação.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Acrescente um terceiro tipo de <code>colisao</code> - um drone - a <code>exemplos/deriva/tipos/despacho.hpp</code> e estenda <code>resolver</code> para tratá-lo. Quantos ramos a função passa a ter? Depois implemente o mesmo despacho por Visitor e compare: qual das duas formas obriga o compilador a acusar o caso que você esqueceu?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Pesquise: o que é <em>duck typing</em>? Compare com o uso de templates em C++, que é polimorfismo estático, e com <code>tem_glifo&lt;T&gt;</code> de <code>tipos/despacho.hpp</code>, que é um trait escrito à mão. Em que momento cada uma das três abordagens detecta que o tipo não serve?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 3 do livro v1 e de <code>unidade-1/aula03-classificacao-linguagens</code>.</p><p>Renumeração.</p></div></details>
+  <nav class="nav-pe">
+    <a href="aula-04.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Git, LLM e a rubrica</div></a>
+    <div class="meio">AULA 05 / 26</div>
+    <a href="aula-06.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">UML que serve ao código</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

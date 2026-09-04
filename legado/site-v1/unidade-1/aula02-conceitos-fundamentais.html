@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 02 — Conceitos Fundamentais do OO | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e OO</a>
+<a href="aula02-conceitos-fundamentais.html" class="nav-link active"><span class="num">02.</span>Conceitos fundamentais</a>
+<a href="aula03-classificacao-linguagens.html" class="nav-link"><span class="num">03.</span>Classificação de linguagens</a>
+<a href="aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python→C++</a>
+<a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+<a href="aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como copiloto</a>
+<a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+<a href="aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e objetos</a>
+<a href="aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 02 — Conceitos Fundamentais do OO</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula01-complexidade-oo.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula03-classificacao-linguagens.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 02 · 30/abr</span>
+          <h2 class="slide-title hero-title">Conceitos Fundamentais: Objetos, Classes e Mensagens</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Distinguir classe (molde) de objeto (instância)</li><li>Compreender mensagens e o mecanismo de despacho</li><li>Identificar atributos de instância vs. de classe</li><li>Usar a terminologia OO corretamente em português e inglês</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="classe-objeto">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Classe vs. Objeto</h2>
+        </div>
+        <div class="slide-body"><p>Uma <strong>classe</strong> é um molde — define estrutura e comportamento. Um <strong>objeto</strong> é uma instância concreta em memória, com seus próprios valores de atributos.</p>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Classe como molde, objetos como instâncias</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button><a href="https://godbolt.org" target="_blank" class="godbolt-btn">▶ playground</a></div>
+            </div>
+<pre><code class="language-cpp">// Classe: define o molde — existe em tempo de compilação
+class sample {
+    float amplitude_;      // atributo de instância — cada objeto tem o seu
+    float sample_rate_;
+public:
+    explicit sample(float a, float sr = 44100.0f);
+    float amplitude() const noexcept { return amplitude_; }
+};
+
+// Objetos: instâncias em memória — existem em tempo de execução
+sample s1{0.5f};          // objeto 1: amplitude_ = 0.5
+sample s2{-0.3f, 48000};  // objeto 2: amplitude_ = -0.3, rate_ = 48000
+
+// s1 e s2 compartilham o CÓDIGO (a classe), mas têm DADOS independentes
+std::cout << s1.amplitude(); // 0.5  — dados de s1
+std::cout << s2.amplitude(); // -0.3 — dados de s2</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="mensagens">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Mensagens e Despacho</h2>
+        </div>
+        <div class="slide-body"><p>Em OO, objetos se comunicam por <strong>mensagens</strong>. Em C++, uma mensagem é implementada como uma chamada de método. O objeto receptor decide como responder — isso é o fundamento do polimorfismo.</p>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Mensagens em C++</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Sintaxe de mensagem: receptor.mensagem(argumentos)
+s1.set_amplitude(0.8f);    // mensagem "set_amplitude" para s1
+float a = s1.amplitude();  // mensagem "amplitude" para s1
+
+// O receptor DECIDE como processar — encapsulamento em ação
+// set_amplitude pode validar, logar, notificar observers, etc.
+// O remetente não sabe (nem precisa saber) o que acontece internamente</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Mensagem ≠ Chamada de função</div>
+              <p>Uma chamada de função em C é estática — o compilador sabe qual função chamar. Uma mensagem OO pode ser resolvida em tempo de execução (polimorfismo dinâmico), dependendo do tipo real do receptor.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="terminologia">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Terminologia: OO vs. C++</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Conceito OO</th><th>Termo em C++</th><th>Exemplo</th></tr></thead><tbody><tr><td>Classe</td><td>class / struct</td><td>class sample {{ ... }};</td></tr><tr><td>Objeto / Instância</td><td>variável do tipo classe</td><td>sample s{{0.5f}};</td></tr><tr><td>Atributo</td><td>membro dado (data member)</td><td>float amplitude_;</td></tr><tr><td>Método</td><td>função membro (member function)</td><td>float amplitude() const;</td></tr><tr><td>Mensagem</td><td>chamada de método</td><td>s.amplitude();</td></tr><tr><td>Construtor</td><td>constructor</td><td>sample(float a);</td></tr><tr><td>Destruidor</td><td>destructor</td><td>~sample();</td></tr></tbody></table></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Explique em português a diferença entre classe e objeto, usando um exemplo do domínio de áudio digital em C++17. A classe deve ter pelo menos 3 atributos, 2 construtores e demonstrar encapsulamento com invariante real."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs confundem atributos de instância com atributos de classe (static). Peça explicitamente que demonstre os dois e mostre que objetos independentes têm dados independentes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Identifique no arquivo <code>include/sintonia/sample.hpp</code>: quantas classes, quantos atributos de instância, quantos métodos, quantos construtores. Classifique cada membro como atributo ou método.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Crie um objeto <code>sample</code> no <code>main()</code> e imprima seus atributos antes e depois de chamar <code>set_amplitude(0.7f)</code>. Qual mensagem foi enviada? Quem é o receptor?</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Explique com um exemplo concreto por que dois objetos da mesma classe compartilham código mas não compartilham dados.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Pesquise a diferença entre <em>early binding</em> (ligação estática) e <em>late binding</em> (ligação dinâmica). Qual delas implementa o conceito de mensagem OO de forma mais fiel? Por quê?</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula01-complexidade-oo.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Complexidade e OO</span></div>
+      </a>
+      <a href="aula03-classificacao-linguagens.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Classificação de Linguagens</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

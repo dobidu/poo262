@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 01 — Gerenciamento de Complexidade e OO | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link active"><span class="num">01.</span>Complexidade e OO</a>
+<a href="aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos fundamentais</a>
+<a href="aula03-classificacao-linguagens.html" class="nav-link"><span class="num">03.</span>Classificação de linguagens</a>
+<a href="aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python→C++</a>
+<a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+<a href="aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como copiloto</a>
+<a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+<a href="aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e objetos</a>
+<a href="aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 01 — Gerenciamento de Complexidade e OO</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="index.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula02-conceitos-fundamentais.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 01 · 28/abr</span>
+          <h2 class="slide-title hero-title">Gerenciamento de Complexidade e o Paradigma OO</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Entender por que o software precisa de mecanismos para controlar complexidade</li><li>Contrastar programação procedural com OO</li><li>Identificar os quatro pilares da OO: encapsulamento, abstração, herança, polimorfismo</li><li>Situar C++ no cenário de linguagens OO</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="complexidade">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Por que Complexidade é o Problema Central</h2>
+        </div>
+        <div class="slide-body"><p>Software é a atividade humana com maior número de estados possíveis por unidade de volume. Um programa com 300 variáveis booleanas tem mais estados do que átomos no universo observável. Gerenciar essa complexidade é o problema central da engenharia de software.</p>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Sintomas de complexidade descontrolada</div>
+              <p>Código que ninguém entende sem o autor; módulos que quebram quando você toca em outro módulo; bugs que surgem em partes não modificadas; medo de alterar código existente.</p>
+            </div>
+          </div>
+        <table class="slide-table"><thead><tr><th>Técnica</th><th>Como reduz complexidade</th><th>Limitação</th></tr></thead><tbody><tr><td>Decomposição procedural</td><td>Divide em funções</td><td>Estado global, acoplamento</td></tr><tr><td>Módulos (C)</td><td>Agrupa funções relacionadas</td><td>Difícil representar estado por instância</td></tr><tr><td>OO</td><td>Agrupa dados + comportamento + estado por objeto</td><td>Curva de aprendizado, overengineering</td></tr></tbody></table></div>
+      </section>
+      <section class="slide" id="paradigmas">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Paradigmas de Programação</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Paradigma</th><th>Base</th><th>Exemplos</th></tr></thead><tbody><tr><td>Procedural</td><td>Sequência de instruções, funções</td><td>C, Pascal, FORTRAN</td></tr><tr><td>OO</td><td>Objetos com estado e comportamento</td><td>C++, Java, Python, Ruby</td></tr><tr><td>Funcional</td><td>Funções puras, sem estado mutável</td><td>Haskell, Erlang, Clojure</td></tr><tr><td>Multiparadigma</td><td>Combina paradigmas</td><td>C++17, Python, Rust</td></tr></tbody></table>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">C++ é multiparadigma</div>
+              <p>C++ suporta programação procedural (herança de C), OO (classes, herança, polimorfismo) e funcional (lambdas, std::function, algoritmos da STL). Isso é poder — e responsabilidade.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="quatro-pilares">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Os Quatro Pilares da OO</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Pilar</th><th>Definição</th><th>Benefício</th></tr></thead><tbody><tr><td>Encapsulamento</td><td>Agrupar dados e operações; esconder implementação</td><td>Invariantes garantidas; interface estável</td></tr><tr><td>Abstração</td><td>Expor apenas o essencial; esconder detalhes</td><td>Reduz carga cognitiva</td></tr><tr><td>Herança</td><td>Reutilizar e especializar comportamento</td><td>Evita duplicação</td></tr><tr><td>Polimorfismo</td><td>Mesmo código opera sobre tipos diferentes</td><td>Extensibilidade</td></tr></tbody></table>
+        <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div class="callout-content">
+              <div class="callout-title">Ordem de importância</div>
+              <p>Encapsulamento e abstração são os mais importantes no dia a dia. Herança é a mais usada em excesso. Polimorfismo é o mais poderoso quando bem aplicado.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Explique o princípio de encapsulamento com um exemplo real em C++17. Mostre: (1) como a ausência de encapsulamento causa problemas, (2) como encapsulamento os resolve. Use snake_case e comentários em português."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs tendem a usar exemplos triviais demais (getter/setter puro) que não demonstram o valor real do encapsulamento. Peça exemplos com invariantes concretas — ex.: amplitude de áudio em [-1,1].</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Leia o código C procedural em <code>extras/broken-designs/</code>. Liste 5 problemas específicos de gerenciamento de complexidade que você identifica.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Reescreva em pseudocódigo OO (sem compilar ainda) a estrutura de dados <code>struct student { int id; char name[50]; float grade; }</code> como uma classe com encapsulamento adequado.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Pesquise: qual é a diferença entre <em>abstração de dados</em> (ADT) e <em>classe</em> em C++? Dê um exemplo de ADT que não é implementado como classe.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Compare o tamanho médio de uma base de código C procedural vs. C++ OO equivalente em funcionalidade. Por que sistemas OO bem projetados tendem a ter menos linhas de código?</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="index.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Índice</span></div>
+      </a>
+      <a href="aula02-conceitos-fundamentais.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Conceitos Fundamentais</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

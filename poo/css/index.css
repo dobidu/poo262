@@ -1,0 +1,163 @@
+/* =============================================================
+   POO v2 · index.css   (T3 · capa / índice do curso)
+   A única tela onde a estética pode ser exuberante, porque é
+   onde se estabelece o contrato visual.
+   ============================================================= */
+
+.capa { max-width: var(--pagina-max); margin: 0 auto; padding: 0 var(--goteira) var(--e5); }
+
+/* ---- abertura tipo POST -------------------------------------
+   Uma vez, saltável, e nada de conteúdo depende dela.          */
+.abertura {
+  padding: var(--e5) 0 var(--e4);
+  font-family: var(--maquina); font-size: var(--t-est); line-height: 1.9;
+  color: var(--apagado);
+}
+.abertura [data-post] { white-space: pre-wrap; }
+.abertura [data-post][data-oculta] { visibility: hidden; }
+.abertura .ok { color: var(--ok); }
+.abertura .am { color: var(--fosforo); }
+.abertura .fr { color: var(--frio); }
+.abertura .fa { color: var(--fantasma); }
+.saltar {
+  margin-top: var(--e2); background: none; border: none; padding: 0;
+  color: var(--fantasma); font-family: var(--maquina); font-size: var(--t-rot);
+  letter-spacing: .12em; cursor: pointer; text-decoration: underline;
+}
+.saltar:hover { color: var(--fosforo); }
+.abertura[data-pronta="1"] .saltar { display: none; }
+
+/* ---- título ------------------------------------------------- */
+.capa__tit { padding: var(--e3) 0 var(--e4); }
+.capa__tit h1 {
+  margin: 0; font-family: var(--humana); font-size: var(--t-capa);
+  line-height: 1.05; font-weight: 600; letter-spacing: -.03em;
+  color: var(--leitura); max-width: 22ch; text-wrap: balance;
+}
+.capa__tit h1 em { font-style: normal; color: var(--fosforo); }
+.capa__tit .linha {
+  margin: var(--e3) 0 0; font-family: var(--humana); font-size: calc(19px * var(--s));
+  color: var(--leitura); max-width: var(--medida); text-wrap: pretty;
+}
+.capa__meta {
+  margin-top: var(--e3); display: flex; gap: var(--e3) var(--e4); flex-wrap: wrap;
+  font-family: var(--maquina); font-size: var(--t-est); color: var(--apagado); letter-spacing: .06em;
+}
+.capa__meta b { color: var(--fosforo); font-weight: 500; }
+
+/* =============================================================
+   HERÓI · despacho virtual (js/heroi-vtable.js)
+   ============================================================= */
+.heroi {
+  margin: var(--e3) 0 0;
+  border-inline: var(--rule-w) solid var(--grade-alta);
+  background: var(--painel-alto);
+}
+.hv__palco {
+  display: flex; align-items: stretch; gap: var(--e2); flex-wrap: nowrap;
+  padding: var(--e3) var(--e2); overflow-x: auto;
+}
+.hv__bloco {
+  flex: 1 1 0; min-width: 178px; white-space: nowrap;
+  border: var(--rule-w) solid var(--grade); background: var(--painel);
+  padding: var(--e1);
+  font-family: var(--maquina); font-size: var(--t-est); line-height: 1.75;
+  transition: border-color 200ms ease-out, background-color 200ms ease-out;
+}
+.hv__bloco[data-aceso="1"] { border-color: var(--fosforo); background: var(--fosforo-lav); }
+.hv__cab {
+  font-size: var(--t-rot); letter-spacing: .14em; color: var(--apagado);
+  border-bottom: var(--rule-w) solid var(--grade); padding-bottom: 3px; margin-bottom: 4px;
+}
+.hv__seta {
+  flex: 0 0 auto; align-self: center;
+  font-family: var(--maquina); color: var(--grade-alta);
+  transition: color 200ms ease-out;
+}
+.hv__seta[data-aceso="1"][data-t="ok"] { color: var(--fosforo); }
+.hv__seta[data-aceso="1"][data-t="falha"] { color: var(--falha); }
+
+.hv__terminal {
+  border-top: var(--rule-w) solid var(--grade);
+  padding: var(--e2);
+  display: flex; align-items: center; gap: var(--e3); flex-wrap: wrap;
+}
+.hv__terminal .rot {
+  font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em; color: var(--apagado);
+}
+.hv__saida {
+  font-family: var(--maquina); font-size: calc(26px * var(--s)); letter-spacing: .22em;
+  line-height: 1.2;
+}
+.hv__controles {
+  border-top: var(--rule-w) solid var(--grade); background: var(--painel);
+  padding: var(--e2); display: flex; align-items: center; gap: var(--e2); flex-wrap: wrap;
+}
+.hv__est {
+  display: flex; gap: var(--e3); flex-wrap: wrap; margin-left: auto;
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .06em;
+}
+.hv__est b { color: var(--leitura); font-weight: 500; }
+.heroi__legenda {
+  border-top: var(--rule-w) solid var(--grade); padding: var(--e2);
+  display: flex; gap: var(--e2); align-items: flex-start;
+}
+.heroi__legenda .rot {
+  flex: 0 0 auto; font-family: var(--maquina); font-size: var(--t-rot);
+  letter-spacing: .14em; color: var(--fosforo); padding-top: 2px;
+}
+.heroi__legenda p { margin: 0; font-family: var(--rotulo); font-size: calc(14px * var(--s)); max-width: 78ch; }
+
+/* =============================================================
+   ÍNDICE · 3 unidades × 26 aulas
+   ============================================================= */
+.unidades {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--e3); padding: var(--e5) 0 0;
+}
+.unidade { border-inline: var(--rule-w) solid var(--grade); background: var(--painel); }
+.unidade__corpo { padding: var(--e2); }
+.unidade__tema {
+  font-family: var(--rotulo); font-size: calc(15px * var(--s));
+  color: var(--leitura); margin-bottom: var(--e2);
+}
+.unidade ol { list-style: none; margin: 0; padding: 0; font-family: var(--maquina); font-size: var(--t-est); }
+.unidade li { display: flex; }
+.unidade a {
+  display: flex; gap: .55em; align-items: baseline; flex: 1 1 auto;
+  min-height: calc(30px * var(--s)); padding: 3px var(--e1);
+  border: none; color: var(--apagado); line-height: 1.45;
+}
+.unidade a:hover { background: var(--painel-alto); color: var(--fosforo-alto); }
+.unidade a .num { color: var(--fantasma); flex: 0 0 auto; }
+.unidade a .galho { color: var(--fantasma); flex: 0 0 auto; }
+.unidade a[data-visitada="1"] { color: var(--leitura); }
+.unidade a .tem-int { color: var(--fosforo); flex: 0 0 auto; }
+.unidade__pe {
+  padding: var(--e1) var(--e2); border-top: var(--rule-w) solid var(--grade);
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--fantasma); letter-spacing: .1em;
+}
+.unidade__pe b { color: var(--apagado); font-weight: 400; }
+
+/* ---- atalhos da capa --------------------------------------- */
+.atalhos {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--e2); padding: var(--e4) 0 0;
+}
+.atalho {
+  border: var(--rule-w) solid var(--grade); background: var(--painel);
+  padding: var(--e2); color: var(--apagado);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.atalho:hover { border-color: var(--fosforo); background: var(--painel-alto); color: var(--apagado); }
+.atalho__rot { font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em; color: var(--fosforo); }
+.atalho__nome { font-family: var(--rotulo); font-size: calc(16px * var(--s)); color: var(--leitura); }
+.atalho__nota { font-family: var(--maquina); font-size: var(--t-rot); color: var(--fantasma); }
+
+@media (max-width: 860px) {
+  .capa__tit h1 { font-size: calc(34px * var(--s)); }
+  .hv__palco { flex-wrap: wrap; }
+  .hv__bloco { flex: 1 1 100%; }
+  .hv__seta { align-self: flex-start; transform: rotate(90deg); }
+  .hv__est { margin-left: 0; }
+}

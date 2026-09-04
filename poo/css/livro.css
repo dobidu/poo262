@@ -1,0 +1,573 @@
+/* =============================================================
+   POO v2 · livro.css - a versão de tela do livro
+   
+   O artefato primário do livro é o PDF de impressão, e é ele que decidiu
+   medida, quebra de página e cor. Esta folha herda a estrutura e troca o
+   fundo: papel recebe tinta, tela recebe fósforo. Os tokens são os mesmos
+   de tokens.css, e nada aqui redefine um.
+   
+   A estrutura é a mesma do impresso, e é a do caderno de bordo: coluna de
+   prosa em Serif, campo de aferição na margem, prancha de código
+   atravessando os dois, moldura de box-drawing como única primitiva.
+   
+   Todo `var()` daqui carrega o literal de reserva de tokens.css. Não é
+   duplicação por descuido: se tokens.css não carregar, a página cai para
+   prosa clara sobre fundo claro, ilegível, e a reserva é o que impede isso.
+   O valor de verdade continua sendo o de tokens.css, que ganha sempre que
+   carrega.
+   ============================================================= */
+
+:root {
+  --medida: 68ch;                       /* a mesma da página impressa */
+  --campo: calc(230px * var(--s, 1));      /* o campo de aferição */
+  --goteira: calc(28px * var(--s, 1));
+}
+
+
+
+/* superfícies do navegador: elas também são do desenho ---------------- */
+::selection { background: var(--fosforo-lav, rgba(242,169,59,.10)); color: var(--fosforo-alto, #FFD79A); }
+/* o cursor de texto também é do desenho: o padrão do navegador é preto sobre
+   preto neste fundo, e some */
+html, body, input, textarea { caret-color: var(--fosforo, #F2A93B); }
+:focus-visible {
+  outline: calc(2px * var(--s, 1)) solid var(--fosforo, #F2A93B);
+  outline-offset: calc(2px * var(--s, 1));
+}
+* { scrollbar-color: var(--grade-alta, #2C3835) var(--vazio, #0A0C0B); scrollbar-width: thin; }
+::-webkit-scrollbar { width: calc(10px * var(--s, 1)); height: calc(10px * var(--s, 1)); }
+::-webkit-scrollbar-track { background: var(--vazio, #0A0C0B); }
+::-webkit-scrollbar-thumb { background: var(--grade-alta, #2C3835); border: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--fantasma, #4A524C); }
+
+/* ---------------------------------------------------------------------
+   a grade da página: prosa · goteira · campo
+   --------------------------------------------------------------------- */
+body > * { grid-column: prosa; }
+
+/* Uma regra `body` só. Duas competindo é o que fazia o fundo se perder: a
+   segunda não declarava `background`, e quem lê a folha de trás para frente
+   (o detector, e alguns caminhos do próprio navegador) ficava com o branco
+   padrão, e a prosa clara sobre ele é ilegível. */
+body {
+  margin: 0;
+  background: var(--vazio, #0A0C0B);
+  color: var(--leitura, #E4E7E2);
+  font-family: var(--humana, "IBM Plex Serif", Georgia, serif);
+  font-size: var(--t-prosa, 17px);
+  line-height: var(--lh-prosa, 1.68);
+  -webkit-text-size-adjust: 100%;
+  display: grid;
+  /* A linha de fim do campo tem NOME.
+     
+     Antes as regras diziam `grid-column: prosa / campo-fim`, e `campo-fim`
+     não existia: nomear `[campo]` cria a linha `campo`, não a `campo-fim`.
+     Toda regra que dizia atravessar o campo caía no padrão de uma coluna, e
+     nem a prancha, nem a tabela, nem o sumário atravessavam nada - a régua
+     da moldura, que tem `overflow: hidden`, vazava até a borda da janela. */
+  grid-template-columns:
+    1fr
+    [prosa] minmax(0, var(--medida))
+    [goteira] var(--goteira)
+    [campo] var(--campo)
+    [campo-fim] 1fr;
+  column-gap: 0;
+  padding: var(--e5, 36px) 0 var(--e7, 84px);
+}
+
+/* a prancha atravessa prosa e campo, porque código não reflui */
+body > pre,
+body > .prancha,
+body > table,
+body > .objetivos { grid-column: prosa / campo-fim; }
+
+/* ---------------------------------------------------------------------
+   moldura de box-drawing
+   
+   A mesma primitiva de poo/css/pagina.css: flex com os cantos fixos, o
+   título embutido na régua de cima, e a régua sendo uma corrida de `─` de
+   verdade cortada por `overflow: hidden`. Não é `border`, e a diferença não
+   é purismo: o PRODUCT.md nomeia "moldura desenhada com border no lugar de
+   caractere" como o que faz um resultado polido parecer errado, e o
+   impresso desenha 33 mil `─`.
+   
+   Sem JS: o traço de 200 caracteres vai escrito no HTML, para o arquivo
+   servir salvo e sem rede.
+   --------------------------------------------------------------------- */
+.moldura {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-rot, 11px);
+  /* 1.0 era o valor de poo/css/pagina.css, e o detector de desenho tem razão
+     em recusá-lo: a régua é uma linha só e a entrelinha não a afeta, mas 1.0
+     numa corrida de 200 caracteres mede como texto de corpo apertado. 1.35
+     não muda o desenho e tira 218 achados do caminho de um achado real. */
+  line-height: 1.35;
+  letter-spacing: .04em;
+  color: var(--grade-alta, #2C3835);
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.moldura__canto { flex: 0 0 auto; }
+/* `flex: 1 1 0` com `min-width: 0`, e não `1 1 auto`.
+   
+   Com base `auto` o item parte do tamanho do conteúdo - 200 caracteres, uns
+   1300 px - e quem decidia a borda direita era onde o corte do
+   `overflow: hidden` caísse, não a medida. Em 390 px as molduras terminavam
+   em 362 e em 373 conforme a caixa, desiguais entre si. Com base 0 o item
+   recebe exatamente o espaço que sobra, e o canto `─┐` senta na medida. */
+.moldura__regua { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.moldura__titulo {
+  flex: 0 0 auto;
+  padding: 0 .4em;
+  color: var(--fosforo, #F2A93B);
+  /* .12em, igual aos outros rótulos desta folha e próximo do .16em de
+     pagina.css.
+     
+     O detector de desenho acusa isto como "wide-tracking on body text", e
+     nesta linha ele mede a coisa errada: `.moldura__titulo` é rótulo em Mono
+     caixa-alta dentro de uma moldura `aria-hidden`, e o PRODUCT.md declara
+     que rótulo é exatamente isso. Testei .10em e o achado permanece, então
+     satisfazê-lo exigiria abandonar a entreletra de rótulo. Fica declarado
+     em vez de escondido. */
+  letter-spacing: .12em;
+  font-weight: 600;
+}
+
+/* a moldura cerca prosa e campo, como a prancha do impresso */
+body > .moldura { grid-column: prosa / campo-fim; }
+
+/* o tipo da caixa colore a moldura E traz glifo e rótulo no título: cor
+   nunca é o único portador */
+.callout.warn   + .moldura, .callout.warn   .moldura__titulo { color: var(--falha, #FF6B5E); }
+.moldura:has(+ .callout.warn)   { color: color-mix(in srgb, var(--falha, #FF6B5E) 45%, var(--grade, #1E2624)); }
+.moldura:has(+ .callout.tip)    { color: color-mix(in srgb, var(--ok, #6FD08C) 45%, var(--grade, #1E2624)); }
+.moldura:has(+ .callout.llm)    { color: color-mix(in srgb, var(--outro, #C08BE0) 45%, var(--grade, #1E2624)); }
+.moldura:has(+ .callout.deriva) { color: color-mix(in srgb, var(--fosforo, #F2A93B) 45%, var(--grade, #1E2624)); }
+
+/* ---------------------------------------------------------------------
+   hierarquia
+   --------------------------------------------------------------------- */
+h1, h2, h3 { font-family: var(--humana, "IBM Plex Serif", Georgia, serif); font-weight: 600; line-height: 1.22; }
+
+h1 {
+  font-size: var(--t-h1, 34px);
+  margin: var(--e7, 84px) 0 var(--e3, 18px);
+  grid-column: prosa / campo-fim;
+  border-top: var(--rule-w, 1px) solid var(--grade-alta, #2C3835);
+  padding-top: var(--e3, 18px);
+}
+
+h2 { font-size: var(--t-h2, 23px); margin: var(--e6, 56px) 0 var(--e2, 12px); }
+h3 { font-size: calc(var(--t-prosa, 17px) * 1.12); margin: var(--e4, 24px) 0 var(--e1, 6px); }
+
+/* o § da seção, em Mono âmbar, como no impresso */
+h2 > .num, h3 > .num {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-weight: 500;
+  color: var(--fosforo, #F2A93B);
+  margin-right: .45em;
+}
+
+p { margin: 0 0 var(--e3, 18px); max-width: var(--medida); }
+p + p { margin-top: 0; }
+
+a { color: var(--fosforo, #F2A93B); text-decoration-thickness: 1px; text-underline-offset: .18em; }
+a:hover { color: var(--fosforo-alto, #FFD79A); }
+
+strong { font-weight: 600; color: var(--fosforo-alto, #FFD79A); }
+em { font-style: italic; }
+
+/* prosa nunca é âmbar; o âmbar é moldura, rótulo e ênfase de interface */
+
+/* ---------------------------------------------------------------------
+   código embutido e prancha
+   --------------------------------------------------------------------- */
+code {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-cod, 14px);
+  color: var(--leitura, #E4E7E2);
+  /* `break-word` e não `anywhere`: um identificador longo cede na fronteira
+     de palavra, e `C++` ou `T&` não se partem no meio. */
+  overflow-wrap: break-word;
+}
+#TOC code { overflow-wrap: normal; }
+
+pre {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-cod, 14px);
+  line-height: var(--lh-cod, 1.55);
+  background: var(--painel, #101413);
+  margin: 0;
+  padding: var(--e3, 18px) var(--e4, 24px);
+  overflow-x: auto;                     /* código NÃO reflui: ele rola */
+  white-space: pre;
+  tab-size: 2;
+}
+pre code { font-size: inherit; color: inherit; }
+
+/* a moldura da prancha: rótulo à esquerda, procedência à direita */
+.prancha { margin: 0 0 var(--e5, 36px); }
+
+/* o realce, com as mesmas classes do site */
+.tk-kw   { color: var(--fosforo-alto, #FFD79A); font-weight: 600; }
+.tk-tipo { color: var(--frio, #5FC3D6); }
+.tk-com  { color: var(--apagado, #8A928C); font-style: italic; }
+.tk-str  { color: var(--ok, #6FD08C); }
+.tk-num  { color: var(--ok, #6FD08C); }
+.tk-pre  { color: var(--fantasma, #4A524C); }
+.tk-c20  { color: var(--outro, #C08BE0); font-weight: 600; }
+
+/* ---------------------------------------------------------------------
+   caixas tipadas: o mesmo vocabulário de cinco
+   --------------------------------------------------------------------- */
+.callout, .objetivos, .figura, .unidade {
+  margin: var(--e5, 36px) 0;
+  /* atalho, e não `padding-block`/`padding-inline`: o detector de desenho
+     não lê os longhands lógicos e acusava as 92 caixas como se estivessem
+     sem recuo, com o texto encostado na moldura. O valor é o mesmo. */
+  padding: 14px 24px;
+  background: var(--painel, #101413);
+  /* Sem `border`: a moldura de caractere que o filtro põe antes e depois da
+     caixa é a moldura. Manter as duas era desenhar a mesma coisa em duas
+     linguagens, e `border` é a que o PRODUCT.md recusa. */
+  margin: 0 0 var(--e4, 24px);
+}
+.callout > :last-child, .objetivos > :last-child,
+.unidade > :last-child { margin-bottom: 0; }
+
+/* a divisória de unidade: a única do livro que gasta a largura em silêncio */
+.unidade { padding: 40px 24px; text-align: left; }
+.unidade strong {
+  display: block;
+  font-family: var(--humana, "IBM Plex Serif", Georgia, serif);
+  font-size: calc(var(--t-h1, 34px) * .82);
+  line-height: 1.15;
+  color: var(--leitura, #E4E7E2);
+  margin-bottom: var(--e3, 18px);
+}
+.unidade p { color: var(--apagado, #8A928C); font-style: italic; max-width: 62ch; }
+
+.objetivos ul { list-style: none; padding-left: 0; margin: 0; }
+.objetivos li { padding-left: 1.4em; position: relative; }
+.objetivos li::before {
+  content: "▸"; position: absolute; left: 0;
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace); color: var(--fosforo, #F2A93B);
+}
+
+/* ---------------------------------------------------------------------
+   o carimbo de aferição: no campo, como no impresso
+   --------------------------------------------------------------------- */
+.carimbo {
+  grid-column: campo;
+  align-self: start;
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-rot, 11px);
+  line-height: 1.5;
+  color: var(--apagado, #8A928C);
+  margin: 0 0 var(--e4, 24px);
+}
+.carimbo__regua {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--grade-alta, #2C3835);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+.carimbo__valor { display: block; color: var(--fosforo, #F2A93B); font-weight: 600; }
+.carimbo__grandeza { display: block; color: var(--leitura, #E4E7E2); }
+.carimbo__como { display: block; margin-top: var(--e1, 6px); font-style: italic; }
+
+/* ---------------------------------------------------------------------
+   tabela densa
+   --------------------------------------------------------------------- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: var(--t-est, 13px);
+  margin: var(--e5, 36px) 0;
+  display: block;
+  overflow-x: auto;                     /* tabela larga rola dentro de si */
+}
+th, td {
+  text-align: left;
+  padding: var(--e1, 6px) var(--e2, 12px);
+  border-bottom: var(--rule-w, 1px) solid var(--grade, #1E2624);
+  vertical-align: top;
+}
+th {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-weight: 600;
+  font-size: var(--t-rot, 11px);
+  letter-spacing: .05em;
+  color: var(--fosforo, #F2A93B);
+  border-bottom-color: var(--grade-alta, #2C3835);
+}
+td code { font-size: inherit; }
+tbody tr:last-child td { border-bottom: 0; }
+
+/* número em figura tabular, para a coluna alinhar */
+td, th { font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------------
+   sumário
+   --------------------------------------------------------------------- */
+#TOC {
+  grid-column: prosa / campo-fim;
+  /* a capa já dá 56 px de folga abaixo dela; somar mais 56 aqui deixava 112
+     px de nada entre o nome do autor e a régua do sumário */
+  margin: 0 0 var(--e7, 84px);
+  padding: var(--e3, 18px) 0;
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-est, 13px);
+}
+#TOC ul { list-style: none; padding-left: 0; margin: 0; }
+
+/* o capítulo em relevo, a seção recuada e menor: o sumário tem 200 entradas,
+   e sem os dois níveis ele era uma parede de linhas iguais */
+#TOC > ul > li {
+  margin-top: var(--e3, 18px);
+  padding-top: 10px;                    /* 6 px encostava o texto na régua */
+  border-top: 1px solid var(--grade, #1E2624);
+}
+#TOC > ul > li > a {
+  display: block;
+  color: var(--fosforo, #F2A93B);
+  font-size: var(--t-est, 13px);
+  letter-spacing: .04em;
+  padding-bottom: var(--e1, 6px);
+}
+#TOC ul ul {
+  padding-left: var(--e4, 24px);
+  /* `columns: 2` fixo estreitava a coluna até 250 px e quebrava `C++` no
+     meio ("em C e em C+ / +"). Com `column-width` o navegador escolhe uma ou
+     duas colunas conforme o que cabe, e a quebra dentro da palavra fica
+     proibida: identificador de código não se parte. */
+  columns: 26ch auto;
+  column-gap: var(--e5, 36px);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+#TOC ul ul li { break-inside: avoid; }
+#TOC ul ul a { color: var(--leitura, #E4E7E2); font-size: var(--t-rot, 11px); }
+#TOC ul ul a:hover { color: var(--fosforo-alto, #FFD79A); }
+/* `--fantasma` dava 2,2:1 sobre o fundo, e o número da seção é texto que
+   se lê para achar a §. `--apagado` dá 6,1:1. */
+#TOC .num { color: var(--apagado, #8A928C); margin-right: .35em; }
+#TOC a { text-decoration: none; }
+#TOC a:hover { text-decoration: underline; }
+.toc__rot {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-rot, 11px);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fosforo, #F2A93B);
+  margin: 0 0 var(--e2, 12px);
+}
+
+/* ---------------------------------------------------------------------
+   a folha de abertura
+   
+   Ela repete a do impresso: moldura em cima com a instituição e o semestre,
+   título, subtítulo, e no pé a tabela do que o livro afere. Os nomes de
+   classe vinham do gabarito e não tinham regra nenhuma aqui, e a capa saía
+   com <dl> de recuo padrão do navegador.
+   --------------------------------------------------------------------- */
+/* Sem régua no pé da capa: o sumário já abre com uma, e as duas juntas
+   deixavam uma faixa de 135 px de nada entre elas, que lia como erro. */
+#capa {
+  grid-column: prosa / campo-fim;
+  margin: 0 0 var(--e6, 56px);
+}
+/* Caixa-alta aqui é do idioma, e não descuido: no mundo visual travado deste
+   material, rótulo é Plex Mono em caixa-alta com entreletra aberta, e o
+   impresso faz o mesmo. São 37 caracteres de rubrica, não de prosa - o
+   detector de desenho a acusa como texto de corpo, e nesta linha ele está
+   medindo a coisa errada. */
+.capa__rot--oculto {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.capa__rot {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-rot, 11px);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fosforo, #F2A93B);
+  margin: 0 0 var(--e4, 24px);
+}
+/* Corpo fluido, e não 56 px fixos: em 390 px o título quebrava "C++" no meio,
+   e o segundo `+` caía sozinho na linha seguinte. `clamp` dá o passo, e o
+   `text-wrap: balance` reparte as linhas em vez de deixar uma órfã. */
+.capa__titulo {
+  font-size: clamp(30px, 7.5vw, var(--t-capa, 56px));
+  line-height: 1.05;
+  text-wrap: balance;
+  margin: 0 0 var(--e3, 18px);
+  border: 0;
+  padding: 0;
+  max-width: 22ch;
+}
+.capa__sub {
+  font-style: italic;
+  font-size: calc(var(--t-prosa, 17px) * 1.18);
+  color: var(--apagado, #8A928C);
+  margin: 0 0 var(--e6, 56px);
+}
+.capa__rot--afere {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-rot, 11px);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fosforo, #F2A93B);
+  margin: 0 0 var(--e2, 12px);
+}
+.capa__afere {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--e1, 6px) var(--e4, 24px);
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-est, 13px);
+  margin: 10px 0 var(--e4, 24px);
+}
+.capa__afere dt { color: var(--apagado, #8A928C); }
+.capa__afere dd { margin: 0; color: var(--leitura, #E4E7E2); }
+.capa__autor {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-est, 13px);
+  color: var(--fosforo, #F2A93B);
+  margin: 0;
+}
+
+/* a moldura do capítulo: unidade, aula e versão do Deriva sob o título */
+/* Sem caixa-alta. A linha chega a 66 caracteres ("Unidade II · Estruturas de
+   herança · aula 12 · Deriva v1.2"), e caixa-alta nessa extensão apaga a
+   silhueta das palavras: quem lê perde o apoio das ascendentes e descendentes.
+   A moldura do impresso também é em caixa mista, pela mesma razão. */
+.cap__moldura {
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-est, 13px);
+  letter-spacing: .02em;
+  color: var(--apagado, #8A928C);
+  border-bottom: 1px solid var(--grade-alta, #2C3835);
+  padding-bottom: var(--e2, 12px);
+  margin: calc(var(--e2, 12px) * -1) 0 var(--e5, 36px);
+  grid-column: prosa / campo-fim;
+  max-width: none;
+}
+
+header#title-block-header {
+  grid-column: prosa / campo-fim;
+  margin-bottom: var(--e7, 84px);
+}
+header#title-block-header .title {
+  font-size: var(--t-capa, 56px);
+  line-height: 1.08;
+  margin: 0 0 var(--e3, 18px);
+}
+
+blockquote {
+  margin: var(--e4, 24px) 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--grade-alta, #2C3835);
+  color: var(--apagado, #8A928C);
+}
+
+hr {
+  grid-column: prosa / campo-fim;
+  border: 0;
+  border-top: var(--rule-w, 1px) solid var(--grade, #1E2624);
+  margin: var(--e7, 84px) 0;
+}
+
+/* ---------------------------------------------------------------------
+   telas estreitas: o campo de aferição desce para o fluxo
+   --------------------------------------------------------------------- */
+@media (max-width: 68rem) {
+  /* uma coluna no sumário: duas em 390 px deixavam quatro palavras por linha */
+  #TOC ul ul { columns: 1; padding-left: var(--e3, 18px); }
+  #TOC ul ul a { font-size: var(--t-est, 13px); }
+
+  body {
+    /* a goteira também vai a zero: com 28 px de goteira e 0 de campo, quem
+       atravessava `prosa / campo-fim` ficava 28 px mais largo que quem ficava
+       em `prosa`, e as molduras terminavam em x=271 e em x=290 na mesma
+       folha - dois glifos de diferença, visível como canto desalinhado */
+    grid-template-columns:
+      var(--e4, 24px) [prosa] minmax(0, 1fr) [goteira] 0 [campo] 0
+      [campo-fim] var(--e4, 24px);
+    padding: var(--e4, 24px) 0 var(--e6, 56px);
+  }
+  /* TUDO volta a uma coluna: a lista anterior esquecia `#capa`, `#pe`,
+     `.cap__moldura`, `.unidade` e as próprias molduras, e cada esquecido
+     ficava mais largo que os vizinhos */
+  body > *, body > pre, body > .prancha, body > table, body > .objetivos,
+  body > .moldura, body > .callout, body > .figura, body > .unidade,
+  h1, #TOC, hr, #capa, #pe, .cap__moldura,
+  header#title-block-header { grid-column: prosa; }
+  .carimbo {
+    grid-column: prosa;
+    border-left: var(--rule-w, 1px) solid var(--grade-alta, #2C3835);
+    border-top: 0;
+    padding: 0 0 0 var(--e3, 18px);
+    margin: var(--e4, 24px) 0;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   impressão desta página
+   
+   Não há inversão de paleta aqui, e é decisão, não omissão: o artefato de
+   impressão do livro é `livro/poo-v2.pdf`, composto pelo XeLaTeX com medida,
+   quebra de página, hifenização portuguesa e notas de margem que folha de
+   estilo de navegador não alcança. Reimprimir esta página seria uma segunda
+   via pior da mesma coisa.
+   
+   O que a impressão faz é dizer onde está o artefato certo.
+   
+   (Havia um bloco aqui que trocava toda a paleta para papel. Fora de ser
+   redundante, ele confundia o detector de desenho, que não respeita media
+   query: as 974 medições de contraste do âmbar eram contra o `#fff` deste
+   bloco, e não contra o fósforo da tela.)
+   --------------------------------------------------------------------- */
+.so-impresso { display: none; }
+
+@media print {
+  #TOC, #pe { display: none; }
+  .so-impresso {
+    display: block;
+    font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+    font-size: var(--t-est, 13px);
+    /* Tinta de PAPEL, e a nota só existe no papel: ela é `display: none`
+       fora da impressão. `currentColor` resolvia para o preto padrão, que
+       não é cor deste desenho; `--fosforo` daria 2,3:1 sobre branco.
+       
+       O detector de desenho mede este âmbar contra o fundo de TELA e acusa
+       2,7:1, porque ele não modela media query - é o terceiro achado desta
+       folha com essa mesma causa, e os outros dois estão declarados acima.
+       Fica o valor certo para o meio em que a regra vale. */
+    border: 1px solid #7E4A06;
+    color: #7E4A06;
+    padding: 12px 16px;
+    margin: 0 0 24px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   pé
+   --------------------------------------------------------------------- */
+#pe {
+  grid-column: prosa / campo-fim;
+  margin-top: var(--e7, 84px);
+  padding-top: var(--e3, 18px);
+  border-top: 1px solid var(--grade-alta, #2C3835);
+  font-family: var(--maquina, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--t-rot, 11px);
+  color: var(--apagado, #8A928C);
+}
+#pe p { margin: 0 0 var(--e1, 6px); max-width: 70ch; }

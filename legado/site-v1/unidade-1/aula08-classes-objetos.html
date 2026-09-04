@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 08 — Classes e Objetos | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e OO</a>
+        <a href="aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos fundamentais</a>
+        <a href="aula03-classificacao-linguagens.html" class="nav-link"><span class="num">03.</span>Classificação de linguagens</a>
+        <a href="aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python→C++</a>
+        <a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+        <a href="aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como copiloto</a>
+        <a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+        <a href="aula08-classes-objetos.html" class="nav-link active"><span class="num">08.</span>Classes e objetos</a>
+        <a href="aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 08 — Classes e Objetos</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula07-uml-leve.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula09-ciclo-de-vida.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+
+    <main class="slides-container">
+
+      <!-- HERO -->
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 08 · 21/mai</span>
+          <h2 class="slide-title hero-title">Classes e Objetos em C++</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul>
+              <li>Declarar e definir classes com encapsulamento correto (public/protected/private)</li>
+              <li>Compreender o papel do ponteiro <code>this</code></li>
+              <li>Aplicar <em>const</em>-correctness em métodos, parâmetros e variáveis</li>
+              <li>Usar membros <code>static</code> para dados compartilhados por instâncias</li>
+              <li>Separar interface (.hpp) de implementação (.cpp)</li>
+            </ul>
+          </div>
+          <div class="callout callout-sintonia">
+            <span class="callout-icon">🎵</span>
+            <div class="callout-content">
+              <div class="callout-title">Sintonia v0.1 — sample e track</div>
+              <p>Hoje criamos as primeiras classes do Sintonia: <code>sample</code> (amostra de áudio individual) e <code>track</code> (sequência de amostras). O código está em <code>include/sintonia/sample.hpp</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide: Separação header/implementação -->
+      <section class="slide" id="separacao">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Separação de Interface e Implementação</h2>
+        </div>
+        <div class="slide-body">
+          <p>Em C++, a convenção é separar a <strong>declaração</strong> (o contrato) em <code>.hpp</code> e a <strong>definição</strong> (a implementação) em <code>.cpp</code>. Isso reduz tempo de recompilação e esconde detalhes de implementação.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">sample.hpp — interface pública</span>
+              <div class="code-actions">
+                <button class="copy-btn">copiar</button>
+              </div>
+            </div>
+<pre><code class="language-cpp">#pragma once
+#include &lt;stdexcept&gt;
+
+// Representa uma única amostra de áudio com amplitude em [-1.0, 1.0]
+class sample {
+public:
+    // Constante da classe — compartilhada, sem custo de instância
+    static constexpr float MAX_AMP = 1.0f;
+
+    sample() noexcept = default;   // construtor padrão: amplitude 0
+    explicit sample(float amplitude, float sample_rate = 44100.0f);
+
+    // Getters — todos const: não modificam o objeto
+    float amplitude()   const noexcept { return amplitude_; }
+    float sample_rate() const noexcept { return sample_rate_; }
+    bool  is_silent()   const noexcept { return amplitude_ == 0.0f; }
+
+    // Setter com validação
+    void set_amplitude(float a);
+
+    // Operadores (implementados em sample.cpp)
+    sample& operator+=(const sample& rhs) noexcept;
+    sample& operator*=(float factor)      noexcept;
+
+private:
+    float amplitude_   = 0.0f;      // sufixo _ = membro privado
+    float sample_rate_ = 44100.0f;
+};</code></pre>
+          </div>
+
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Boa prática: #pragma once</div>
+              <p>Use <code>#pragma once</code> em vez de include guards (<code>#ifndef</code>). É mais simples, sem risco de typos, e suportado por todos os compiladores modernos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide: Modificadores de acesso -->
+      <section class="slide" id="acesso">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Modificadores de Acesso</h2>
+        </div>
+        <div class="slide-body">
+          <table class="slide-table">
+            <thead>
+              <tr><th>Modificador</th><th>Quem pode acessar</th><th>Uso típico</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>public</code></td><td>Qualquer código</td><td>Interface: construtores, getters, operadores</td></tr>
+              <tr><td><code>private</code></td><td>Apenas a própria classe</td><td>Dados internos, métodos auxiliares</td></tr>
+              <tr><td><code>protected</code></td><td>Própria classe + derivadas</td><td>Dados que subclasses precisam acessar</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Regra de ouro</div>
+              <p>Comece tudo como <code>private</code>. Torne <code>public</code> apenas o necessário para o contrato da classe. Use <code>protected</code> somente ao projetar herança — e mesmo assim prefira getters/setters a dados diretamente protegidos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide: const-correctness -->
+      <section class="slide" id="const">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Const-Correctness</h2>
+        </div>
+        <div class="slide-body">
+          <p>Marque como <code>const</code> tudo que não deve ser modificado. O compilador verifica isso em tempo de compilação — é documentação executável.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">As formas de const</span>
+              <div class="code-actions">
+                <button class="copy-btn">copiar</button>
+                <a href="https://godbolt.org/#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:1,endLineNumber:1,startColumn:1,startLineNumber:1),source:'%23include+%3Ciostream%3E%0A%0Aclass+sample+%7B%0Apublic:%0A++++float+amplitude()+++const+noexcept+%7B+return+amp_;+%7D%0Aprivate:%0A++++float+amp_+%3D+0.0f;%0A%7D;%0A%0Avoid+print(const+sample%26+s)+%7B%0A++++std::cout+%3C%3C+s.amplitude()+%3C%3C+%22%5Cn%22;%0A%7D%0A%0Aint+main()+%7B%0A++++const+sample+s;%0A++++print(s);%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),header:(),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:g121,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'-std%3Dc%2B%2B17+-Wall+-Wextra+-O2',overrides:!(),selection:(endColumn:1,endLineNumber:1,startColumn:1,startLineNumber:1),source:1),l:'5',n:'0',o:'+x86-64+gcc+12.1+(Editor+%231)',t:'0')),header:(),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',n:'0',o:'',t:'0')),version:4" target="_blank" class="godbolt-btn">▶ playground</a>
+              </div>
+            </div>
+<pre><code class="language-cpp">// 1. Método const: garante que NÃO modifica o objeto
+float sample::amplitude() const { return amplitude_; }
+
+// 2. Parâmetro const&: eficiente (sem cópia) + somente leitura
+void print_sample(const sample& s) {
+    std::cout &lt;&lt; s.amplitude() &lt;&lt; "\n";
+    // s.set_amplitude(0.5f);  // ERRO: s é const
+}
+
+// 3. Variável const: não pode ser reatribuída
+const float MAX_RATE = 192000.0f;
+
+// 4. Objeto const: só pode chamar métodos const
+const sample s{0.5f};
+s.amplitude();       // OK — método const
+// s.set_amplitude(0.3f); // ERRO de compilação ← detecta bug!</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide: this e interface fluente -->
+      <section class="slide" id="this">
+        <div class="slide-header">
+          <span class="slide-num">§4</span>
+          <h2 class="slide-title">O Ponteiro <code>this</code> e Interface Fluente</h2>
+        </div>
+        <div class="slide-body">
+          <p>Dentro de qualquer método não-estático, <code>this</code> é um ponteiro implícito para o objeto receptor. Raramente precisamos usá-lo explicitamente — mas é útil para desambiguação e para construir interfaces fluentes.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Interface fluente com this</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class track {
+public:
+    // Retorna *this → permite encadeamento de chamadas
+    track& set_name(const std::string& name) {
+        name_ = name;
+        return *this;
+    }
+    track& set_gain(float gain) {
+        gain_ = gain;
+        return *this;
+    }
+    track& set_muted(bool m) {
+        muted_ = m;
+        return *this;
+    }
+private:
+    std::string name_;
+    float gain_  = 1.0f;
+    bool  muted_ = false;
+};
+
+// Uso idiomático — encadeamento de chamadas:
+track t;
+t.set_name("baixo").set_gain(0.8f).set_muted(false);</code></pre>
+          </div>
+
+          <div class="uml-box">
+            <span class="uml-label">📐 Diagrama de Classes — sample e track</span>
+            <div class="mermaid">
+classDiagram
+    class sample {
+        -float amplitude_
+        -float sample_rate_
+        +sample()
+        +sample(float, float)
+        +amplitude() float
+        +sample_rate() float
+        +is_silent() bool
+        +set_amplitude(float) void
+        +operator+=(sample) sample
+    }
+    class track {
+        -string name_
+        -vector~sample~ samples_
+        -float gain_
+        -bool muted_
+        +set_name(string) track
+        +set_gain(float) track
+        +add_sample(sample) void
+        +size() size_t
+    }
+    track "1" *-- "0..*" sample : contém
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide: static -->
+      <section class="slide" id="static">
+        <div class="slide-header">
+          <span class="slide-num">§5</span>
+          <h2 class="slide-title">Membros <code>static</code></h2>
+        </div>
+        <div class="slide-body">
+          <p>Membros <code>static</code> pertencem à classe, não a instâncias individuais. Uma variável estática é compartilhada por todos os objetos da classe; um método estático pode ser chamado sem criar um objeto.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Contador de instâncias com static</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// sample.hpp
+class sample {
+public:
+    static int live_count() noexcept { return count_; }
+    static constexpr float DEFAULT_RATE = 44100.0f;
+
+    sample() { ++count_; }
+    ~sample() { --count_; }
+    // ...
+private:
+    static int count_;   // compartilhado por TODAS as instâncias
+    float amplitude_ = 0.0f;
+};
+
+// sample.cpp — definição obrigatória para static não-constexpr
+int sample::count_ = 0;
+
+// Uso:
+std::cout &lt;&lt; sample::live_count() &lt;&lt; "\n"; // 0 — sem criar objeto
+{
+    sample a{0.5f}, b{-0.3f};
+    std::cout &lt;&lt; sample::live_count() &lt;&lt; "\n"; // 2
+}
+std::cout &lt;&lt; sample::live_count() &lt;&lt; "\n"; // 0 — destruídos</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide: LLM -->
+      <section class="slide" id="llm">
+        <div class="slide-header">
+          <span class="slide-num">🤖</span>
+          <h2 class="slide-title">LLMs neste Tópico</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt de modelagem de classe</div>
+              <p>
+                <em>"Preciso de uma classe <code>audio_buffer</code> em C++17 para o projeto Sintonia.
+                Convenções: snake_case, identificadores em inglês, comentários em português.
+                Requisitos: armazena samples como <code>std::vector&lt;float&gt;</code>;
+                construtor parametrizado (size_t, float); métodos <code>operator[]</code> const e não-const
+                com verificação de limites; <code>size()</code>, <code>sample_rate()</code> const;
+                <code>clear()</code> noexcept; sem new/delete crus.
+                Gere <code>audio_buffer.hpp</code> e <code>audio_buffer.cpp</code>."</em>
+              </p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM provavelmente vai errar</div>
+              <p>
+                Sem instrução explícita, o LLM provavelmente vai: (1) usar PascalCase (<code>AudioBuffer</code>),
+                (2) esquecer <code>noexcept</code> onde caberia, (3) não incluir versão
+                <code>const</code> de <code>operator[]</code>. Revise sempre.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exercícios -->
+      <section class="slide" id="exercicios">
+        <div class="slide-header">
+          <span class="slide-num">Ex.</span>
+          <h2 class="slide-title">Exercícios Propostos</h2>
+        </div>
+        <div class="exercises">
+          <div class="exercise-item">
+            <span class="exercise-num">01.</span>
+            <span>Implemente a classe <code>track</code> do Sintonia v0.1 com: <code>vector&lt;sample&gt; samples_</code>, <code>float sample_rate_</code>, <code>string name_</code>. Adicione <code>add_sample(sample)</code>, <code>size() const</code>, <code>operator[](size_t) const</code>. Separe em <code>.hpp</code> e <code>.cpp</code>.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">02.</span>
+            <span>Adicione const-correctness completa à classe <code>track</code>: marque como <code>const</code> todos os métodos que não modificam o objeto. Compile com <code>-Wall</code> e verifique que não há warnings.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">03.</span>
+            <span>Adicione um membro <code>static</code> a <code>sample</code> que conta o número de instâncias vivas. Escreva um teste no <code>main()</code> que cria 3 samples, imprime o contador, destrói um usando escopo (<code>{ }</code>) e imprime novamente.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">04.</span>
+            <span>Explique com código concreto por que o compilador recusa chamar um método não-const em um objeto <code>const</code>. O que acontece internamente? Como isso detecta bugs em tempo de compilação?</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Navegação bottom -->
+    <nav class="lecture-nav">
+      <a href="aula07-uml-leve.html" class="lecture-nav-btn prev">
+        ←
+        <div>
+          <span class="label">anterior</span>
+          <span class="title">UML Leve</span>
+        </div>
+      </a>
+      <a href="aula09-ciclo-de-vida.html" class="lecture-nav-btn next">
+        <div>
+          <span class="label">próxima</span>
+          <span class="title">Ciclo de Vida de Objetos</span>
+        </div>
+        →
+      </a>
+    </nav>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

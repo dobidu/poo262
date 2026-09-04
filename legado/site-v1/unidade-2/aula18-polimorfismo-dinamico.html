@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 18 — Polimorfismo Dinâmico | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link active"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 18 — Polimorfismo Dinâmico</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula17-funcoes-virtuais.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="../unidade-3/aula19-templates-crtp.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 18 · 02/jul</span>
+          <h2 class="slide-title hero-title">Polimorfismo Dinâmico: vtables, RTTI e dynamic_cast</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Compreender o mecanismo interno de vtable e vptr</li><li>Usar RTTI e <code>dynamic_cast</code> com segurança</li><li>Contrastar polimorfismo dinâmico com estático (templates)</li><li>Identificar quando RTTI é sinal de design problemático</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="vtable">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Mecanismo de vtable/vptr</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">O que o compilador gera internamente</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Você escreve:
+class effect {
+    virtual void process(audio_buffer& buf) = 0;
+    virtual std::string name() const = 0;
+};
+
+// O compilador gera (conceptualmente):
+struct effect_vtable {
+    void (*process)(effect*, audio_buffer&);  // ponteiro para process()
+    std::string (*name)(const effect*);       // ponteiro para name()
+};
+
+struct effect_internal {
+    const effect_vtable* vptr;  // PRIMEIRO membro: ponteiro para a vtable
+    // ... outros membros
+};
+
+// Quando você chama e->process(buf):
+// 1. Carrega e->vptr (ponteiro para vtable do tipo real)
+// 2. Busca na vtable o ponteiro de process()
+// 3. Chama o ponteiro — overhead: 1 indireção de memória</code></pre>
+          </div>
+        <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div class="callout-content">
+              <div class="callout-title">Custo do polimorfismo virtual</div>
+              <p>Cada objeto com virtual tem um vptr (8 bytes em x64). Cada chamada virtual tem 1 indireção de memória. Em hot loops de áudio (44100 samples/s), isso importa — use CRTP (Aula 19) quando o desempenho é crítico.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="dynamic-cast">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">dynamic_cast e RTTI</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Downcast seguro com dynamic_cast</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// dynamic_cast verifica o tipo em tempo de execução (RTTI)
+effect* e = get_some_effect();  // tipo real desconhecido
+
+// Para ponteiro: retorna nullptr se falhar
+if (auto* g = dynamic_cast<gain_effect*>(e)) {
+    std::cout << "Factor: " << g->factor() << "\n";
+    // g é válido aqui
+}
+
+// Para referência: lança std::bad_cast se falhar
+try {
+    gain_effect& g = dynamic_cast<gain_effect&>(*e);
+    // g é válido aqui
+} catch (const std::bad_cast& ex) {
+    // não era um gain_effect
+}
+
+// typeid: obtém informação de tipo em runtime
+std::cout << typeid(*e).name() << "\n";  // nome mangled</code></pre>
+          </div>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">dynamic_cast é sinal de design ruim</div>
+              <p>Se você precisa de <code>dynamic_cast</code> com frequência, sua hierarquia provavelmente viola OCP ou ISP. A solução é adicionar o método necessário à interface base, ou usar o padrão Visitor.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Dado um vector&lt;unique_ptr&lt;effect&gt;&gt;, preciso serializar cada efeito para JSON sem dynamic_cast. Proponha um design usando padrão Visitor ou método virtual to_json() na interface base. Mostre trade-offs."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs tendem a sugerir dynamic_cast como primeira solução em vez de redesign da interface. Peça explicitamente alternativas sem RTTI.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Adicione <code>std::cout &lt;&lt; sizeof(effect_base)</code> a uma classe com e sem métodos virtuais. Qual é a diferença? Por que? Verifique em uma arquitetura de 64 bits.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Implemente o padrão Visitor para a hierarquia de efeitos do Sintonia sem usar dynamic_cast. Compare a solução com e sem Visitor em legibilidade e extensibilidade.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Use <code>-fno-rtti</code> para compilar o projeto sem RTTI. Quais erros surgem? O que isso diz sobre o design do código?</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Implemente uma cadeia de efeitos que usa polimorfismo dinâmico e meça sua performance. Compare com uma implementação template (Aula 19 preview). Documente os trade-offs encontrados.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula17-funcoes-virtuais.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Funções Virtuais</span></div>
+      </a>
+      <a href="../unidade-3/aula19-templates-crtp.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Templates e CRTP</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

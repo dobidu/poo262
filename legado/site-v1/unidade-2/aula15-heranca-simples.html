@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 15 — Herança Simples | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link active"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 15 — Herança Simples</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula14-testes-catch2.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula16-heranca-multipla.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 15 · 23/jun</span>
+          <h2 class="slide-title hero-title">Herança Simples: is-a, Reutilização e Especialização</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Distinguir herança (is-a) de composição (has-a)</li><li>Implementar hierarquias com proteção de acesso correta</li><li>Compreender ordem de construção e destruição na herança</li><li>Decidir quando herança é a escolha errada</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v1.0 — Hierarquia effect</div>
+            <p>Hoje criamos a hierarquia <code>effect</code> → <code>gain_effect</code>/<code>reverb_effect</code>/<code>delay_effect</code>. A versão com bug (sem destrutor virtual) está em <code>extras/broken-designs/v1.0-no-virtual-dtor/</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="is-a">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">is-a vs. has-a</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Relação</th><th>Quando usar</th><th>Implementação C++</th><th>Exemplo Sintonia</th></tr></thead><tbody><tr><td>is-a (herança)</td><td>B é um tipo de A; substitui A</td><td>class B : public A</td><td>gain_effect é um effect</td></tr><tr><td>has-a (composição)</td><td>B usa A internamente</td><td>membro por valor/ptr</td><td>track tem um audio_buffer</td></tr><tr><td>uses-a (dependência)</td><td>B usa A apenas temporariamente</td><td>parâmetro de método</td><td>process(audio_buffer&)</td></tr></tbody></table>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Herança não é para reuso de código</div>
+              <p>A razão certa para herdar é o polimorfismo: poder tratar <code>gain_effect</code> como <code>effect</code> via ponteiro base. Se você quer só reutilizar código, prefira composição ou funções livres.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="hierarquia">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Hierarquia de Efeitos do Sintonia</h2>
+        </div>
+        <div class="slide-body"><div class="uml-box">
+            <span class="uml-label">📐 effect → gain_effect, reverb_effect, delay_effect</span>
+            <div class="mermaid">
+classDiagram
+    class effect {
+        <<abstract>>
+        #string name_
+        #bool enabled_
+        +process(audio_buffer) void*
+        +clone() unique_ptr~effect~*
+        +name() string
+        +set_enabled(bool) void
+        +virtual ~effect()
+    }
+    class gain_effect {
+        -float factor_
+        +gain_effect(float)
+        +process(audio_buffer) void
+        +clone() unique_ptr~effect~
+        +factor() float
+    }
+    class reverb_effect {
+        -float room_size_
+        -float wet_
+        +process(audio_buffer) void
+        +clone() unique_ptr~effect~
+    }
+    effect <|-- gain_effect
+    effect <|-- reverb_effect
+</div>
+          </div></div>
+      </section>
+      <section class="slide" id="destrutor">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">O Destrutor Virtual — Obrigatório</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Por que o destrutor DEVE ser virtual</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// ❌ BUG: sem virtual ~effect()
+class effect {
+    ~effect() { }  // não-virtual!
+};
+// Deleting via base pointer → ~effect() only, not ~gain_effect()
+effect* e = new gain_effect{0.5f};
+delete e;  // UNDEFINED BEHAVIOR: destrutor do gain_effect não é chamado
+
+// ✅ CORRETO: virtual ~effect() = default
+class effect {
+    virtual ~effect() = default;  // garante chamada do destrutor mais derivado
+};</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Regra: se tem virtual, o destrutor é virtual</div>
+              <p>Toda classe com pelo menos um método virtual <strong>deve</strong> ter destrutor virtual. Verifique no <code>extras/broken-designs/v1.0-no-virtual-dtor/</code> o efeito sem ele.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente a hierarquia <code>sound_effect</code> com três derivadas: <code>chorus_effect</code>, <code>compressor_effect</code> e <code>eq_effect</code>. Cada uma processa um <code>audio_buffer</code>. Use destrutor virtual, override, clone(). C++17, snake_case."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente: esquecem o destrutor virtual, declaram membros protected desnecessariamente (quebrando encapsulamento), e não implementam clone() corretamente (slicing silencioso).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Compile e execute <code>extras/broken-designs/v1.0-no-virtual-dtor/test_broken.cpp</code> com <code>-fsanitize=address</code>. Interprete o relatório do ASan. Corrija adicionando o destrutor virtual.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Crie uma hierarquia <code>audio_source</code> → <code>sine_source</code> e <code>noise_source</code>. Adicione um método não-virtual <code>generate_seconds(float duration)</code> que chama o virtual <code>generate(audio_buffer&)</code>. É herança ou composição? Por quê?</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Demonstre object slicing: crie um <code>vector&lt;effect&gt;</code> (não de ponteiros), adicione um <code>gain_effect</code>. O que acontece com os dados específicos de <code>gain_effect</code>? Como corrigir?</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Implemente <code>effect::clone()</code> corretamente usando o padrão CRTP para evitar duplicação de código nas subclasses.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula14-testes-catch2.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Testes com Catch2</span></div>
+      </a>
+      <a href="aula16-heranca-multipla.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Herança Múltipla</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

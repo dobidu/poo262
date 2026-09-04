@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 16 — Herança Múltipla e Diamante | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+        <a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+        <a href="aula12-move-semantics.html" class="nav-link"><span class="num">12.</span>Move semantics</a>
+        <a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+        <a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+        <a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+        <a href="aula16-heranca-multipla.html" class="nav-link active"><span class="num">16.</span>Herança múltipla</a>
+        <a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+        <a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 16 — Herança Múltipla</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula15-heranca-simples.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula17-funcoes-virtuais.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+
+    <main class="slides-container">
+
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 16 · 25/jun</span>
+          <h2 class="slide-title hero-title">Herança Múltipla e o Problema do Diamante</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul>
+              <li>Usar herança múltipla de interfaces sem ambiguidades</li>
+              <li>Compreender o problema do diamante e suas consequências</li>
+              <li>Resolver o diamante com herança <code>virtual</code></li>
+              <li>Contrastar com Java/C# (interfaces únicas, herança simples)</li>
+            </ul>
+          </div>
+          <div class="callout callout-sintonia">
+            <span class="callout-icon">🎵</span>
+            <div class="callout-content">
+              <div class="callout-title">Sintonia v1.4 — Looper com diamante</div>
+              <p>
+                Hoje criamos <code>looper</code>: herda de <code>oscillator</code> E <code>sampler</code>,
+                que herdam virtualmente de <code>sound_source</code>.
+                Código completo em <code>extras/diamond-inheritance/diamond.hpp</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- O problema -->
+      <section class="slide" id="problema">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">O Problema do Diamante</h2>
+        </div>
+        <div class="slide-body">
+          <p>O diamante ocorre quando uma classe herda de duas classes que compartilham uma ancestral comum. Sem <code>virtual</code>, a classe mais derivada recebe <strong>duas cópias</strong> dos membros da ancestral — criando ambiguidade.</p>
+
+          <div class="uml-box">
+            <span class="uml-label">📐 O Diamante — sem herança virtual (problemático)</span>
+            <div class="mermaid">
+graph TD
+    SS["sound_source\n-name_: string\n+generate() = 0"]
+    OSC["oscillator\n+generate() override"]
+    SAMP["sampler\n+generate() override"]
+    LOOP["looper"]
+    SS --> OSC
+    SS --> SAMP
+    OSC --> LOOP
+    SAMP --> LOOP
+    style SS fill:#1a3a5c,stroke:#7aa2f7,color:#e6edf3
+    style LOOP fill:#3a1a1a,stroke:#f7768e,color:#e6edf3
+    style OSC fill:#1a2a1a,stroke:#9ece6a,color:#e6edf3
+    style SAMP fill:#1a2a1a,stroke:#9ece6a,color:#e6edf3
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Sem virtual — duas cópias de sound_source em looper</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class sound_source { public: std::string name_; };
+
+class oscillator : public sound_source { /* ... */ };
+class sampler    : public sound_source { /* ... */ };
+
+class looper : public oscillator, public sampler {
+    // looper tem DUAS cópias de sound_source:
+    // - oscillator::sound_source::name_
+    // - sampler::sound_source::name_
+};
+
+looper lp;
+lp.name_ = "x";  // ERRO DE COMPILAÇÃO: ambiguous!
+// Qual name_ ? oscillator::sound_source::name_
+//              ou sampler::sound_source::name_ ?</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Solução: herança virtual -->
+      <section class="slide" id="solucao">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Solução: Herança <code>virtual</code></h2>
+        </div>
+        <div class="slide-body">
+          <p>Ao usar <code>virtual</code> na herança, garantimos que <code>sound_source</code> aparece <strong>uma única vez</strong> em <code>looper</code>, independentemente do número de rotas de herança.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">extras/diamond-inheritance/diamond.hpp — Sintonia v1.4</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class sound_source {
+public:
+    explicit sound_source(std::string name) : name_{std::move(name)} {}
+    virtual void generate(std::vector&lt;float&gt;&amp; buf, float sr) = 0;
+    virtual ~sound_source() = default;
+    const std::string&amp; name() const { return name_; }
+protected:
+    std::string name_;
+};
+
+// "virtual" aqui: sound_source será compartilhada
+class oscillator : public virtual sound_source {
+public:
+    explicit oscillator(std::string name)
+        : sound_source{std::move(name)} {}
+    void generate(std::vector&lt;float&gt;&amp; buf, float sr) override;
+};
+
+class sampler : public virtual sound_source {
+public:
+    explicit sampler(std::string name)
+        : sound_source{std::move(name)} {}
+    void generate(std::vector&lt;float&gt;&amp; buf, float sr) override;
+};
+
+// Looper herda UMA instância de sound_source
+class looper : public oscillator, public sampler, public recordable {
+public:
+    // ⚠️ Com herança virtual: looper (classe mais derivada)
+    //    DEVE inicializar a base virtual diretamente
+    explicit looper(std::string name)
+        : sound_source{std::move(name)},  // ← inicializa a base virtual
+          oscillator{name_},
+          sampler{name_}
+    {}
+
+    // Sem ambiguidade — sound_source existe apenas uma vez
+    void generate(std::vector&lt;float&gt;&amp; buf, float sr) override {
+        if (is_recording_)
+            oscillator::generate(buf, sr);
+        else
+            sampler::generate(buf, sr);
+    }
+    // ...
+};</code></pre>
+          </div>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Responsabilidade da classe mais derivada</div>
+              <p>Com herança virtual, <code>looper</code> é responsável por construir <code>sound_source</code>, mesmo não herdando diretamente dela. Os construtores de <code>oscillator</code> e <code>sampler</code> não inicializam a base virtual — esse papel cabe a <code>looper</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ordem de construção -->
+      <section class="slide" id="ordem">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Ordem de Construção e Destruição</h2>
+        </div>
+        <div class="slide-body">
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">text</span>
+              <span class="code-caption">Saída ao construir e destruir um looper</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-bash">looper lp{"meu_looper"};
+
+# Construção (base virtual primeiro):
+[+] sound_source("meu_looper")  ← base virtual — UMA VEZ
+[+] oscillator
+[+] sampler
+[+] looper
+
+# Destruição (ordem inversa):
+[-] ~looper
+[-] ~sampler
+[-] ~oscillator
+[-] ~sound_source("meu_looper")  ← UMA VEZ</code></pre>
+          </div>
+
+          <p>Compare: <strong>sem</strong> herança virtual, <code>sound_source</code> apareceria duas vezes na construção e destruição — e os dados seriam duplicados em memória.</p>
+
+          <table class="slide-table">
+            <thead>
+              <tr><th>Aspecto</th><th>Sem virtual</th><th>Com virtual</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Cópias de sound_source</td><td>2 (uma por rota)</td><td>1 (compartilhada)</td></tr>
+              <tr><td><code>lp.name_</code></td><td>Ambíguo → erro</td><td>Sem ambiguidade</td></tr>
+              <tr><td>Quem constrói a base?</td><td>Cada derivada</td><td>Classe mais derivada</td></tr>
+              <tr><td>Overhead em memória</td><td>Dados duplicados</td><td>vptr extra por base virtual</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Java/C# contraste -->
+      <section class="slide" id="contraste">
+        <div class="slide-header">
+          <span class="slide-num">§4</span>
+          <h2 class="slide-title">Contraste com Java e C#</h2>
+        </div>
+        <div class="slide-body">
+          <p>Java e C# eliminam o problema proibindo herança múltipla de classes concretas. Em compensação, permitem implementar múltiplas <em>interfaces</em> — que são equivalentes às classes puramente abstratas de C++. Na prática, a maioria dos usos legítimos de herança múltipla em C++ envolve apenas interfaces puras.</p>
+
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Herança segura — apenas de interfaces puras (sem diamante)</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// Interface pura — sem estado, sem diamante
+class recordable {
+public:
+    virtual void start_recording() = 0;
+    virtual void stop_recording()  = 0;
+    virtual bool is_recording() const noexcept = 0;
+    virtual ~recordable() = default;
+};
+
+class playable {
+public:
+    virtual void play()  = 0;
+    virtual void pause() = 0;
+    virtual ~playable() = default;
+};
+
+// Herdar de múltiplas interfaces puras: seguro, sem diamante
+class looper : public oscillator, public sampler, public recordable {
+    // oscillator e sampler usam herança virtual com sound_source
+    // recordable é interface pura — sem estado duplicado
+};</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- LLM -->
+      <section class="slide" id="llm">
+        <div class="slide-header">
+          <span class="slide-num">🤖</span>
+          <h2 class="slide-title">LLMs e Herança Múltipla</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">LLMs frequentemente erram aqui</div>
+              <p>Ao pedir ao LLM uma hierarquia com diamante, ele muitas vezes:</p>
+              <ul style="margin: 0.5rem 0 0; padding-left: 1.2rem; font-size: 0.88rem;">
+                <li>Esquece o <code>virtual</code> na herança intermediária</li>
+                <li>Não inicializa a base virtual no construtor da classe mais derivada</li>
+                <li>Gera código que compila mas produz comportamento indefinido</li>
+              </ul>
+              <p style="margin-top: 0.5rem;"><strong>Sempre compile com <code>-Wall</code> e teste a ordem de construção</strong> imprimindo mensagens nos construtores.</p>
+            </div>
+          </div>
+          <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt para testar o LLM</div>
+              <p><em>"Implemente em C++17 uma hierarquia de diamante: <code>sound_source</code> (base virtual), <code>oscillator</code> e <code>sampler</code> (herança virtual de sound_source), <code>looper</code> (herda de oscillator e sampler). Adicione mensagens nos construtores e destrutores. Mostre que sound_source é construída apenas uma vez."</em></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exercícios -->
+      <section class="slide" id="exercicios">
+        <div class="slide-header">
+          <span class="slide-num">Ex.</span>
+          <h2 class="slide-title">Exercícios Propostos</h2>
+        </div>
+        <div class="exercises">
+          <div class="exercise-item">
+            <span class="exercise-num">01.</span>
+            <span>Compile e execute <code>extras/diamond-inheritance/test_diamond.cpp</code>. Observe a saída dos construtores. Remova <code>virtual</code> das heranças de <code>oscillator</code> e <code>sampler</code> e tente compilar — o que acontece?</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">02.</span>
+            <span>Adicione um segundo atributo a <code>sound_source</code> (ex.: <code>float volume_</code>). Sem herança virtual, demonstre (com <code>sizeof</code>) que <code>looper</code> teria duplicado o atributo. Com herança virtual, mostre que o tamanho é o esperado.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">03.</span>
+            <span>Java não tem herança múltipla de classes, mas permite múltiplas interfaces. Pesquise o padrão <em>Mixin</em> em C++ usando herança múltipla de classes com implementação. Como ele difere do diamante? Dê um exemplo que não causa problema.</span>
+          </div>
+          <div class="exercise-item">
+            <span class="exercise-num">04.</span>
+            <span>Implemente <code>sinusoidal_oscillator : public oscillator</code> e <code>file_sampler : public sampler</code>. Crie <code>loop_synth : public sinusoidal_oscillator, public file_sampler</code>. Verifique que compila e que a construção de <code>sound_source</code> ocorre uma única vez.</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="lecture-nav">
+      <a href="aula15-heranca-simples.html" class="lecture-nav-btn prev">
+        ←
+        <div>
+          <span class="label">anterior</span>
+          <span class="title">Herança Simples</span>
+        </div>
+      </a>
+      <a href="aula17-funcoes-virtuais.html" class="lecture-nav-btn next">
+        <div>
+          <span class="label">próxima</span>
+          <span class="title">Funções Virtuais e Classes Abstratas</span>
+        </div>
+        →
+      </a>
+    </nav>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

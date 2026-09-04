@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Os oito instrumentos · POO · UFPB</title>
+<meta name="description" content="Os oito interativos canônicos da disciplina, mais o diagrama de classes interativo: o que a execução real não mostra.">
+<meta property="og:title" content="Os oito instrumentos · POO · UFPB">
+<meta property="og:description" content="Os oito interativos canônicos da disciplina, mais o diagrama de classes interativo: o que a execução real não mostra.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="index.html">
+<link rel="next" href="trilha.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="atual">OS OITO INSTRUMENTOS</span>
+  </div>
+  <div class="ferramentas">
+    
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<main class="pg" style="padding:0 var(--goteira) var(--e5)">
+  <div class="cabeca-aula">
+    <h1>Os oito instrumentos</h1>
+    <p class="sub">UMA MOLDURA · OITO TIPOS · 28 USOS NAS 26 AULAS</p>
+  </div>
+
+  <section class="slide" id="conteudo">
+    <p>Os oito instrumentos compartilham a mesma moldura e o mesmo contrato: o estado exibido é
+    função de <em>(cenário, passo)</em>, o avanço do passo é sempre seu, cada peça oferece ao
+    menos um cenário que <strong>demonstra a falha</strong> e outro que a evita, e o painel de
+    estado expõe aquilo que a execução real mantém invisível - o <code>vptr</code>, o
+    <em>padding</em> entre membros, a contagem de referências, o objeto de origem depois de um
+    <code>std::move</code> e o ramo que o <code>if constexpr</code> podou.</p>
+    <p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">Com o
+    foco dentro de uma peça, <b style="color:var(--fosforo)">←</b> e
+    <b style="color:var(--fosforo)">→</b> movem o passo e <b style="color:var(--fosforo)">R</b>
+    reinicia o cenário. Nenhuma das peças tem botão de <em>play</em>, porque autoplay sem
+    controle de passo é recusado pelo contrato que <code>build/verifica_pecas.js</code>
+    confere, e o motor não chega a ter tal função para oferecer.</p>
+  </section>
+
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">01</span><h2>Inspetor de objeto
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-07.html">07</a>, <a href="aula-10.html">10</a>, <a href="aula-17.html">17</a></span></h2></div>
+  <p>Leiaute em memória, ordem de declaração, padding, subobjeto base, membro estático fora do objeto.</p>
+  <section data-int="inspetor" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">02</span><h2>Rastreador de ciclo de vida
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-03.html">03</a>, <a href="aula-08.html">08</a>, <a href="aula-09.html">09</a>, <a href="aula-20.html">20</a></span></h2></div>
+  <p>Ordem exata de construção e destruição, escopos, desenrolar por exceção, referência pendente.</p>
+  <section data-int="ciclo" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">03</span><h2>Despachante
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-05.html">05</a>, <a href="aula-11.html">11</a>, <a href="aula-15.html">15</a>, <a href="aula-18.html">18</a></span></h2></div>
+  <p>Vptr e vtable, tipo estático versus dinâmico, resolução de sobrecarga, dynamic_cast.</p>
+  <section data-int="virtual" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">04</span><h2>Copiar × mover
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-14.html">14</a></span></h2></div>
+  <p>Com o estado do objeto de origem depois da operação.</p>
+  <section data-int="move" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">05</span><h2>Grafo de posse
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-12.html">12</a>, <a href="aula-13.html">13</a></span></h2></div>
+  <p>Unique_ptr, shared_ptr, weak_ptr, contagem de referências, o ciclo que vaza.</p>
+  <section data-int="posse" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">06</span><h2>Diferenciador de refatoração
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-01.html">01</a>, <a href="aula-16.html">16</a>, <a href="aula-24.html">24</a>, <a href="aula-25.html">25</a>, <a href="aula-26.html">26</a></span></h2></div>
+  <p>Antes/depois, grafo de acoplamento, e o diff do despejo que prova invariância.</p>
+  <section data-int="refator" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">07</span><h2>Expansor de compilação e template
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-02.html">02</a>, <a href="aula-19.html">19</a>, <a href="aula-21.html">21</a></span></h2></div>
+  <p>Pré-processador/compilação/ligação e onde cada erro aparece; instanciação; if constexpr podando ramo.</p>
+  <section data-int="expansor" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">08</span><h2>Revisor com rubrica
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-04.html">04</a>, <a href="aula-06.html">06</a>, <a href="aula-23.html">23</a></span></h2></div>
+  <p>Código oo gerado, plausível e defeituoso, com cada item da rubrica acendendo a falha.</p>
+  <section data-int="revisor" tabindex="0"></section>
+</section>
+<section class="slide">
+  <div class="slide__cab"><span class="slide__n">09</span><h2>Corrida de dados
+    <span style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado);letter-spacing:.1em">· AULAS <a href="aula-22.html">22</a><span style="color:var(--outro)"> · reaproveitado de LPII</span></span></h2></div>
+  <p>Dois fluxos sobre o mesmo contador, com e sem mutex.</p>
+  <section data-int="corrida" tabindex="0"></section>
+</section>
+<section class="slide" id="int-uml">
+  <div class="slide__cab"><span class="slide__n">T9</span><h2>Diagrama de classes, como ferramenta</h2></div>
+  <p>O diagrama aqui é ferramenta, e não figura pronta: você acrescenta classe e relação, e o
+  desenho se reorganiza. Os níveis são <em>calculados</em> a partir da profundidade de
+  herança, em vez de fixados por posições escolhidas à mão; remover uma classe leva os
+  descendentes com ela, porque herança <em>é</em> dependência, e o diagrama não a esconde.</p>
+  <section class="interativo" data-uml aria-label="Diagrama de classes interativo da hierarquia do Deriva">
+    <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">HIERARQUIA DO DERIVA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ 3 a 8 classes ├</span><span class="moldura__canto">─┐</span></div>
+    <div class="int__palco"><div class="uml" data-uml-palco></div></div>
+    <div class="int__controles">
+      <span class="cenarios__rot">ACRESCENTAR</span>
+      <div class="cenarios"><button class="cen" type="button" data-add="entidade" aria-pressed="true">entidade</button><button class="cen" type="button" data-add="sonda" aria-pressed="true">sonda</button><button class="cen" type="button" data-add="drone" aria-pressed="true">drone</button><button class="cen" type="button" data-add="item" aria-pressed="false">item</button><button class="cen" type="button" data-add="i_reparo" aria-pressed="false">i_reparavel</button><button class="cen" type="button" data-add="reparadora" aria-pressed="false">sonda_reparadora</button><button class="cen" type="button" data-add="componente" aria-pressed="false">componente</button><button class="cen" type="button" data-add="mochila" aria-pressed="false">mochila</button></div>
+      <div class="grupo" style="margin-left:auto">
+        <button class="bt" type="button" data-uml-reset>↺ INICIAL</button>
+      </div>
+    </div>
+    <div class="int__estado" data-uml-estado aria-live="polite"></div>
+    <div class="int__legenda">
+      <span class="rot">LEGENDA</span>
+      <p><span style="color:var(--fosforo)">△ ─ herança pública</span> ·
+      <span style="color:var(--frio)">△ ┄ implementação de interface (moldura tracejada)</span> ·
+      <span style="color:var(--apagado)">◆ ─ composição</span> · <em>nome em itálico</em> = abstrata ·
+      <span style="color:var(--fosforo)">método em âmbar</span> = virtual ·
+      <span style="color:var(--fosforo);font-style:italic">itálico</span> = puramente virtual.</p>
+    </div>
+    <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+  </section>
+</section>
+
+  <section class="slide">
+    <div class="slide__cab"><span class="slide__n">T11</span><h2>Estados vazios e de erro</h2></div>
+    <p>A mensagem de sistema é nativa deste idioma visual, e o estado vazio se resolve no
+    próprio terminal, com a busca que falhou e as três consultas mais próximas.</p>
+    <div class="vazio-sistema">
+      <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">BUSCA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div>
+      <div class="vazio-sistema__corpo">
+        <div>$ buscar "monad"</div>
+        <div><b>nenhum resultado em 26 aulas, 130 slides, 112 exercícios.</b></div>
+        <div style="margin-top:var(--e2);color:var(--fantasma)">tente:
+          <a href="glossario.html#polimorfismo">polimorfismo</a> ·
+          <a href="glossario.html#raii">RAII</a> ·
+          <a href="glossario.html#move">semântica de movimento</a></div>
+        <div style="margin-top:var(--e2)">$ <span class="cursor">█</span></div>
+      </div>
+      <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+    </div>
+  </section>
+
+  <nav class="nav-pe">
+    <a href="index.html" rel="prev"><div class="tecla-rot">◀ J · CAPA</div><div class="alvo">Índice das 26 aulas</div></a>
+    <div class="meio">8 TIPOS + UML</div>
+    <a href="trilha.html" rel="next"><div class="tecla-rot">TRILHA · K ▶</div><div class="alvo">As 20 versões do Deriva</div></a>
+  </nav>
+</main>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

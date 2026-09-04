@@ -1,0 +1,16 @@
+# roteiro determinístico — a mesma entrada dá o mesmo despejo, byte a byte.
+# É o oráculo do portão: refatoração correta é a que não muda esta saída.
+norte
+norte
+oeste
+oeste
+oeste
+sul
+sul
+sul
+leste
+esperar
+leste
+leste
+norte
+oeste

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 26 - Qt e a separação domínio/apresentação · POO · UFPB</title>
+<meta name="description" content="Aula 26 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Qt e a separação domínio/apresentação.">
+<meta property="og:title" content="Aula 26 - Qt e a separação domínio/apresentação · POO · UFPB">
+<meta property="og:description" content="Aula 26 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Qt e a separação domínio/apresentação.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-25.html">
+<link rel="next" href="anexo-a.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE III</span><span class="sep">/</span><span class="atual">AULA 26</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a26">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26" aria-current="page"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Qt e a separação domínio/apresentação</h1>
+    <p class="sub">UNIDADE III · AULA 26 DE 26 · CAP. 26 DO LIVRO · DERIVA v2.7</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Compreender o modelo de objetos do Qt: <code>QObject</code>, a árvore de pais, e signals e slots</li><li>Reconhecer onde a posse no Qt contraria a regra da Aula 12, e por que a exceção é declarada</li><li>Explicar por que o segundo front-end existe sem que o núcleo mude uma linha</li><li>Fechar o semestre pelo critério: o que se aprendeu se verifica em código que compila</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Qt, signals e slots sobre o mesmo núcleo</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · v2.7 - o segundo front-end</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>O esqueleto está em <code>qt/janela.hpp</code>, <code>qt/janela.cpp</code> e <code>qt/main_qt.cpp</code>, e <strong>não entra no build padrão</strong>: ele exige <code>cmake -S . -B build -DDERIVA_COM_QT=ON</code> e Qt6 instalado. O laboratório não tem Qt, e por isso esta aula é demonstração do docente com esqueleto publicado, sem entrega obrigatória.</p><p>A <code>tela_qt</code> implementa <code>i_apresentacao</code>, a mesma interface que <code>apresentacao_em_texto</code> implementa, e o núcleo não sabe qual das duas está do outro lado. Fora dessa implementação, nenhuma linha de <code>src/</code> nem de <code>include/deriva/</code> muda para a janela existir.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<p>O argumento da aula não é Qt. É que a separação entre domínio e apresentação, afirmada ao longo do semestre e extraída na Aula 24, passa a ser <strong>demonstrável</strong>: há duas interfaces sobre o mesmo núcleo, no mesmo repositório, e a variante <code>v2.6-antes</code> continua ali para que se possa verificar que, antes da extração de <code>i_apresentacao</code>, isso era impossível - o <code>mundo</code> escrevia direto em <code>std::cout</code>.</p></section>
+<section class="slide" id="qobject"><div class="slide__cab"><span class="slide__n">02</span><h2>QObject, o MOC e a posse por árvore</h2></div><p>A macro <code>Q_OBJECT</code> na declaração da classe exige o MOC, um pré-processador que lê o cabeçalho e <strong>gera código</strong> a partir dele: é ele que dá a cada classe um nome consultável em tempo de execução e registra os slots. É por isso que <code>CMAKE_AUTOMOC</code> existe, e é o que faz esta classe precisar de um sistema de build que entenda Qt - compilar o <code>.cpp</code> à mão não basta.</p>
+<p>Um slot é um método comum que o MOC registra para poder ser chamado por nome, sem que quem chama conheça o tipo de quem recebe: é a versão do Qt para o Observer da Aula 25. A ligação se faz com <code>connect</code>, e a forma que o esqueleto usa passa <strong>ponteiro de função membro</strong>, que o compilador verifica. A forma antiga, com as macros <code>SIGNAL</code> e <code>SLOT</code>, casava strings em tempo de execução, e um erro de digitação virava conexão que nunca acontece, sem um aviso.</p>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · Posse no Qt é a exceção declarada à regra da Aula 12</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><code>QObject</code> tem árvore de pais, e o pai destrói os filhos. Passar um <code>QWidget*</code> cru ao construtor do filho <strong>entrega a posse</strong> ao pai, de forma que <code>std::unique_ptr</code> sobre <code>QWidget</code> com pai é dupla liberação. A regra do semestre - posse declarada no tipo - vale, e esta é a exceção, que fica escrita no cabeçalho em vez de escondida.</p><p>As duas formas convivem na mesma função: <code>new QPlainTextEdit(this)</code> entrega o visor à árvore do Qt, e o <code>std::unique_ptr</code> guarda a <code>tela_qt</code>, que é nossa e não é <code>QObject</code>. Dentro da <code>tela_qt</code>, o ponteiro para o visor é cru, porque é observação e não posse - o mesmo critério de <code>mundo::primeira_com</code>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="separacao"><div class="slide__cab"><span class="slide__n">03</span><h2>Separação domínio e apresentação, e o ponto de composição</h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Camada</th><th>Responsabilidade</th><th>Depende de</th></tr></thead><tbody><tr><td>Domínio: <code>mundo</code>, <code>entidade</code>, <code>mapa</code></td><td>Estado do setor, turno, regra de movimento</td><td>C++17 e a STL, e nada mais</td></tr><tr><td>Apresentação: <code>i_apresentacao</code></td><td>A interface que o núcleo conhece</td><td>Nada: é abstração pura</td></tr><tr><td>Implementações: <code>apresentacao_em_texto</code>, <code>tela_qt</code></td><td>Desenhar, cada uma no seu destino</td><td>A interface, e o Qt6 no caso da segunda</td></tr><tr><td>Persistência: <code>partida</code></td><td>Salvar e carregar, com a versão do formato</td><td>A STL, e o texto que o replay já compara</td></tr><tr><td>Composição: <code>main.cpp</code> e <code>qt/main_qt.cpp</code></td><td>Escolher as concretas e ligá-las</td><td>Todas as camadas, e é o único lugar que pode</td></tr></tbody></table></div>
+<p>A última linha é a que importa: existe <strong>um</strong> lugar autorizado a conhecer todas as camadas, e é o ponto de composição. <code>qt/main_qt.cpp</code> carrega o mapa, monta o <code>mundo</code>, acrescenta a sonda e entrega o mundo pronto para a janela; o mesmo <code>mundo</code> que o executável de terminal usa, montado do mesmo jeito.</p>
+<p>O critério de aceitação da aula é verificável sem Qt instalado, e é isso que o torna útil: <code>testes/test_padroes.cpp</code> monta duas implementações de <code>i_apresentacao</code> no mesmo processo, sobre o mesmo <code>mundo</code>, e confere que desenhar cinco vezes não altera o estado do domínio - despejo byte a byte igual. Se desenhar mudasse estado, a segunda interface veria um sistema diferente da primeira, e a separação seria mentira.</p></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">04</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">6 trechos do Deriva, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>`QObject` tem árvore de pais, e o pai destrói os filhos: passar um `QWidget*` cru ao construtor do filho ENTREGA a posse. `unique_ptr` sobre `QWidget` com pai é dupla liberação. É a exceção à regra da Aula 12, e ela é declarada, não escondida.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">qt/janela.hpp · posse no Qt é a exceção declarada</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// A janela.</span>
+<span class="tk-com">///</span>
+<span class="tk-com">/// **Posse no Qt é diferente.** `QObject` tem árvore de pais, e o pai destrói</span>
+<span class="tk-com">/// os filhos. Passar um `QWidget*` cru para o construtor do filho ENTREGA a</span>
+<span class="tk-com">/// posse ao pai - e por isso `unique_ptr` sobre `QWidget` com pai é erro de</span>
+<span class="tk-com">/// dupla liberação. É a exceção à regra da Aula 12, e ela é declarada e não</span>
+<span class="tk-com">/// escondida.</span>
+<span class="tk-com">///</span>
+<span class="tk-com">/// O `Q_OBJECT` exige o MOC, um pré-processador que gera código a partir do</span>
+<span class="tk-com">/// cabeçalho. É por isso que `CMAKE_AUTOMOC` existe, e é o que faz esta classe</span>
+<span class="tk-com">/// precisar de um sistema de build que o Qt entenda.</span>
+<span class="tk-kw">class</span> janela : <span class="tk-kw">public</span> QMainWindow {
+  Q_OBJECT
+
+ <span class="tk-kw">public</span>:
+  <span class="tk-kw">explicit</span> janela(mundo w, QWidget* pai = <span class="tk-kw">nullptr</span>);
+  ~janela() <span class="tk-kw">override</span>;
+
+ <span class="tk-kw">private</span> slots:
+  <span class="tk-com">/// Um slot é um método comum que o MOC registra para poder ser chamado por</span>
+  <span class="tk-com">/// nome, sem que quem chama conheça o tipo. É a versão do Qt para Observer,</span>
+  <span class="tk-com">/// e o compilador não verifica a assinatura - o erro aparece em execução, na</span>
+  <span class="tk-com">/// forma de uma conexão que não acontece.</span>
+  <span class="tk-kw">void</span> ao_mover_norte();
+  <span class="tk-kw">void</span> ao_mover_sul();
+  <span class="tk-kw">void</span> ao_desfazer();
+
+ <span class="tk-kw">private</span>:
+  <span class="tk-kw">void</span> redesenhar();
+
+  mundo mundo_;                          <span class="tk-com">// o núcleo, intacto</span>
+  historico historico_;                  <span class="tk-com">// Command, da v2.6</span>
+  <span class="tk-tipo">std::unique_ptr</span>&lt;tela_qt&gt; tela_;
+  QPlainTextEdit* visor_ = <span class="tk-kw">nullptr</span>;      <span class="tk-com">// filho: o Qt é o dono</span>
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/qt/janela.hpp:44</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIEEgamFuZWxhLlxuLy8vXG4vLy8gKipQb3NzZSBubyBRdCDDqSBkaWZlcmVudGUuKiogYFFPYmplY3RgIHRlbSDDoXJ2b3JlIGRlIHBhaXMsIGUgbyBwYWkgZGVzdHLDs2lcbi8vLyBvcyBmaWxob3MuIFBhc3NhciB1bSBgUVdpZGdldCpgIGNydSBwYXJhIG8gY29uc3RydXRvciBkbyBmaWxobyBFTlRSRUdBIGFcbi8vLyBwb3NzZSBhbyBwYWkgLSBlIHBvciBpc3NvIGB1bmlxdWVfcHRyYCBzb2JyZSBgUVdpZGdldGAgY29tIHBhaSDDqSBlcnJvIGRlXG4vLy8gZHVwbGEgbGliZXJhw6fDo28uIMOJIGEgZXhjZcOnw6NvIMOgIHJlZ3JhIGRhIEF1bGEgMTIsIGUgZWxhIMOpIGRlY2xhcmFkYSBlIG7Do29cbi8vLyBlc2NvbmRpZGEuXG4vLy9cbi8vLyBPIGBRX09CSkVDVGAgZXhpZ2UgbyBNT0MsIHVtIHByw6ktcHJvY2Vzc2Fkb3IgcXVlIGdlcmEgY8OzZGlnbyBhIHBhcnRpciBkb1xuLy8vIGNhYmXDp2FsaG8uIMOJIHBvciBpc3NvIHF1ZSBgQ01BS0VfQVVUT01PQ2AgZXhpc3RlLCBlIMOpIG8gcXVlIGZheiBlc3RhIGNsYXNzZVxuLy8vIHByZWNpc2FyIGRlIHVtIHNpc3RlbWEgZGUgYnVpbGQgcXVlIG8gUXQgZW50ZW5kYS5cbmNsYXNzIGphbmVsYSA6IHB1YmxpYyBRTWFpbldpbmRvdyB7XG4gIFFfT0JKRUNUXG5cbiBwdWJsaWM6XG4gIGV4cGxpY2l0IGphbmVsYShtdW5kbyB3LCBRV2lkZ2V0KiBwYWkgPSBudWxscHRyKTtcbiAgfmphbmVsYSgpIG92ZXJyaWRlO1xuXG4gcHJpdmF0ZSBzbG90czpcbiAgLy8vIFVtIHNsb3Qgw6kgdW0gbcOpdG9kbyBjb211bSBxdWUgbyBNT0MgcmVnaXN0cmEgcGFyYSBwb2RlciBzZXIgY2hhbWFkbyBwb3JcbiAgLy8vIG5vbWUsIHNlbSBxdWUgcXVlbSBjaGFtYSBjb25oZcOnYSBvIHRpcG8uIMOJIGEgdmVyc8OjbyBkbyBRdCBwYXJhIE9ic2VydmVyLFxuICAvLy8gZSBvIGNvbXBpbGFkb3IgbsOjbyB2ZXJpZmljYSBhIGFzc2luYXR1cmEgLSBvIGVycm8gYXBhcmVjZSBlbSBleGVjdcOnw6NvLCBuYVxuICAvLy8gZm9ybWEgZGUgdW1hIGNvbmV4w6NvIHF1ZSBuw6NvIGFjb250ZWNlLlxuICB2b2lkIGFvX21vdmVyX25vcnRlKCk7XG4gIHZvaWQgYW9fbW92ZXJfc3VsKCk7XG4gIHZvaWQgYW9fZGVzZmF6ZXIoKTtcblxuIHByaXZhdGU6XG4gIHZvaWQgcmVkZXNlbmhhcigpO1xuXG4gIG11bmRvIG11bmRvXzsgICAgICAgICAgICAgICAgICAgICAgICAgIC8vIG8gbsO6Y2xlbywgaW50YWN0b1xuICBoaXN0b3JpY28gaGlzdG9yaWNvXzsgICAgICAgICAgICAgICAgICAvLyBDb21tYW5kLCBkYSB2Mi42XG4gIHN0ZDo6dW5pcXVlX3B0cjx0ZWxhX3F0PiB0ZWxhXztcbiAgUVBsYWluVGV4dEVkaXQqIHZpc29yXyA9IG51bGxwdHI7ICAgICAgLy8gZmlsaG86IG8gUXQgw6kgbyBkb25vXG59OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Nenhuma linha do núcleo mudou para esta janela existir, e isso só é verdade porque a v2.6 extraiu `i_apresentacao`. É a diferença entre separação demonstrada e separação afirmada.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">qt/main_qt.cpp · o argumento inteiro da aula</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-kw">int</span> main(<span class="tk-kw">int</span> argc, <span class="tk-kw">char</span>** argv) {
+  QApplication app(argc, argv);
+
+  <span class="tk-kw">auto</span> m = deriva::mapa::carregar(<span class="tk-str">&quot;mapas/estacao-01.txt&quot;</span>);
+  <span class="tk-kw">if</span> (!m) <span class="tk-kw">return</span> <span class="tk-num">2</span>;
+  deriva::mundo w(<span class="tk-tipo">std::move</span>(*m));
+  w.acrescentar(<span class="tk-tipo">std::make_unique</span>&lt;deriva::sonda&gt;(w.setor().entrada()));
+
+  <span class="tk-com">// Nenhuma linha do núcleo mudou para isto existir. É o argumento inteiro da</span>
+  <span class="tk-com">// Aula 26, e ele só é verdade porque a v2.6 extraiu `i_apresentacao`.</span>
+  deriva::qt::janela janela(<span class="tk-tipo">std::move</span>(w));
+  janela.resize(<span class="tk-num">900</span>, <span class="tk-num">600</span>);
+  janela.setWindowTitle(<span class="tk-str">&quot;Deriva - segundo front-end&quot;</span>);
+  janela.show();
+  <span class="tk-kw">return</span> app.exec();
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/qt/main_qt.cpp:10</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiaW50IG1haW4oaW50IGFyZ2MsIGNoYXIqKiBhcmd2KSB7XG4gIFFBcHBsaWNhdGlvbiBhcHAoYXJnYywgYXJndik7XG5cbiAgYXV0byBtID0gZGVyaXZhOjptYXBhOjpjYXJyZWdhcihcIm1hcGFzL2VzdGFjYW8tMDEudHh0XCIpO1xuICBpZiAoIW0pIHJldHVybiAyO1xuICBkZXJpdmE6Om11bmRvIHcoc3RkOjptb3ZlKCptKSk7XG4gIHcuYWNyZXNjZW50YXIoc3RkOjptYWtlX3VuaXF1ZTxkZXJpdmE6OnNvbmRhPih3LnNldG9yKCkuZW50cmFkYSgpKSk7XG5cbiAgLy8gTmVuaHVtYSBsaW5oYSBkbyBuw7pjbGVvIG11ZG91IHBhcmEgaXN0byBleGlzdGlyLiDDiSBvIGFyZ3VtZW50byBpbnRlaXJvIGRhXG4gIC8vIEF1bGEgMjYsIGUgZWxlIHPDsyDDqSB2ZXJkYWRlIHBvcnF1ZSBhIHYyLjYgZXh0cmFpdSBgaV9hcHJlc2VudGFjYW9gLlxuICBkZXJpdmE6OnF0OjpqYW5lbGEgamFuZWxhKHN0ZDo6bW92ZSh3KSk7XG4gIGphbmVsYS5yZXNpemUoOTAwLCA2MDApO1xuICBqYW5lbGEuc2V0V2luZG93VGl0bGUoXCJEZXJpdmEgLSBzZWd1bmRvIGZyb250LWVuZFwiKTtcbiAgamFuZWxhLnNob3coKTtcbiAgcmV0dXJuIGFwcC5leGVjKCk7XG59IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Ele implementa a mesma interface que `apresentacao_em_texto`, e o núcleo não sabe qual das duas está do outro lado. O widget é guardado como ponteiro cru porque é observação: a árvore do Qt é a dona.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">qt/janela.hpp · o adaptador, que não é QObject</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// A implementação Qt de `i_apresentacao`.</span>
+<span class="tk-com">///</span>
+<span class="tk-com">/// Repare no que ela NÃO faz: não conhece regra de jogo, não decide o que</span>
+<span class="tk-com">/// acontece num turno, não sabe o que é uma parede. Ela recebe um `mundo` e</span>
+<span class="tk-com">/// desenha. É a mesma interface que `apresentacao_em_texto` implementa, e o</span>
+<span class="tk-com">/// núcleo não sabe qual das duas está do outro lado.</span>
+<span class="tk-kw">class</span> tela_qt <span class="tk-kw">final</span> : <span class="tk-kw">public</span> i_apresentacao {
+ <span class="tk-kw">public</span>:
+  <span class="tk-kw">explicit</span> tela_qt(QPlainTextEdit* alvo) : alvo_(alvo) {}
+
+  <span class="tk-kw">void</span> desenhar(<span class="tk-kw">const</span> mundo&amp; m) <span class="tk-kw">override</span>;
+  <span class="tk-kw">void</span> mensagem(<span class="tk-tipo">std::string_view</span> texto) <span class="tk-kw">override</span>;
+
+ <span class="tk-kw">private</span>:
+  QPlainTextEdit* alvo_;   <span class="tk-com">// observação, não posse: a árvore do Qt é a dona</span>
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/qt/janela.hpp:27</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIEEgaW1wbGVtZW50YcOnw6NvIFF0IGRlIGBpX2FwcmVzZW50YWNhb2AuXG4vLy9cbi8vLyBSZXBhcmUgbm8gcXVlIGVsYSBOw4NPIGZhejogbsOjbyBjb25oZWNlIHJlZ3JhIGRlIGpvZ28sIG7Do28gZGVjaWRlIG8gcXVlXG4vLy8gYWNvbnRlY2UgbnVtIHR1cm5vLCBuw6NvIHNhYmUgbyBxdWUgw6kgdW1hIHBhcmVkZS4gRWxhIHJlY2ViZSB1bSBgbXVuZG9gIGVcbi8vLyBkZXNlbmhhLiDDiSBhIG1lc21hIGludGVyZmFjZSBxdWUgYGFwcmVzZW50YWNhb19lbV90ZXh0b2AgaW1wbGVtZW50YSwgZSBvXG4vLy8gbsO6Y2xlbyBuw6NvIHNhYmUgcXVhbCBkYXMgZHVhcyBlc3TDoSBkbyBvdXRybyBsYWRvLlxuY2xhc3MgdGVsYV9xdCBmaW5hbCA6IHB1YmxpYyBpX2FwcmVzZW50YWNhbyB7XG4gcHVibGljOlxuICBleHBsaWNpdCB0ZWxhX3F0KFFQbGFpblRleHRFZGl0KiBhbHZvKSA6IGFsdm9fKGFsdm8pIHt9XG5cbiAgdm9pZCBkZXNlbmhhcihjb25zdCBtdW5kbyYgbSkgb3ZlcnJpZGU7XG4gIHZvaWQgbWVuc2FnZW0oc3RkOjpzdHJpbmdfdmlldyB0ZXh0bykgb3ZlcnJpZGU7XG5cbiBwcml2YXRlOlxuICBRUGxhaW5UZXh0RWRpdCogYWx2b187ICAgLy8gb2JzZXJ2YcOnw6NvLCBuw6NvIHBvc3NlOiBhIMOhcnZvcmUgZG8gUXQgw6kgYSBkb25hXG59OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`new QPlainTextEdit(this)` entrega a posse ao pai, e `unique_ptr` sobre o adaptador guarda o que é nosso. As duas formas convivem na mesma função, e a diferença está em quem destrói.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">qt/janela.cpp · `new` com pai ao lado de unique_ptr</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>janela::janela(mundo w, QWidget* pai)
+    : QMainWindow(pai), mundo_(<span class="tk-tipo">std::move</span>(w)) {
+  visor_ = <span class="tk-kw">new</span> QPlainTextEdit(<span class="tk-kw">this</span>);   <span class="tk-com">// `this` é o pai: o Qt destrói</span>
+  visor_-&gt;setReadOnly(<span class="tk-kw">true</span>);
+  visor_-&gt;setFont(QFont(<span class="tk-str">&quot;IBM Plex Mono&quot;</span>, <span class="tk-num">12</span>));
+  setCentralWidget(visor_);
+
+  tela_ = <span class="tk-tipo">std::make_unique</span>&lt;tela_qt&gt;(visor_);
+
+  QMenu* menu = menuBar()-&gt;addMenu(<span class="tk-str">&quot;Sonda&quot;</span>);
+  QAction* norte = menu-&gt;addAction(<span class="tk-str">&quot;Norte&quot;</span>);
+  QAction* sul = menu-&gt;addAction(<span class="tk-str">&quot;Sul&quot;</span>);
+  QAction* desfazer = menu-&gt;addAction(<span class="tk-str">&quot;Desfazer&quot;</span>);
+
+  <span class="tk-com">// A conexão por ponteiro de função é a forma verificada em compilação. A</span>
+  <span class="tk-com">// forma antiga, com as macros SIGNAL e SLOT, casava strings em execução - e</span>
+  <span class="tk-com">// um erro de digitação virava conexão que nunca acontece, sem aviso.</span>
+  connect(norte, &amp;QAction::triggered, <span class="tk-kw">this</span>, &amp;janela::ao_mover_norte);
+  connect(sul, &amp;QAction::triggered, <span class="tk-kw">this</span>, &amp;janela::ao_mover_sul);
+  connect(desfazer, &amp;QAction::triggered, <span class="tk-kw">this</span>, &amp;janela::ao_desfazer);
+
+  redesenhar();</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/qt/janela.cpp:20</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiamFuZWxhOjpqYW5lbGEobXVuZG8gdywgUVdpZGdldCogcGFpKVxuICAgIDogUU1haW5XaW5kb3cocGFpKSwgbXVuZG9fKHN0ZDo6bW92ZSh3KSkge1xuICB2aXNvcl8gPSBuZXcgUVBsYWluVGV4dEVkaXQodGhpcyk7ICAgLy8gYHRoaXNgIMOpIG8gcGFpOiBvIFF0IGRlc3Ryw7NpXG4gIHZpc29yXy0-c2V0UmVhZE9ubHkodHJ1ZSk7XG4gIHZpc29yXy0-c2V0Rm9udChRRm9udChcIklCTSBQbGV4IE1vbm9cIiwgMTIpKTtcbiAgc2V0Q2VudHJhbFdpZGdldCh2aXNvcl8pO1xuXG4gIHRlbGFfID0gc3RkOjptYWtlX3VuaXF1ZTx0ZWxhX3F0Pih2aXNvcl8pO1xuXG4gIFFNZW51KiBtZW51ID0gbWVudUJhcigpLT5hZGRNZW51KFwiU29uZGFcIik7XG4gIFFBY3Rpb24qIG5vcnRlID0gbWVudS0-YWRkQWN0aW9uKFwiTm9ydGVcIik7XG4gIFFBY3Rpb24qIHN1bCA9IG1lbnUtPmFkZEFjdGlvbihcIlN1bFwiKTtcbiAgUUFjdGlvbiogZGVzZmF6ZXIgPSBtZW51LT5hZGRBY3Rpb24oXCJEZXNmYXplclwiKTtcblxuICAvLyBBIGNvbmV4w6NvIHBvciBwb250ZWlybyBkZSBmdW7Dp8OjbyDDqSBhIGZvcm1hIHZlcmlmaWNhZGEgZW0gY29tcGlsYcOnw6NvLiBBXG4gIC8vIGZvcm1hIGFudGlnYSwgY29tIGFzIG1hY3JvcyBTSUdOQUwgZSBTTE9ULCBjYXNhdmEgc3RyaW5ncyBlbSBleGVjdcOnw6NvIC0gZVxuICAvLyB1bSBlcnJvIGRlIGRpZ2l0YcOnw6NvIHZpcmF2YSBjb25leMOjbyBxdWUgbnVuY2EgYWNvbnRlY2UsIHNlbSBhdmlzby5cbiAgY29ubmVjdChub3J0ZSwgJlFBY3Rpb246OnRyaWdnZXJlZCwgdGhpcywgJmphbmVsYTo6YW9fbW92ZXJfbm9ydGUpO1xuICBjb25uZWN0KHN1bCwgJlFBY3Rpb246OnRyaWdnZXJlZCwgdGhpcywgJmphbmVsYTo6YW9fbW92ZXJfc3VsKTtcbiAgY29ubmVjdChkZXNmYXplciwgJlFBY3Rpb246OnRyaWdnZXJlZCwgdGhpcywgJmphbmVsYTo6YW9fZGVzZmF6ZXIpO1xuXG4gIHJlZGVzZW5oYXIoKTsiLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Duas implementações da mesma interface, no mesmo processo, sobre o mesmo mundo. É o que a variante `v2.6-antes` torna impossível, e é a diferença entre separação demonstrada e separação afirmada.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_padroes.cpp · a prova do critério da §26.1</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;duas apresentacoes sobre o MESMO mundo, e ele nao sabe qual&quot;</span>) {
+  zerar_entidades();
+  mundo w = montar();
+  w.acrescentar(<span class="tk-tipo">std::make_unique</span>&lt;sonda&gt;(vetor2{<span class="tk-num">1</span>, <span class="tk-num">1</span>}));
+
+  <span class="tk-com">// (2) Duas implementações independentes da mesma interface, no mesmo</span>
+  <span class="tk-com">//     processo, sobre o mesmo mundo. É o que a v2.7 faz com Qt, e o que a</span>
+  <span class="tk-com">//     variante `v2.6-antes` torna impossível.</span>
+  apresentacao_em_texto a;
+  apresentacao_em_texto b;
+  i_apresentacao&amp; como_a = a;
+  i_apresentacao&amp; como_b = b;
+
+  como_a.desenhar(w);
+  como_b.mensagem(<span class="tk-str">&quot;segunda interface&quot;</span>);
+  como_b.desenhar(w);
+
+  REQUIRE(a.acumulado().find(<span class="tk-str">&quot;entidades 1&quot;</span>) != <span class="tk-tipo">std::string::npos</span>);
+  REQUIRE(b.acumulado().find(<span class="tk-str">&quot;&gt; segunda interface&quot;</span>) == <span class="tk-num">0</span>);
+  REQUIRE(b.acumulado().find(<span class="tk-str">&quot;entidades 1&quot;</span>) != <span class="tk-tipo">std::string::npos</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_padroes.cpp:170</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiZHVhcyBhcHJlc2VudGFjb2VzIHNvYnJlIG8gTUVTTU8gbXVuZG8sIGUgZWxlIG5hbyBzYWJlIHF1YWxcIikge1xuICB6ZXJhcl9lbnRpZGFkZXMoKTtcbiAgbXVuZG8gdyA9IG1vbnRhcigpO1xuICB3LmFjcmVzY2VudGFyKHN0ZDo6bWFrZV91bmlxdWU8c29uZGE-KHZldG9yMnsxLCAxfSkpO1xuXG4gIC8vICgyKSBEdWFzIGltcGxlbWVudGHDp8O1ZXMgaW5kZXBlbmRlbnRlcyBkYSBtZXNtYSBpbnRlcmZhY2UsIG5vIG1lc21vXG4gIC8vICAgICBwcm9jZXNzbywgc29icmUgbyBtZXNtbyBtdW5kby4gw4kgbyBxdWUgYSB2Mi43IGZheiBjb20gUXQsIGUgbyBxdWUgYVxuICAvLyAgICAgdmFyaWFudGUgYHYyLjYtYW50ZXNgIHRvcm5hIGltcG9zc8OtdmVsLlxuICBhcHJlc2VudGFjYW9fZW1fdGV4dG8gYTtcbiAgYXByZXNlbnRhY2FvX2VtX3RleHRvIGI7XG4gIGlfYXByZXNlbnRhY2FvJiBjb21vX2EgPSBhO1xuICBpX2FwcmVzZW50YWNhbyYgY29tb19iID0gYjtcblxuICBjb21vX2EuZGVzZW5oYXIodyk7XG4gIGNvbW9fYi5tZW5zYWdlbShcInNlZ3VuZGEgaW50ZXJmYWNlXCIpO1xuICBjb21vX2IuZGVzZW5oYXIodyk7XG5cbiAgUkVRVUlSRShhLmFjdW11bGFkbygpLmZpbmQoXCJlbnRpZGFkZXMgMVwiKSAhPSBzdGQ6OnN0cmluZzo6bnBvcyk7XG4gIFJFUVVJUkUoYi5hY3VtdWxhZG8oKS5maW5kKFwiPiBzZWd1bmRhIGludGVyZmFjZVwiKSA9PSAwKTtcbiAgUkVRVUlSRShiLmFjdW11bGFkbygpLmZpbmQoXCJlbnRpZGFkZXMgMVwiKSAhPSBzdGQ6OnN0cmluZzo6bnBvcyk7XG59IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Cinco renders, e o despejo byte a byte igual. Se desenhar mudasse estado, a segunda interface veria um sistema diferente da primeira.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_padroes.cpp · desenhar não altera o mundo</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;trocar a apresentacao nao muda o estado do dominio&quot;</span>) {
+  <span class="tk-com">// (3) O critério mais forte: desenhar não pode alterar o mundo. Se</span>
+  <span class="tk-com">//     desenhar mudasse estado, a segunda interface veria um sistema</span>
+  <span class="tk-com">//     diferente da primeira.</span>
+  zerar_entidades();
+  mundo w = montar();
+  w.acrescentar(<span class="tk-tipo">std::make_unique</span>&lt;sonda&gt;(vetor2{<span class="tk-num">1</span>, <span class="tk-num">1</span>}));
+  <span class="tk-kw">const</span> <span class="tk-tipo">std::string</span> antes = w.despejar();
+
+  apresentacao_em_texto tela;
+  <span class="tk-kw">for</span> (<span class="tk-kw">int</span> k = <span class="tk-num">0</span>; k &lt; <span class="tk-num">5</span>; ++k) tela.desenhar(w);
+
+  REQUIRE(w.despejar() == antes);   <span class="tk-com">// byte a byte, depois de cinco renders</span>
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_padroes.cpp:192</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwidHJvY2FyIGEgYXByZXNlbnRhY2FvIG5hbyBtdWRhIG8gZXN0YWRvIGRvIGRvbWluaW9cIikge1xuICAvLyAoMykgTyBjcml0w6lyaW8gbWFpcyBmb3J0ZTogZGVzZW5oYXIgbsOjbyBwb2RlIGFsdGVyYXIgbyBtdW5kby4gU2VcbiAgLy8gICAgIGRlc2VuaGFyIG11ZGFzc2UgZXN0YWRvLCBhIHNlZ3VuZGEgaW50ZXJmYWNlIHZlcmlhIHVtIHNpc3RlbWFcbiAgLy8gICAgIGRpZmVyZW50ZSBkYSBwcmltZWlyYS5cbiAgemVyYXJfZW50aWRhZGVzKCk7XG4gIG11bmRvIHcgPSBtb250YXIoKTtcbiAgdy5hY3Jlc2NlbnRhcihzdGQ6Om1ha2VfdW5pcXVlPHNvbmRhPih2ZXRvcjJ7MSwgMX0pKTtcbiAgY29uc3Qgc3RkOjpzdHJpbmcgYW50ZXMgPSB3LmRlc3BlamFyKCk7XG5cbiAgYXByZXNlbnRhY2FvX2VtX3RleHRvIHRlbGE7XG4gIGZvciAoaW50IGsgPSAwOyBrIDwgNTsgKytrKSB0ZWxhLmRlc2VuaGFyKHcpO1xuXG4gIFJFUVVJUkUody5kZXNwZWphcigpID09IGFudGVzKTsgICAvLyBieXRlIGEgYnl0ZSwgZGVwb2lzIGRlIGNpbmNvIHJlbmRlcnNcbn0iLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-refator"><div class="slide__cab"><span class="slide__n">05</span><h2>Diferenciador de refatoração</h2></div><p>Antes/depois, grafo de acoplamento, e o diff do despejo que prova invariância. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="refator" tabindex="0"></section></section>
+<section class="slide" id="deriva"><div class="slide__cab"><span class="slide__n">06</span><h2>O Deriva nesta aula</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · O QUE VOCÊ ENTREGA NESTA AULA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><span class="versao">v2.7</span> front-end Qt sobre o mesmo núcleo. <span style="color:var(--apagado)">QObject, signals/slots, separação domínio/apresentação</span> · <span style="color:var(--apagado)">◇ nenhum teste próprio</span> <span style="color:var(--apagado)">· nenhum teste novo, e é esse o argumento: o núcleo não mudou</span></p><p style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado)">A versão anterior e a seguinte estão na <a href="trilha.html">trilha completa</a>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">07</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Configure com <code>-DDERIVA_COM_QT=ON</code> e compile o esqueleto. Depois acrescente as ações de leste e oeste ao menu, ligando-as a <code>mover_sonda</code>, e confira que <code>src/</code> e <code>include/deriva/</code> não precisaram de uma linha. Se precisaram, o que a sua mudança violou?</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Escreva uma terceira implementação de <code>i_apresentacao</code> que grave o despejo em arquivo, e ligue-a ao mesmo <code>mundo</code> das outras duas. Quantos arquivos você teve de tocar, e quais? Compare com o que a variante <code>v2.6-antes</code> exigiria para a mesma tarefa.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Troque, no esqueleto, o <code>new QPlainTextEdit(this)</code> por um <code>std::unique_ptr&lt;QPlainTextEdit&gt;</code> membro e observe o que acontece ao fechar a janela. Explique o defeito com o vocabulário da Aula 12, e diga por que <code>-Wall -Wextra -Wpedantic</code> não o pega.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Escreva um relatório de uma página respondendo à pergunta do semestre: como você determina, <strong>a partir do texto</strong>, qual destrutor roda e em que ordem, no caminho em que a janela do Qt é fechada com o <code>historico</code> cheio de comandos? Cite os três instrumentos das Aulas 7, 8 e 11 e diga o que cada um mostraria.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 27 do livro v1 e de <code>unidade-3/aula27-qt-llms</code>.</p><p>Fatia: <strong>qt</strong> - fatia de Qt do Cap. 27; a fatia de LLM foi para a Aula 4.</p><p>MIGRAÇÃO DE RISCO 2/3 (fecho). Demonstração do docente com esqueleto publicado - o plano v2 não exige entrega. Fica QObject, signals/slots e o argumento do segundo front-end sobre o mesmo núcleo.</p></div></details>
+  <nav class="nav-pe">
+    <a href="aula-25.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Padrões de projeto</div></a>
+    <div class="meio">AULA 26 / 26</div>
+    <a href="anexo-a.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Anexo A · Concepts e Ranges</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

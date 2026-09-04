@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula 11 - Funções virtuais e classes abstratas · POO · UFPB</title>
+<meta name="description" content="Aula 11 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Funções virtuais e classes abstratas.">
+<meta property="og:title" content="Aula 11 - Funções virtuais e classes abstratas · POO · UFPB">
+<meta property="og:description" content="Aula 11 de 26 da disciplina de Programação Orientada a Objetos em C++17 (UFPB/CI): Funções virtuais e classes abstratas.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="aula-10.html">
+<link rel="next" href="aula-12.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+<script src="js/interativo.js" defer></script>
+<script src="js/pecas.js" defer></script>
+<script src="js/pecas-extra.js" defer></script>
+<script src="js/uml.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="unid">UNIDADE II</span><span class="sep">/</span><span class="atual">AULA 11</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula" data-aula-slug="a11">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11" aria-current="page"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Funções virtuais e classes abstratas</h1>
+    <p class="sub">UNIDADE II · AULA 11 DE 26 · CAP. 11 DO LIVRO · DERIVA v1.1 · LAB-06</p>
+    <div class="progresso" aria-hidden="true"><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i><i data-vista="0"></i></div>
+  </div>
+<section class="slide" id="objetivos"><div class="slide__cab"><span class="slide__n">00</span><h2>O que você sai sabendo</h2></div><ul><li>Usar <code>virtual</code>, <code>override</code> e <code>final</code> onde cada um cabe</li><li>Declarar classes abstratas com funções puramente virtuais</li><li>Descrever o mecanismo de <code>vptr</code> e vtable e dizer quanto ele custa em bytes</li><li>Provar que o destrutor virtual rodou sem sanitizer nem Valgrind</li></ul></section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Funções virtuais, override, final e abstração</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · v1.1 · o despacho, e o destrutor que o acompanha</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><code>glifo()</code> e <code>nome()</code> passam a puramente virtuais, o que torna <code>entidade</code> abstrata, e <code>agir(mundo&amp;)</code> passa a virtual com corpo vazio. A base ganha <code>virtual ~entidade() = default</code>, e é essa palavra que a caça ao bug 2 retira para ver o que acontece.</p><p>A variante <code>variantes/v1.1-quebrada/</code> traz a base com função virtual e destrutor não virtual. O que ela mede não é o vazamento, que é conhecido: é <strong>quando o compilador avisa</strong>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="override-final"><div class="slide__cab"><span class="slide__n">02</span><h2>virtual, override e final</h2></div><p>As três palavras respondem a perguntas diferentes. <code>virtual</code>, na base, diz que a chamada se resolve pelo objeto e não pelo ponteiro. <code>override</code>, na derivada, pede ao compilador que confira: se a assinatura não casar com nenhuma função virtual da base, o programa não compila, e é assim que um erro de digitação deixa de criar uma função nova em silêncio. <code>final</code> proíbe continuar sobrescrevendo, ou continuar derivando.</p>
+<p>Na derivada, <code>virtual</code> não se repete: <code>override</code> já diz que a função sobrescreve, e diz melhor, porque o compilador o verifica. No Deriva, <code>drone</code> e <code>item</code> são <code>final</code> e <code>sonda</code> não é, e a razão dessa assimetria está na Aula 17.</p>
+<aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ DICA · Escreva sempre override</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Sem <code>override</code>, trocar <code>glifo</code> por <code>Glifo</code> ou esquecer o <code>const</code> na assinatura produz uma função nova que ninguém chama, e o objeto passa a desenhar o glifo da base. O compilador não tem como saber que você queria sobrescrever, salvo se você disser. O item R5 da rubrica é a pergunta que pega isso na revisão.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="abstrata"><div class="slide__cab"><span class="slide__n">03</span><h2>Classes abstratas e interfaces puras</h2></div><p>Uma função puramente virtual, escrita com <code>= 0</code>, declara a operação e recusa fornecer o corpo. Basta uma para que a classe se torne abstrata e deixe de ser instanciável. Em <code>entidade</code> isso não é cerimônia: uma entidade sem glifo não significa nada no domínio, e a partir da v1.1 é o compilador que passa a dizer isso, em vez de a documentação.</p>
+<p>Interface pura é o caso extremo: só funções puramente virtuais, nenhum dado, e destrutor virtual. É a forma que <code>i_reparavel</code> tem na v1.7, e a Aula 17 mostra por que ela é o único uso de herança múltipla que este material recomenda sem ressalva. A diferença entre "classe abstrata" e "interface pura" é a presença de estado, e é ela que decide se a herança múltipla vai duplicar alguma coisa.</p>
+<aside class="callout" data-t="info"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · A abstração é afirmada, não descrita</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>O trecho extraído de <code>testes/test_entidade.cpp</code> afirma quatro decisões de projeto com <code>std::is_abstract_v</code>, <code>std::is_constructible_v</code>, <code>std::has_virtual_destructor_v</code> e <code>std::is_copy_constructible_v</code>. São perguntas respondidas em tempo de compilação: se alguém tornar a base instanciável ou copiável por acidente, o teste falha antes de o programa rodar.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">04</span><h2>LLMs neste tópico</h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Em C++17, snake_case: dada a base abstrata <code>entidade</code>, com <code>glifo()</code> e <code>nome()</code> puramente virtuais e <code>agir(mundo&amp;)</code> virtual, escreva uma derivada concreta e um teste que afirme, sem executar nada, que a base é abstrata, tem destrutor virtual e não é copiável."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o LLM costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Erros recorrentes: <code>override</code> escrito numa função que a base não declarou virtual, o que ao menos falha na compilação; <code>final</code> posto na classe quando a intenção era pôr no método; e o destrutor da base declarado virtual sem corpo nem <code>= default</code>, o que passa da compilação e falha na ligação. Nenhum dos três aparece se você pedir o teste junto com o código.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="codigo-deriva"><div class="slide__cab"><span class="slide__n">05</span><h2>O código, extraído do Deriva</h2></div><p style="font-family:var(--maquina);font-size:var(--t-est);color:var(--apagado)">6 trechos do Deriva, 1 deliberadamente quebrado, recortados por âncora do projeto que compila · <code>-std=c++17 -Wall -Wextra -Wpedantic</code>, zero warning · <code>make verifica</code> 4 de 4</p><p>O contador de cada classe concreta é o que acusa. Sem `virtual` no destrutor da base, `sonda::vivos` ficaria em 1 no fim do escopo - e nenhum aviso apareceria, porque o `delete` mora dentro do `unique_ptr`.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_entidade.cpp · a prova do destrutor virtual</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">// A prova do destrutor virtual: deletar por ponteiro da base tem de rodar o</span>
+<span class="tk-com">// destrutor da derivada, e o contador de CADA classe concreta e o que acusa.</span>
+TEST_CASE(<span class="tk-str">&quot;deletar por entidade* destroi a derivada&quot;</span>) {
+  zerar_entidades();
+  {
+    <span class="tk-tipo">std::unique_ptr</span>&lt;entidade&gt; e = <span class="tk-tipo">std::make_unique</span>&lt;sonda&gt;(vetor2{<span class="tk-num">1</span>, <span class="tk-num">1</span>});
+    REQUIRE(sonda::vivos == <span class="tk-num">1</span>);
+  }</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_entidade.cpp:42</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8gQSBwcm92YSBkbyBkZXN0cnV0b3IgdmlydHVhbDogZGVsZXRhciBwb3IgcG9udGVpcm8gZGEgYmFzZSB0ZW0gZGUgcm9kYXIgb1xuLy8gZGVzdHJ1dG9yIGRhIGRlcml2YWRhLCBlIG8gY29udGFkb3IgZGUgQ0FEQSBjbGFzc2UgY29uY3JldGEgZSBvIHF1ZSBhY3VzYS5cblRFU1RfQ0FTRShcImRlbGV0YXIgcG9yIGVudGlkYWRlKiBkZXN0cm9pIGEgZGVyaXZhZGFcIikge1xuICB6ZXJhcl9lbnRpZGFkZXMoKTtcbiAge1xuICAgIHN0ZDo6dW5pcXVlX3B0cjxlbnRpZGFkZT4gZSA9IHN0ZDo6bWFrZV91bmlxdWU8c29uZGE-KHZldG9yMnsxLCAxfSk7XG4gICAgUkVRVUlSRShzb25kYTo6dml2b3MgPT0gMSk7XG4gIH0iLCJjb21waWxlcnMiOlt7ImlkIjoiZzE0MiIsIm9wdGlvbnMiOiItc3RkPWMrKzE3IC1XYWxsIC1XZXh0cmEgLVdwZWRhbnRpYyJ9XX1dfQ==" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>Medido em g++ 13.3: `delete` textual dá 1 aviso; o mesmo `delete` dentro de `unique_ptr` dá ZERO, porque passou a morar num cabeçalho do sistema; com `-Wnon-virtual-dtor` são 3, e nas declarações. C++ moderno, correto em tudo o mais, silenciou o único diagnóstico.</p><div class="codigo" data-estado="falha"><div class="codigo__cab"><span>cpp</span><span class="arq">v1.1-quebrada · destrutor não virtual · CAÇA AO BUG 2</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// A base da hierarquia da v1.0. Tem função virtual, então é polimórfica -</span>
+<span class="tk-com">/// e é para ser usada por ponteiro de base.</span>
+<span class="tk-kw">struct</span> entidade {
+  <span class="tk-kw">explicit</span> entidade(<span class="tk-kw">char</span> glifo) : glifo_(glifo) {
+    ++contador::vivos;
+    ++contador::criados;
+  }
+
+  <span class="tk-com">// FALTA a palavra `virtual` aqui. É a única diferença entre esta variante e</span>
+  <span class="tk-com">// a v1.1 boa.</span>
+  ~entidade() {
+    ++contador::destrutores_de_base;
+    --contador::vivos;
+  }
+
+  <span class="tk-kw">virtual</span> <span class="tk-kw">void</span> desenhar() <span class="tk-kw">const</span> { <span class="tk-tipo">std::putchar</span>(glifo_); }
+
+ <span class="tk-kw">protected</span>:
+  <span class="tk-kw">char</span> glifo_;
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="falha">▲ QUEBRADO DE PROPÓSITO</span> · <span class="arq">exemplos/deriva/variantes/v1.1-quebrada/destrutor_quebrado.cpp:39</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIEEgYmFzZSBkYSBoaWVyYXJxdWlhIGRhIHYxLjAuIFRlbSBmdW7Dp8OjbyB2aXJ0dWFsLCBlbnTDo28gw6kgcG9saW3Ds3JmaWNhIC1cbi8vLyBlIMOpIHBhcmEgc2VyIHVzYWRhIHBvciBwb250ZWlybyBkZSBiYXNlLlxuc3RydWN0IGVudGlkYWRlIHtcbiAgZXhwbGljaXQgZW50aWRhZGUoY2hhciBnbGlmbykgOiBnbGlmb18oZ2xpZm8pIHtcbiAgICArK2NvbnRhZG9yOjp2aXZvcztcbiAgICArK2NvbnRhZG9yOjpjcmlhZG9zO1xuICB9XG5cbiAgLy8gRkFMVEEgYSBwYWxhdnJhIGB2aXJ0dWFsYCBhcXVpLiDDiSBhIMO6bmljYSBkaWZlcmVuw6dhIGVudHJlIGVzdGEgdmFyaWFudGUgZVxuICAvLyBhIHYxLjEgYm9hLlxuICB-ZW50aWRhZGUoKSB7XG4gICAgKytjb250YWRvcjo6ZGVzdHJ1dG9yZXNfZGVfYmFzZTtcbiAgICAtLWNvbnRhZG9yOjp2aXZvcztcbiAgfVxuXG4gIHZpcnR1YWwgdm9pZCBkZXNlbmhhcigpIGNvbnN0IHsgc3RkOjpwdXRjaGFyKGdsaWZvXyk7IH1cblxuIHByb3RlY3RlZDpcbiAgY2hhciBnbGlmb187XG59OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>8 bytes por OBJETO, não por classe. E o custo não desaparece quando a derivada acrescenta dado: ele se soma - 8 do vptr, 8 da posição, 4 da carga, 4 de padding.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">include/deriva/leiaute.hpp · quanto custa o vptr</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// Sem nenhum método virtual: não há vtable, e portanto não há `vptr`.</span>
+<span class="tk-kw">struct</span> entidade_simples {
+  vetor2 pos;
+};
+<span class="tk-kw">struct</span> drone_simples : entidade_simples {};
+
+<span class="tk-com">/// Com um método virtual: o compilador põe um ponteiro para a vtable como</span>
+<span class="tk-com">/// primeiro campo do objeto. São 8 bytes por OBJETO, não por classe.</span>
+<span class="tk-kw">struct</span> entidade {
+  vetor2 pos;
+  <span class="tk-kw">virtual</span> ~entidade() = <span class="tk-kw">default</span>;
+  <span class="tk-kw">virtual</span> <span class="tk-kw">void</span> desenhar() <span class="tk-kw">const</span> = <span class="tk-num">0</span>;
+};
+<span class="tk-kw">struct</span> drone : entidade {
+  <span class="tk-kw">void</span> desenhar() <span class="tk-kw">const</span> <span class="tk-kw">override</span> {}
+};
+
+<span class="tk-com">/// E quando a derivada acrescenta dado, o custo do vptr não desaparece - ele</span>
+<span class="tk-com">/// se soma. É a v1.2, quando o drone ganha carga.</span>
+<span class="tk-kw">struct</span> drone_com_carga : entidade {
+  <span class="tk-kw">int</span> carga = <span class="tk-num">0</span>;
+  <span class="tk-kw">void</span> desenhar() <span class="tk-kw">const</span> <span class="tk-kw">override</span> {}
+};
+
+<span class="tk-kw">static_assert</span>(<span class="tk-kw">sizeof</span>(entidade_simples) == <span class="tk-num">8</span>, <span class="tk-str">&quot;só a posição&quot;</span>);
+<span class="tk-kw">static_assert</span>(<span class="tk-kw">sizeof</span>(drone_simples) == <span class="tk-num">8</span>, <span class="tk-str">&quot;herdar de classe não-polimórfica é grátis&quot;</span>);
+<span class="tk-kw">static_assert</span>(<span class="tk-kw">sizeof</span>(entidade) == <span class="tk-num">16</span>, <span class="tk-str">&quot;8 do vptr + 8 da posição&quot;</span>);
+<span class="tk-kw">static_assert</span>(<span class="tk-kw">sizeof</span>(drone) == <span class="tk-num">16</span>, <span class="tk-str">&quot;a derivada sem dado novo não cresce&quot;</span>);
+<span class="tk-kw">static_assert</span>(<span class="tk-kw">sizeof</span>(drone_com_carga) == <span class="tk-num">24</span>, <span class="tk-str">&quot;8 vptr + 8 pos + 4 carga + 4 de padding&quot;</span>);</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/include/deriva/leiaute.hpp:16</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIFNlbSBuZW5odW0gbcOpdG9kbyB2aXJ0dWFsOiBuw6NvIGjDoSB2dGFibGUsIGUgcG9ydGFudG8gbsOjbyBow6EgYHZwdHJgLlxuc3RydWN0IGVudGlkYWRlX3NpbXBsZXMge1xuICB2ZXRvcjIgcG9zO1xufTtcbnN0cnVjdCBkcm9uZV9zaW1wbGVzIDogZW50aWRhZGVfc2ltcGxlcyB7fTtcblxuLy8vIENvbSB1bSBtw6l0b2RvIHZpcnR1YWw6IG8gY29tcGlsYWRvciBww7VlIHVtIHBvbnRlaXJvIHBhcmEgYSB2dGFibGUgY29tb1xuLy8vIHByaW1laXJvIGNhbXBvIGRvIG9iamV0by4gU8OjbyA4IGJ5dGVzIHBvciBPQkpFVE8sIG7Do28gcG9yIGNsYXNzZS5cbnN0cnVjdCBlbnRpZGFkZSB7XG4gIHZldG9yMiBwb3M7XG4gIHZpcnR1YWwgfmVudGlkYWRlKCkgPSBkZWZhdWx0O1xuICB2aXJ0dWFsIHZvaWQgZGVzZW5oYXIoKSBjb25zdCA9IDA7XG59O1xuc3RydWN0IGRyb25lIDogZW50aWRhZGUge1xuICB2b2lkIGRlc2VuaGFyKCkgY29uc3Qgb3ZlcnJpZGUge31cbn07XG5cbi8vLyBFIHF1YW5kbyBhIGRlcml2YWRhIGFjcmVzY2VudGEgZGFkbywgbyBjdXN0byBkbyB2cHRyIG7Do28gZGVzYXBhcmVjZSAtIGVsZVxuLy8vIHNlIHNvbWEuIMOJIGEgdjEuMiwgcXVhbmRvIG8gZHJvbmUgZ2FuaGEgY2FyZ2EuXG5zdHJ1Y3QgZHJvbmVfY29tX2NhcmdhIDogZW50aWRhZGUge1xuICBpbnQgY2FyZ2EgPSAwO1xuICB2b2lkIGRlc2VuaGFyKCkgY29uc3Qgb3ZlcnJpZGUge31cbn07XG5cbnN0YXRpY19hc3NlcnQoc2l6ZW9mKGVudGlkYWRlX3NpbXBsZXMpID09IDgsIFwic8OzIGEgcG9zacOnw6NvXCIpO1xuc3RhdGljX2Fzc2VydChzaXplb2YoZHJvbmVfc2ltcGxlcykgPT0gOCwgXCJoZXJkYXIgZGUgY2xhc3NlIG7Do28tcG9saW3Ds3JmaWNhIMOpIGdyw6F0aXNcIik7XG5zdGF0aWNfYXNzZXJ0KHNpemVvZihlbnRpZGFkZSkgPT0gMTYsIFwiOCBkbyB2cHRyICsgOCBkYSBwb3Npw6fDo29cIik7XG5zdGF0aWNfYXNzZXJ0KHNpemVvZihkcm9uZSkgPT0gMTYsIFwiYSBkZXJpdmFkYSBzZW0gZGFkbyBub3ZvIG7Do28gY3Jlc2NlXCIpO1xuc3RhdGljX2Fzc2VydChzaXplb2YoZHJvbmVfY29tX2NhcmdhKSA9PSAyNCwgXCI4IHZwdHIgKyA4IHBvcyArIDQgY2FyZ2EgKyA0IGRlIHBhZGRpbmdcIik7IiwiY29tcGlsZXJzIjpbeyJpZCI6ImcxNDIiLCJvcHRpb25zIjoiLXN0ZD1jKysxNyAtV2FsbCAtV2V4dHJhIC1XcGVkYW50aWMifV19XX0=" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>A saída é `@d!`, e não `eee`. Os três ponteiros são `entidade*`, e quem decidiu foi o objeto.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_entidade.cpp · três objetos, um tipo de ponteiro</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;o despacho virtual escolhe pelo tipo do OBJETO&quot;</span>) {
+  zerar_entidades();
+  <span class="tk-kw">const</span> sonda s({<span class="tk-num">1</span>, <span class="tk-num">1</span>});
+  <span class="tk-kw">const</span> drone d({<span class="tk-num">2</span>, <span class="tk-num">2</span>});
+  <span class="tk-kw">const</span> item i({<span class="tk-num">3</span>, <span class="tk-num">3</span>}, <span class="tk-str">&quot;celula-de-energia&quot;</span>, <span class="tk-num">5</span>);
+
+  <span class="tk-kw">const</span> entidade* por_base[] = {&amp;s, &amp;d, &amp;i};
+  <span class="tk-tipo">std::string</span> glifos;
+  <span class="tk-kw">for</span> (<span class="tk-kw">const</span> entidade* e : por_base) glifos.push_back(e-&gt;glifo());
+
+  REQUIRE(glifos == <span class="tk-str">&quot;@d!&quot;</span>);   <span class="tk-com">// e nao &quot;eee&quot;: o ponteiro e entidade* nos tres</span>
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_entidade.cpp:21</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwibyBkZXNwYWNobyB2aXJ0dWFsIGVzY29saGUgcGVsbyB0aXBvIGRvIE9CSkVUT1wiKSB7XG4gIHplcmFyX2VudGlkYWRlcygpO1xuICBjb25zdCBzb25kYSBzKHsxLCAxfSk7XG4gIGNvbnN0IGRyb25lIGQoezIsIDJ9KTtcbiAgY29uc3QgaXRlbSBpKHszLCAzfSwgXCJjZWx1bGEtZGUtZW5lcmdpYVwiLCA1KTtcblxuICBjb25zdCBlbnRpZGFkZSogcG9yX2Jhc2VbXSA9IHsmcywgJmQsICZpfTtcbiAgc3RkOjpzdHJpbmcgZ2xpZm9zO1xuICBmb3IgKGNvbnN0IGVudGlkYWRlKiBlIDogcG9yX2Jhc2UpIGdsaWZvcy5wdXNoX2JhY2soZS0-Z2xpZm8oKSk7XG5cbiAgUkVRVUlSRShnbGlmb3MgPT0gXCJAZCFcIik7ICAgLy8gZSBuYW8gXCJlZWVcIjogbyBwb250ZWlybyBlIGVudGlkYWRlKiBub3MgdHJlc1xufSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`virtual` não se repete na derivada: `override` já diz que sobrescreve, e diz melhor, porque o compilador o verifica.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">include/deriva/entidade.hpp · `final` na folha, `override` nas sobrescritas</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code><span class="tk-com">/// Drone de patrulha. Anda sozinho, em linha, e inverte ao bater.</span>
+<span class="tk-kw">class</span> drone <span class="tk-kw">final</span> : <span class="tk-kw">public</span> entidade {
+ <span class="tk-kw">public</span>:
+  <span class="tk-kw">inline</span> <span class="tk-kw">static</span> <span class="tk-kw">int</span> vivos = <span class="tk-num">0</span>;
+  <span class="tk-kw">inline</span> <span class="tk-kw">static</span> <span class="tk-kw">int</span> criados = <span class="tk-num">0</span>;
+
+  <span class="tk-kw">explicit</span> drone(vetor2 pos, vetor2 rumo = {<span class="tk-num">1</span>, <span class="tk-num">0</span>}) <span class="tk-kw">noexcept</span>
+      : entidade(pos), rumo_(rumo) {
+    ++vivos;
+    ++criados;
+  }
+  ~drone() <span class="tk-kw">override</span> { --vivos; }
+
+  [[nodiscard]] <span class="tk-kw">char</span> glifo() <span class="tk-kw">const</span> <span class="tk-kw">override</span> { <span class="tk-kw">return</span> <span class="tk-str">&#x27;d&#x27;</span>; }
+  [[nodiscard]] <span class="tk-tipo">std::string_view</span> nome() <span class="tk-kw">const</span> <span class="tk-kw">override</span> { <span class="tk-kw">return</span> <span class="tk-str">&quot;drone&quot;</span>; }
+  <span class="tk-kw">void</span> agir(mundo&amp; m) <span class="tk-kw">override</span>;
+
+  [[nodiscard]] vetor2 rumo() <span class="tk-kw">const</span> <span class="tk-kw">noexcept</span> { <span class="tk-kw">return</span> rumo_; }
+
+ <span class="tk-kw">private</span>:
+  vetor2 rumo_;
+};</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/include/deriva/entidade.hpp:95</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiLy8vIERyb25lIGRlIHBhdHJ1bGhhLiBBbmRhIHNvemluaG8sIGVtIGxpbmhhLCBlIGludmVydGUgYW8gYmF0ZXIuXG5jbGFzcyBkcm9uZSBmaW5hbCA6IHB1YmxpYyBlbnRpZGFkZSB7XG4gcHVibGljOlxuICBpbmxpbmUgc3RhdGljIGludCB2aXZvcyA9IDA7XG4gIGlubGluZSBzdGF0aWMgaW50IGNyaWFkb3MgPSAwO1xuXG4gIGV4cGxpY2l0IGRyb25lKHZldG9yMiBwb3MsIHZldG9yMiBydW1vID0gezEsIDB9KSBub2V4Y2VwdFxuICAgICAgOiBlbnRpZGFkZShwb3MpLCBydW1vXyhydW1vKSB7XG4gICAgKyt2aXZvcztcbiAgICArK2NyaWFkb3M7XG4gIH1cbiAgfmRyb25lKCkgb3ZlcnJpZGUgeyAtLXZpdm9zOyB9XG5cbiAgW1tub2Rpc2NhcmRdXSBjaGFyIGdsaWZvKCkgY29uc3Qgb3ZlcnJpZGUgeyByZXR1cm4gJ2QnOyB9XG4gIFtbbm9kaXNjYXJkXV0gc3RkOjpzdHJpbmdfdmlldyBub21lKCkgY29uc3Qgb3ZlcnJpZGUgeyByZXR1cm4gXCJkcm9uZVwiOyB9XG4gIHZvaWQgYWdpcihtdW5kbyYgbSkgb3ZlcnJpZGU7XG5cbiAgW1tub2Rpc2NhcmRdXSB2ZXRvcjIgcnVtbygpIGNvbnN0IG5vZXhjZXB0IHsgcmV0dXJuIHJ1bW9fOyB9XG5cbiBwcml2YXRlOlxuICB2ZXRvcjIgcnVtb187XG59OyIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div><p>`is_abstract_v`, `!is_constructible_v`, `has_virtual_destructor_v` e `!is_copy_constructible_v`. Quatro decisões de projeto que o compilador guarda.</p><div class="codigo" data-estado="ok"><div class="codigo__cab"><span>cpp</span><span class="arq">testes/test_entidade.cpp · a abstração, afirmada</span><div class="codigo__acoes"><button class="tecla" type="button" data-acao="copiar">COPIAR</button></div></div><pre><code>TEST_CASE(<span class="tk-str">&quot;entidade e abstrata, e o compilador diz isso&quot;</span>) {
+  <span class="tk-kw">static_assert</span>(<span class="tk-tipo">std::is_abstract_v</span>&lt;entidade&gt;);
+  <span class="tk-kw">static_assert</span>(!<span class="tk-tipo">std::is_constructible_v</span>&lt;entidade, vetor2&gt;);
+  <span class="tk-kw">static_assert</span>(<span class="tk-tipo">std::has_virtual_destructor_v</span>&lt;entidade&gt;);
+  <span class="tk-kw">static_assert</span>(!<span class="tk-tipo">std::is_copy_constructible_v</span>&lt;entidade&gt;,
+                <span class="tk-str">&quot;base polimorfica nao se copia por valor: fatiaria o objeto&quot;</span>);
+  SUCCEED(<span class="tk-str">&quot;verificado em tempo de compilacao&quot;</span>);
+}</code></pre><div class="codigo__pe"><span class="selo-estado" data-t="ok">✓ COMPILA</span> · <span class="arq">exemplos/deriva/testes/test_entidade.cpp:12</span> · <a href="https://godbolt.org/clientstate/eyJzZXNzaW9ucyI6W3siaWQiOjEsImxhbmd1YWdlIjoiYysrIiwic291cmNlIjoiVEVTVF9DQVNFKFwiZW50aWRhZGUgZSBhYnN0cmF0YSwgZSBvIGNvbXBpbGFkb3IgZGl6IGlzc29cIikge1xuICBzdGF0aWNfYXNzZXJ0KHN0ZDo6aXNfYWJzdHJhY3RfdjxlbnRpZGFkZT4pO1xuICBzdGF0aWNfYXNzZXJ0KCFzdGQ6OmlzX2NvbnN0cnVjdGlibGVfdjxlbnRpZGFkZSwgdmV0b3IyPik7XG4gIHN0YXRpY19hc3NlcnQoc3RkOjpoYXNfdmlydHVhbF9kZXN0cnVjdG9yX3Y8ZW50aWRhZGU-KTtcbiAgc3RhdGljX2Fzc2VydCghc3RkOjppc19jb3B5X2NvbnN0cnVjdGlibGVfdjxlbnRpZGFkZT4sXG4gICAgICAgICAgICAgICAgXCJiYXNlIHBvbGltb3JmaWNhIG5hbyBzZSBjb3BpYSBwb3IgdmFsb3I6IGZhdGlhcmlhIG8gb2JqZXRvXCIpO1xuICBTVUNDRUVEKFwidmVyaWZpY2FkbyBlbSB0ZW1wbyBkZSBjb21waWxhY2FvXCIpO1xufSIsImNvbXBpbGVycyI6W3siaWQiOiJnMTQyIiwib3B0aW9ucyI6Ii1zdGQ9YysrMTcgLVdhbGwgLVdleHRyYSAtV3BlZGFudGljIn1dfV19" rel="noopener" target="_blank">abrir no Compiler Explorer · -std=c++17 -Wall -Wextra</a></div></div></section>
+<section class="slide" id="int-virtual"><div class="slide__cab"><span class="slide__n">06</span><h2>Despachante</h2></div><p>Vptr e vtable, tipo estático versus dinâmico, resolução de sobrecarga, dynamic_cast. O avanço do passo é seu: a peça não tem <em>play</em>, e o estado exibido é função de <em>(cenário, passo)</em>, de forma que voltar um passo devolva exatamente o quadro anterior.</p><section data-int="virtual" tabindex="0"></section></section>
+<section class="slide" id="deriva"><div class="slide__cab"><span class="slide__n">07</span><h2>O Deriva nesta aula</h2></div><aside class="callout" data-t="deriva"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▸ DERIVA · O QUE VOCÊ ENTREGA NESTA AULA</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><span class="versao">v1.1</span> desenhar() e agir() virtuais; destrutor virtual. <span style="color:var(--apagado)">funções virtuais, classe abstrata, vptr e vtable, destrutor virtual</span> · <span style="color:var(--apagado)">◇ nenhum teste próprio</span></p><p><span class="versao" style="background:var(--falha)">v1.1-quebrada</span> destrutor não virtual na base - CAÇA AO BUG 2 (semana 9): `vivos` nunca volta a zero e o gdb mostra que ~sonda() nunca roda ao deletar por entidade*</p><p style="font-family:var(--maquina);font-size:var(--t-rot);color:var(--apagado)">A versão anterior e a seguinte estão na <a href="trilha.html">trilha completa</a>.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside><aside class="callout" data-t="tip"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">✓ LABORATÓRIO · LAB-06</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><strong>O destrutor não virtual, acusado pelo contador `vivos`</strong></p><p>Faça este laboratório antes desta aula. O portão de correção é: provar o vazamento sem ferramenta externa; gdb no destrutor.</p><p><a href="laboratorios.html#lab-06">Ver o LAB-06 na página dos laboratórios</a></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+<section class="slide" id="exercicios"><div class="slide__cab"><span class="slide__n">08</span><h2>Exercícios · 4 itens</h2></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 01</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Retire <code>override</code> de <code>drone::glifo</code> e troque o nome do método por <code>Glifo</code>. Compile: o portão do Deriva emite algum aviso? Rode o teste do despacho e diga qual glifo o drone passa a desenhar, e por quê.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 02</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Rode a variante <code>variantes/v1.1-quebrada/</code> nos três casos que o <code>LEIA-ME.md</code> dela descreve: <code>delete</code> textual, o mesmo <code>delete</code> dentro de <code>unique_ptr</code>, e os dois com <code>-Wnon-virtual-dtor</code>. Anote quantos avisos aparecem em cada caso e explique por que o caso do <code>unique_ptr</code> é o mais perigoso dos três.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 03</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Naquela variante, o contador <code>vivos</code> fecha em zero e mente. Diga por que, e escreva a correção: onde o contador tem de morar para acusar o defeito. Confira sua resposta contra o Deriva bom, onde o contador está em cada classe concreta.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div><div class="exercicio"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">EXERCÍCIO 04</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="exercicio__corpo"><p>Use <code>make gdb-dtor</code> como modelo e ponha um ponto de parada no destrutor de <code>deriva::sonda</code>. Delete uma sonda por <code>entidade*</code> com o destrutor virtual e sem ele, e mostre, pela pilha de chamadas, de onde o destrutor é chamado em cada caso.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></div></section>
+<details class="callout" data-t="info" style="margin-top:var(--e5)"><summary style="padding:var(--e2);cursor:pointer;font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.14em;color:var(--apagado)">NOTA DE MIGRAÇÃO v1 → v2 · para o docente</summary><div class="callout__corpo"><p>Vem de Cap. 17 do livro v1 e de <code>unidade-2/aula17-funcoes-virtuais</code>.</p><p>O destrutor virtual ganha tratamento próprio: o vazamento que sua ausência produz, acusado pelo contador `vivos` da Aula 7 e lido no gdb. Os trechos saem de `include/deriva/entidade.hpp`, de `testes/test_entidade.cpp` e da variante `v1.1-quebrada`.</p><p>Pendências desta aula (1):</p><ul><li>CAÇA AO BUG 2: destrutor não virtual - semana 9. A variante e o roteiro existem em `variantes/v1.1-quebrada/`; falta o roteiro de condução em sala.</li></ul></div></details>
+  <nav class="nav-pe">
+    <a href="aula-10.html" rel="prev"><div class="tecla-rot">◀ J · ANTERIOR</div><div class="alvo">Herança simples</div></a>
+    <div class="meio">AULA 11 / 26</div>
+    <a href="aula-12.html" rel="next"><div class="tecla-rot">PRÓXIMA · K ▶</div><div class="alvo">Posse exclusiva: unique_ptr</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

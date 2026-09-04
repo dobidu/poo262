@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha Sintonia | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link active">🎵 Trilha Sintonia</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I</div>
+        <a href="#v01" class="nav-link">v0.1 · sample e track</a>
+        <a href="#v02" class="nav-link">v0.2 · audio_buffer</a>
+        <a href="#v03" class="nav-link">v0.3 · WAV I/O</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II</div>
+        <a href="#v10" class="nav-link">v1.0 · hierarquia effect</a>
+        <a href="#v11" class="nav-link">v1.1 · smart pointers</a>
+        <a href="#v12" class="nav-link">v1.2 · move semantics</a>
+        <a href="#v13" class="nav-link">v1.3 · operadores</a>
+        <a href="#v14" class="nav-link">v1.4 · diamante</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III</div>
+        <a href="#v20" class="nav-link">v2.0 · buffer&lt;T&gt;</a>
+        <a href="#v21" class="nav-link">v2.1 · erros</a>
+        <a href="#v22" class="nav-link">v2.2 · serialização</a>
+        <a href="#v23" class="nav-link">v2.3 · SOLID</a>
+        <a href="#v24" class="nav-link">v2.4 · Qt</a>
+        <a href="#v25" class="nav-link">v2.5 · final</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <span>Trilha Sintonia</span>
+      </div>
+    </header>
+
+    <main class="slides-container">
+
+      <section class="slide slide-hero" id="sobre">
+        <div class="slide-header">
+          <span class="slide-num">🎵</span>
+          <h2 class="slide-title hero-title">Projeto Sintonia</h2>
+        </div>
+        <div class="slide-body">
+          <p>O <strong>Sintonia</strong> é um mini-DAW (<em>Digital Audio Workstation</em>) construído incrementalmente ao longo do semestre. Cada versão introduz exatamente os conceitos da aula correspondente, aplicados a um domínio de áudio real e coerente.</p>
+          <div class="callout callout-info">
+            <span class="callout-icon">📁</span>
+            <div class="callout-content">
+              <div class="callout-title">Repositório</div>
+              <p>Todo o código está em <code><a href="https://github.com/dobidu/sintonia" target="_blank">github.com/dobidu/sintonia</a></code>. O estado atual do repositório corresponde à <strong>v2.5 — versão final</strong>, com 72 testes passando.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trilha visual -->
+      <section class="slide" id="trilha">
+        <div class="slide-header">
+          <span class="slide-num">Timeline</span>
+          <h2 class="slide-title">Evolução v0.1 → v2.5</h2>
+        </div>
+        <div class="slide-body">
+          <div class="sintonia-trail">
+
+            <!-- v0.1 -->
+            <div class="trail-item" id="v01">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v0.1</div>
+              <div class="trail-content">
+                <div class="trail-version">v0.1 · Aula 08</div>
+                <div class="trail-title">Classes <code>sample</code> e <code>track</code></div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">encapsulamento</span>
+                  <span class="tag cpp">const-correctness</span>
+                  <span class="tag cpp">static</span>
+                  <span class="tag cpp">this</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v0.2 -->
+            <div class="trail-item" id="v02">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v0.2</div>
+              <div class="trail-content">
+                <div class="trail-version">v0.2 · Aula 09</div>
+                <div class="trail-title"><code>audio_buffer</code> com ciclo de vida</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">construtores</span>
+                  <span class="tag cpp">destrutores</span>
+                  <span class="tag cpp">lista de inicialização</span>
+                  <span class="tag cpp">regra do zero</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v0.3 -->
+            <div class="trail-item" id="v03">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v0.3</div>
+              <div class="trail-content">
+                <div class="trail-version">v0.3 · Aula 09</div>
+                <div class="trail-title"><code>project</code> e I/O WAV (RIFF)</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">composição</span>
+                  <span class="tag cpp">I/O binário</span>
+                  <span class="tag cpp">std::optional</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v1.0 -->
+            <div class="trail-item" id="v10">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v1.0</div>
+              <div class="trail-content">
+                <div class="trail-version">v1.0 · Aulas 15, 17</div>
+                <div class="trail-title">Hierarquia <code>effect</code> polimórfica</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">herança simples</span>
+                  <span class="tag cpp">virtual</span>
+                  <span class="tag cpp">override</span>
+                  <span class="tag cpp">destrutor virtual</span>
+                  <span class="tag broken">⚠️ v1.0-broken: sem ~virtual</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v1.1 -->
+            <div class="trail-item" id="v11">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v1.1</div>
+              <div class="trail-content">
+                <div class="trail-version">v1.1 · Aulas 10, 11</div>
+                <div class="trail-title"><code>effect_chain</code> com <code>unique_ptr</code></div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">unique_ptr</span>
+                  <span class="tag cpp">shared_ptr</span>
+                  <span class="tag cpp">RAII</span>
+                  <span class="tag cpp">regra dos 0/3/5</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v1.2 -->
+            <div class="trail-item" id="v12">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v1.2</div>
+              <div class="trail-content">
+                <div class="trail-version">v1.2 · Aula 12</div>
+                <div class="trail-title">Semântica de movimento em <code>audio_buffer</code></div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">rvalue ref</span>
+                  <span class="tag cpp">std::move</span>
+                  <span class="tag cpp">noexcept</span>
+                  <span class="tag cpp">NRVO</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v1.3 -->
+            <div class="trail-item" id="v13">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v1.3</div>
+              <div class="trail-content">
+                <div class="trail-version">v1.3 · Aula 13</div>
+                <div class="trail-title">Operadores <code>+</code>, <code>*</code>, <code>+=</code>, <code>&lt;&lt;</code></div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">sobrecarga</span>
+                  <span class="tag cpp">funções livres</span>
+                  <span class="tag cpp">interface idiomática</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v1.4 -->
+            <div class="trail-item" id="v14">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v1.4</div>
+              <div class="trail-content">
+                <div class="trail-version">v1.4 · Aula 16</div>
+                <div class="trail-title"><code>looper</code> — o diamante resolvido</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">herança múltipla</span>
+                  <span class="tag cpp">herança virtual</span>
+                  <span class="tag cpp">problema do diamante</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v2.0 -->
+            <div class="trail-item" id="v20">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v2.0</div>
+              <div class="trail-content">
+                <div class="trail-version">v2.0 · Aula 19</div>
+                <div class="trail-title"><code>buffer&lt;T&gt;</code> — template genérico</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">templates</span>
+                  <span class="tag cpp">static_assert</span>
+                  <span class="tag cpp">CRTP</span>
+                  <span class="tag cpp">polimorfismo estático</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v2.1 -->
+            <div class="trail-item" id="v21">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v2.1</div>
+              <div class="trail-content">
+                <div class="trail-version">v2.1 · Aula 21</div>
+                <div class="trail-title">Erros modernos: <code>optional</code>, <code>variant</code></div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">std::optional</span>
+                  <span class="tag cpp">std::variant</span>
+                  <span class="tag cpp">hierarquia de exceções</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v2.2 -->
+            <div class="trail-item" id="v22">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v2.2</div>
+              <div class="trail-content">
+                <div class="trail-version">v2.2 · Aula 24</div>
+                <div class="trail-title">Serialização JSON com nlohmann</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">nlohmann/json</span>
+                  <span class="tag cpp">DIP</span>
+                  <span class="tag cpp">versionamento</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v2.3 -->
+            <div class="trail-item" id="v23">
+              <div class="trail-line"></div>
+              <div class="trail-dot done">v2.3</div>
+              <div class="trail-content">
+                <div class="trail-version">v2.3 · Aulas 25, 26</div>
+                <div class="trail-title">Refatoração SOLID + Padrões</div>
+                <div class="trail-concepts">
+                  <span class="tag pattern">SRP · OCP · LSP · ISP · DIP</span>
+                  <span class="tag pattern">Strategy · Observer · Factory</span>
+                  <span class="tag pattern">Decorator · Composite · Singleton</span>
+                  <span class="tag broken">⚠️ v2.3-before: sem SOLID</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v2.4 -->
+            <div class="trail-item" id="v24">
+              <div class="trail-line"></div>
+              <div class="trail-dot">v2.4</div>
+              <div class="trail-content">
+                <div class="trail-version">v2.4 · Aula 27</div>
+                <div class="trail-title">Interface Qt — mixer com signals/slots</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">QObject</span>
+                  <span class="tag cpp">signals/slots</span>
+                  <span class="tag cpp">separação domínio/UI</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- v2.5 -->
+            <div class="trail-item" id="v25">
+              <div class="trail-dot done">v2.5</div>
+              <div class="trail-content">
+                <div class="trail-version">v2.5 · Estado atual do repositório</div>
+                <div class="trail-title">Versão final integrada — 72 testes passando ✅</div>
+                <div class="trail-concepts">
+                  <span class="tag cpp">CI GitHub Actions</span>
+                  <span class="tag cpp">ASan + UBSan</span>
+                  <span class="tag cpp">Ubuntu · macOS</span>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /sintonia-trail -->
+        </div>
+      </section>
+
+      <!-- Versões com bugs didáticos -->
+      <section class="slide" id="broken">
+        <div class="slide-header">
+          <span class="slide-num">⚠️</span>
+          <h2 class="slide-title">Versões com Bugs Didáticos</h2>
+        </div>
+        <div class="slide-body">
+          <p>O diretório <code>extras/broken-designs/</code> contém versões <strong>deliberadamente incorretas</strong> para exercícios de identificação e correção.</p>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">v1.0-no-virtual-dtor — sem destrutor virtual</div>
+              <p>A cadeia de efeitos não declara <code>virtual ~effect()</code>. Deletar via <code>effect*</code> não chama <code>~gain_effect()</code> — vazamento de recursos visível com ASan.</p>
+              <p style="margin-top:0.5rem;"><code>extras/broken-designs/v1.0-no-virtual-dtor/test_broken.cpp</code></p>
+            </div>
+          </div>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">v2.3-before-solid — violações SOLID</div>
+              <p><code>audio_manager</code> viola SRP (4 responsabilidades), OCP (if/else para efeitos), LSP (<code>normalized_manager</code> muda semântica), ISP (interface monolítica) e DIP (depende de <code>fstream</code> diretamente).</p>
+              <p style="margin-top:0.5rem;"><code>extras/broken-designs/v2.3-before-solid/broken_manager.hpp</code></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <kbd>←</kbd><kbd>→</kbd> navegar &nbsp; <kbd>Esc</kbd> início
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

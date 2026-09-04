@@ -1,0 +1,498 @@
+%% livro/estilo/livro.tex - gabarito de impressão do livro de POO (UFPB/CI)
+%%
+%% GERADO consome este arquivo: build/render_livro.py o passa ao pandoc como
+%% --template. Editar aqui muda o livro impresso; editar poo/css/livro.css
+%% muda a versão de tela. As duas herdam o mesmo mundo visual, e a diferença
+%% é o fundo: papel recebe tinta, tela recebe fósforo.
+%%
+%% Estrutura: caderno de bordo. Campo de aferição na margem externa, sempre à
+%% direita (o livro é `oneside` de propósito: o campo não pode trocar de lado
+%% sem que o código deixe de caber). Bloco de código atravessa texto e campo,
+%% porque código não reflui.
+\documentclass[10.5pt,oneside]{book}
+
+% `includemp` NÃO é opcional aqui, e a falta dele custou uma depuração inteira.
+% Sem ele, `geometry` trata a margem externa como parte da margem direita: o
+% textwidth pedido é ignorado e recalculado para 172 mm, e o campo de aferição
+% vai para 199 mm da borda esquerda - FORA do papel de 210 mm. O resultado é
+% que nenhum carimbo aparecia, e sem erro nenhum.
+%
+% Com `includemp`, a soma fecha: 20 + 134 + 5 + 35 + 16 = 210 mm.
+\usepackage[a4paper,
+            left=20mm, right=16mm,
+            marginparsep=5mm, marginparwidth=35mm, includemp,
+            top=22mm, bottom=25mm,
+            headsep=7mm, footskip=14mm]{geometry}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{portuguese}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{marginnote}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{calc}      % o pandoc calcula largura de coluna com \real, que vem daqui
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{amsmath}
+% NÃO há `unicode-math` aqui, e não é esquecimento: ele exige uma fonte
+% matemática de base (`latinmodern-math`) que esta instalação não tem.
+%
+% O livro tinha duas expressões em modo matemático, e as duas puxavam CMR10,
+% CMMI10 e CMMI7 para dentro do PDF: três faces do Computer Modern, fora das
+% três que o desenho declara, para imprimir "2" e "n". As duas passaram a
+% trecho de código na prosa, que é como este livro escreve toda expressão, e
+% o modo matemático deixou de ser usado.
+\usepackage{microtype}
+% Palavra de largura fixa quebra: `-Wsign-conversion` e `[[nodiscard]]` não
+% cabem na medida da prosa, e transbordar a coluna é pior que hifenizar.
+\usepackage[htt]{hyphenat}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\Urlmuskip=0mu plus 2mu
+\def\UrlBreaks{\do\/\do\-\do\.\do\_\do\?\do\&\do\=\do\#\do\:}
+
+% ---------------------------------------------------------------------------
+% a paleta, traduzida para papel
+%
+% O fósforo âmbar #F2A93B vive sobre #0A0C0B e é ilegível sobre branco. A
+% tradução escurece o âmbar até 4,8:1 sobre papel e mantém o viés quente;
+% o claro fica para moldura e fio de cabelo, que não carregam texto.
+% ---------------------------------------------------------------------------
+\definecolor{tinta}{HTML}{1A1C1B}
+% O âmbar impresso, medido em pixel e não em declaração.
+%
+% Em #A0630F o valor declarado dá 4,9:1 sobre papel, mas a 8 pt o traço é fino
+% e a antialiasagem o clareia: o pixel mais escuro da procedência media
+% (177,127,60), cerca de 3,5:1, contra 7:1 do código que ela rotula. A tinta
+% mais fraca da folha era justamente a que carrega a prova.
+\definecolor{ambar}{HTML}{7E4A06}
+\definecolor{ambarclaro}{HTML}{C89A52}
+\definecolor{apagado}{HTML}{5C625E}
+\definecolor{papel}{HTML}{FFFFFF}
+\color{tinta}
+
+% ---------------------------------------------------------------------------
+% três famílias, três papéis - e nenhum papel a mais
+% ---------------------------------------------------------------------------
+% `Mapping=` vazio é o que desliga a conversão de risca, e levou três
+% tentativas para achar: não é feature OpenType, é o mapa de entrada
+% `tex-text` do XeTeX, que o fontspec aplica por padrão. `Ligatures=NoTeX`
+% não existe, `Ligatures=NoCommon` não o desliga e `RawFeature={-tlig}`
+% também não. As ligaduras tipográficas de verdade (fi, fl) são `liga` do
+% OpenType e continuam ligadas.
+\defaultfontfeatures{Path = FONTEDIR/}
+% NENHUMA família recebe `Ligatures=TeX`, e a razão é a regra 6.4.
+%
+% Aquela opção é atalho de entrada do TeX: ela converte `--` em meia-risca e
+% `---` em travessão NA COMPOSIÇÃO, depois de o `.tex` estar limpo. O arquivo
+% não tinha uma risca e o PDF saiu com 13, todas em opção de linha de comando
+% escrita na prosa: `cmake --build` compôs `cmake –build`. Quem copiasse o
+% comando do livro receberia erro do shell.
+%
+% O que ela também dava eram as aspas curvas, e essas vêm agora do filtro
+% `Quoted` em `livro.lua`, em Unicode, que é mais direto e não tem efeito
+% colateral. As ligaduras tipográficas de verdade (fi, fl) são o padrão do
+% fontspec e continuam ligadas.
+\setmainfont{IBMPlexSerif-Regular.ttf}[
+  Mapping        = ,
+  ItalicFont     = IBMPlexSerif-Italic.ttf,
+  BoldFont       = IBMPlexSerif-SemiBold.ttf,
+  BoldItalicFont = IBMPlexSerif-Italic.ttf]
+\setsansfont{IBMPlexSans-Regular.ttf}[Mapping = , BoldFont = IBMPlexSans-Medium.ttf]
+% O Mono fica FORA de `Ligatures=TeX`, e isso não é detalhe.
+%
+% Aquela opção converte `--` em meia-risca e `---` em travessão. Num livro de
+% C++ ela corrompia toda opção de linha de comando - `--replay`, `--leiaute`,
+% `ctest --test-dir` saíram como `–replay`, `–leiaute`, `ctest –test-dir` - e
+% transformava as réguas de comentário `// ------` numa fileira de travessões.
+% Eram 42 meias-riscas e 6 travessões no PDF, e a regra 6.4 da voz do autor
+% proíbe as duas. `verifica_pdf.py` agora recusa o livro se voltarem.
+\setmonofont{IBMPlexMono-Regular.ttf}[
+  Mapping = , BoldFont = IBMPlexMono-SemiBold.ttf, Scale = 0.92]
+% O suplemento geométrico: os dez glifos que nenhuma família do Plex tem, e
+% que o material usa como marcador de estado. Mesmo avanço do Plex Mono.
+\newfontfamily\geo{DerivaGeometricos.ttf}[Mapping = ]
+
+\newcommand{\maquina}{\ttfamily}
+\newcommand{\rotulo}[1]{{\ttfamily\bfseries\footnotesize\MakeUppercase{#1}}}
+\newcommand{\rotuloliteral}[1]{{\ttfamily\bfseries\footnotesize #1}}
+
+% ---------------------------------------------------------------------------
+% moldura: caracteres de box-drawing de verdade, tiling com \leaders
+%
+% O `─` que preenche a régua é o próprio caractere repetido, não um \hrule
+% pintado de cinza: é a mesma primitiva do site, e o desalinho apareceria.
+% Topo e base só, sem os verticais - é o que a moldura do site faz, e um
+% `│` por linha não sobrevive a parágrafo que reflui.
+% ---------------------------------------------------------------------------
+\newlength{\codigolargura}
+\setlength{\codigolargura}{\dimexpr\textwidth+\marginparsep+\marginparwidth\relax}
+
+% \largo: caixa que passa da medida do texto e entra no campo externo, sem
+% que o LaTeX a trate como transbordo - ela cabe onde tem de caber, e a
+% reclamação escondia os transbordos de verdade.
+\newcommand{\largo}[2]{\noindent\makebox[\textwidth][l]{\hbox to #1{#2}}\par}
+
+\newcommand{\molduratopo}[4][8.0]{% [#1] corpo  #2 largura  #3 rótulo  #4 nota
+  \largo{#2}{%
+    \ttfamily\fontsize{#1pt}{#1pt}\selectfont\color{ambarclaro}%
+    ┌─%
+    \if\relax\detokenize{#3}\relax\else
+      ─┤\,{\normalcolor\color{ambar}#3}\,├%
+    \fi
+    \leaders\hbox{─}\hfil
+    \if\relax\detokenize{#4}\relax\else
+      \,{\normalcolor\color{apagado}\ttfamily\fontsize{#1pt}{#1pt}\selectfont #4}\,─%
+    \fi
+    ─┐}\nointerlineskip}
+
+\newcommand{\moldurafecha}[2]{% #1 largura  #2 nota à direita
+  \largo{#1}{%
+    \ttfamily\small\color{ambarclaro}%
+    └\leaders\hbox{─}\hfil
+    \if\relax\detokenize{#2}\relax\else
+      \,{\normalcolor\color{apagado}\ttfamily\scriptsize #2}\,─%
+    \fi
+    ┘}}
+
+\newcommand{\moldurabase}[1]{% #1 largura
+  \largo{#1}{%
+    \ttfamily\small\color{ambarclaro}%
+    └\leaders\hbox{─}\hfil┘}}
+
+% ---------------------------------------------------------------------------
+% bloco de código: a prancha
+%
+% Atravessa texto e campo de aferição, porque código não reflui e 92 colunas
+% não caberiam na medida da prosa. A procedência - arquivo e linha - vai
+% embutida na moldura de cima, não em legenda solta embaixo: ela é parte do
+% bloco, e o leitor a lê antes do código, não depois.
+% ---------------------------------------------------------------------------
+\newlength{\codeem}
+\newcommand{\CS}{\hbox to \codeem{}}
+
+% A prancha numera as linhas, e começa no número que a régua declara.
+%
+% Sem isso a procedência é afirmação: a régua diz `src/mapa.cpp:66` e o corpo
+% não dá ao leitor como casar a linha que ele está vendo com a linha do
+% arquivo. O livro afirma que todo trecho vem de arquivo que compila, e a
+% numeração é o que torna a afirmação conferível - que é a tese dele.
+%
+% O número fica FORA da medida do código, num recuo à esquerda, para não
+% roubar coluna de um bloco que já não reflui.
+\newcounter{codelinhanum}
+\newlength{\codegoteira}
+\setlength{\codegoteira}{3.2em}
+\newcommand{\codelinha}[1]{%
+  \stepcounter{codelinhanum}%
+  \noindent
+  \hbox to \codegoteira{\color{fantasma}\hfil
+    \scriptsize\thecodelinhanum\hskip 0.9em}%
+  \strut#1\par}
+\definecolor{fantasma}{HTML}{9AA09C}
+
+\newcommand{\tkkw}[1]{{\bfseries\color{tinta}#1}}
+\newcommand{\tktipo}[1]{{\color{ambar}#1}}
+\newcommand{\tkcom}[1]{{\itshape\color{apagado}#1}}
+\newcommand{\tkstr}[1]{{\color{ambar}#1}}
+\newcommand{\tknum}[1]{{\color{ambar}#1}}
+\newcommand{\tkpre}[1]{{\color{apagado}#1}}
+\newcommand{\tkctwenty}[1]{{\bfseries\color{ambar}#1}}
+
+% [#1] corpo da régua  #2 escala  #3 rótulo  #4 nota  #5 reserva  #6 1ª linha
+\newenvironment{codigo}[6][8.0]{%
+  \setcounter{codelinhanum}{\numexpr#6-1\relax}%
+  \par\addvspace{1.2\baselineskip}%
+  % A altura vem calculada de `build/render_livro.py`, que conhece o número
+  % de linhas do trecho: com 5 linhas fixas a prancha partia na quebra e a
+  % continuação chegava sem régua de cima, sem procedência e sem legenda.
+  \needspace{#5\baselineskip}%
+  \molduratopo[#1]{\codigolargura}{#3}{#4}%
+  \begingroup
+    \fontsize{#2pt}{\dimexpr #2pt*13/10\relax}\selectfont\ttfamily
+    \setlength{\codeem}{0.6\fontcharwd\font`0 }%
+    \settowidth{\codeem}{0}%
+    \parindent=0pt \parskip=0pt \leftskip=\codegoteira \rightskip=0pt plus 1fil
+    \hsize=\codigolargura
+    \color{tinta}%
+}{%
+  \par\endgroup
+  \moldurabase{\codigolargura}%
+  \addvspace{1.2\baselineskip}}
+
+% ---------------------------------------------------------------------------
+% as caixas tipadas: cinco no vocabulário, e o glifo e o rótulo vêm do mapa
+% ---------------------------------------------------------------------------
+\newenvironment{callout}[2]{% #1 glifo  #2 rótulo
+  \par\addvspace{0.9\baselineskip}%
+  \needspace{4\baselineskip}%
+  % #1 já vem com a face embutida, do filtro: `\geo` cobre os dez
+  % geométricos, e `✓` e `·` vivem no Plex Mono.
+  % o rótulo já vem em caixa-alta do filtro; `\MakeUppercase` aqui
+  % seria transformação sobre transformação
+  \molduratopo{\textwidth}{#1\;\rotuloliteral{#2}}{}%
+  \begingroup\small\leftskip=0.9em \rightskip=0.4em
+}{%
+  \par\endgroup\moldurabase{\textwidth}%
+  \addvspace{0.9\baselineskip}}
+
+% os objetivos abrem o capítulo, e não são aviso: caixa própria, mais larga,
+% com a lista dentro
+\newenvironment{objetivos}{%
+  \par\addvspace{0.6\baselineskip}%
+  \molduratopo{\codigolargura}{\rotulo{o que este capítulo entrega}}{}%
+  \begingroup\small\hsize=\codigolargura
+  \setlist[itemize]{leftmargin=1.5em,itemsep=1pt,topsep=2pt,parsep=0pt,
+                    label={\ttfamily\color{ambar}{\geo ▸}}}%
+}{%
+  \par\endgroup\moldurabase{\codigolargura}%
+  \addvspace{1.1\baselineskip}}
+
+% a figura de notação: o desenho da UML é texto, e o lugar dele é a prancha
+\newenvironment{figurauml}{%
+  \par\addvspace{0.9\baselineskip}\needspace{4\baselineskip}%
+  \molduratopo{\codigolargura}{\rotulo{diagrama uml}}{}%
+  \begingroup\small\sffamily\leftskip=0.9em\hsize=\codigolargura
+}{%
+  \par\endgroup\moldurabase{\codigolargura}\addvspace{0.9\baselineskip}}
+
+% ---------------------------------------------------------------------------
+% o carimbo de aferição: o campo externo
+%
+% Cada número que a prosa afirma e o binário mediu recebe, na margem, o
+% valor, o comando que o produziu e o arquivo que o fixa. É a tese do livro
+% em uma primitiva: o leitor não precisa acreditar.
+% ---------------------------------------------------------------------------
+\renewcommand{\marginfont}{\ttfamily\fontsize{6.4}{8}\selectfont\color{apagado}}
+% O carimbo abria `┌───` e nunca fechava: moldura pela metade, que numa folha
+% sem outro carimbo lia como erro de composição. A régua agora atravessa o
+% campo inteiro e não finge ser canto de caixa.
+\newcommand{\carimbo}[4]{% #1 grandeza  #2 valor  #3 comando  #4 arquivo
+  \marginnote{%
+    \raggedright
+    {\color{ambarclaro}\hbox to \marginparwidth{\leaders\hbox{─}\hfil}}\par
+    \nointerlineskip
+    {\color{ambar}\bfseries #2}\par
+    {\color{tinta}#1}\par
+    \addvspace{2pt}
+    {\itshape aferido por}\par
+    #3\par
+    #4\par}}
+
+% ---------------------------------------------------------------------------
+% hierarquia: capítulo, seção, subseção
+% ---------------------------------------------------------------------------
+\newcommand{\capituloabre}[6]{% #1 nº  #2 título  #3 unidade  #4 aula  #5 versão  #6 cabeça
+  \cleardoublepage
+  \thispagestyle{empty}%
+  \vspace*{6mm}%
+  \molduratopo{\codigolargura}{\rotulo{capítulo #1}}{#3}%
+  \vspace{3mm}%
+  {\raggedright\LARGE\bfseries #2\par}%
+  \vspace{2mm}%
+  % O separador some junto com o valor que ele separava: com a aula sem
+  % versão, a régua terminava em "aula 01 ·", com o ponto médio pendurado.
+  % Carimbar a falta com pontuação é a mesma coisa que carimbá-la com
+  % palavra, e o contrato reservou aquele lugar para a versão.
+  \moldurafecha{\codigolargura}{aula #4
+    \if\relax\detokenize{#5}\relax\else\;·\;#5\fi}%
+  \vspace{5mm}%
+  \markboth{#6}{#2}%
+  \addcontentsline{toc}{chapter}{\protect\numberline{#1}#2}}
+
+% O título vem do pandoc como conteúdo inline, e não como argumento: um
+% parágrafo dentro de argumento de \newcommand é erro, e título com `código`
+% embutido é comum aqui. Abre-fecha resolve sem \long e sem fragilidade.
+% A folha de abertura de unidade.
+%
+% As três divisórias vinham do v1 como parágrafos em negrito DEPOIS do
+% cabeçalho do capítulo, e chegavam ao leitor como três linhas soltas no pé
+% de uma folha - uma delas duplicada no prefácio. Num livro de 294 páginas a
+% divisória de parte é folha própria, e aqui ela é a única página que gasta a
+% largura inteira em silêncio.
+\newenvironment{unidade}[1]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \vspace*{58mm}%
+  \molduratopo{\codigolargura}{\rotulo{unidade #1}}{}%
+  \vspace{7mm}%
+  \begingroup\raggedright
+    % O título da unidade vem do markdown como `**...**`, e sairia no corpo do
+    % texto: "Fundamentos" em 10,5 pt no meio de uma folha vazia. Aqui o
+    % negrito da folha de abertura é o título dela.
+    % O título em Serif SemiBold ROMANO, como a capa e a abertura de
+    % capítulo. A primeira versão punha `\itshape` no ambiente inteiro, e o
+    % nível mais alto da estrutura do livro virava o único título em itálico
+    % - título e tema distintos só por corpo, e os dois fora do que o resto
+    % do livro faz.
+    \renewcommand{\textbf}[1]{{\upshape\normalcolor
+      \fontsize{27}{31}\selectfont\bfseries ##1\par
+      \vspace{5mm}}}%
+    \itshape\color{apagado}%
+}{%
+  \par\endgroup
+  \vspace{6mm}%
+  \moldurafecha{\codigolargura}{}%
+  \clearpage}
+
+\newcommand{\unidadetitulo}[1]{{\fontsize{26}{30}\selectfont\bfseries #1\par}}
+
+% Prefácio, anexos e glossário não têm aula nem versão do Deriva, e a moldura
+% não finge que têm.
+\newcommand{\capituloabresimples}[1]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \vspace*{6mm}%
+  \molduratopo{\codigolargura}{}{}%
+  \vspace{3mm}%
+  {\raggedright\LARGE\bfseries #1\par}%
+  \vspace{2mm}%
+  \moldurafecha{\codigolargura}{}%
+  \vspace{5mm}%
+  \markboth{}{#1}%
+  \addcontentsline{toc}{chapter}{#1}}
+
+\newcommand{\secaoabre}[1]{%
+  \par\addvspace{1.6\baselineskip}\needspace{3\baselineskip}%
+  \begingroup\raggedright\Large\bfseries
+  \if\relax\detokenize{#1}\relax\else{\ttfamily\mdseries\color{ambar}§#1}\,\fi}
+\newcommand{\secaofecha}{\par\endgroup\addvspace{0.35\baselineskip}\nopagebreak}
+
+% O terceiro nível tinha o mesmo corpo e o mesmo peso da entrada em negrito
+% de parágrafo ("**Falta de encapsulamento.**"), e os dois apareciam na mesma
+% folha: o nível virava frase enfatizada. Agora ele traz o tique `├──` da
+% moldura, em Mono âmbar, que é device do mundo e não adorno novo.
+\newcommand{\subsecaoabre}{%
+  \par\addvspace{1.2\baselineskip}\needspace{3\baselineskip}%
+  \begingroup\raggedright\large\bfseries
+  {\ttfamily\mdseries\normalsize\color{ambarclaro}├──}\,}
+\newcommand{\subsecaofecha}{\par\endgroup\addvspace{0.15\baselineskip}\nopagebreak}
+
+% ---------------------------------------------------------------------------
+% cabeça corrida: a versão sob inspeção à esquerda, o capítulo à direita
+% ---------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{{\ttfamily\scriptsize\color{ambar}\leftmark}}
+\fancyhead[R]{{\ttfamily\scriptsize\color{apagado}\rightmark}}
+\fancyfoot[R]{{\ttfamily\small\color{tinta}\thepage}}
+\renewcommand{\headrule}{%
+  \makebox[\textwidth][l]{\hbox to \codigolargura{%
+    \ttfamily\scriptsize\color{ambarclaro}\leaders\hbox{─}\hfil}}}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{14pt}
+
+% ---------------------------------------------------------------------------
+% prosa: medida, viúvas, órfãs, e nada de âmbar no corpo
+% ---------------------------------------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55\baselineskip}
+\linespread{1.10}
+\widowpenalty=10000
+\clubpenalty=10000
+% Sem folga de emergência, uma linha com um único identificador longo não tem
+% para onde ceder e transborda.
+\emergencystretch=2em
+\hbadness=2000
+\raggedbottom
+\setlist{topsep=3pt,itemsep=2pt,parsep=0pt,leftmargin=1.3em}
+
+% A tabela reclama os 174 mm, como a prancha: grade densa não reflui sem
+% perder o alinhamento das colunas. `\linewidth` é o que o pandoc usa para
+% calcular a fração de cada coluna, então mudá-lo escala a tabela inteira.
+\newenvironment{tabelalarga}{%
+  \par\addvspace{0.8\baselineskip}%
+  \begingroup
+    \footnotesize
+    % `longtable` centraliza por padrão (`\LTleft` e `\LTright` valem
+    % `\fill`), e o intervalo de coluna soma 2·`\tabcolsep` por fronteira
+    % além da largura que o pandoc calcula: a tabela ficava mais larga que a
+    % medida e vazava dos DOIS lados, 16 blocos tocando a borda do papel.
+    % Ancorada à esquerda, o excesso vai todo para o campo, que é onde ela
+    % tem licença de entrar.
+    \setlength{\LTleft}{0pt}%
+    \setlength{\LTright}{\fill}%
+    \setlength{\linewidth}{\dimexpr\codigolargura-10\tabcolsep\relax}%
+    \setlength{\hsize}{\linewidth}%
+}{%
+  \par\endgroup\addvspace{0.8\baselineskip}}
+
+% tabela densa: só fio horizontal, e número em Mono com figura tabular
+\renewcommand{\arraystretch}{1.18}
+% 5 pt de intervalo estouravam a coluna que o pandoc dimensionou apertada;
+% 3 pt devolvem 4 pt por fronteira de coluna, e a tabela densa cabe.
+\setlength{\tabcolsep}{3pt}
+% `\real` NÃO se toca: é do calc, e o pandoc a usa para dimensionar coluna de
+% longtable. Redefinir aqui derrubava toda tabela do livro.
+\newcommand{\num}[1]{{\ttfamily #1}}
+
+% Código embutido na prosa.
+%
+% `\textcolor` e não `\color`: `\color` abre um grupo de cor, e quando ele é
+% a primeira coisa de uma célula `p{}` o conteúdo desce para a SEGUNDA linha
+% da célula. Custou a fileira inteira da tabela de ponteiros do Cap. 12, com
+% a primeira coluna 9,1 pt abaixo das outras três - e o defeito só apareceu
+% quando os identificadores daquela coluna ganharam crase e viraram Mono.
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{\textcolor{tinta}{\ttfamily #1}}
+
+% o que o pandoc precisa
+% O livro passa de 100 páginas, e o sumário reservava 1,55 em para o número:
+% todo número de três dígitos transbordava. Eram 155 avisos de 2,5 pt, que
+% escondiam os transbordos de verdade.
+\makeatletter
+% A cabeça corrida das folhas do sumário saía "CONTEÚDO   CONTEÚDO",
+% duplicada dos dois lados, porque a classe `book` chama
+% `\@mkboth{\contentsname}{\contentsname}`.
+\newcommand{\sumario}{%
+  \molduratopo{\codigolargura}{\rotulo{sumário}}{}%
+  \vspace{3mm}%
+  \markboth{Sumário}{}%
+  \@starttoc{toc}%
+  \moldurafecha{\codigolargura}{}}
+
+\renewcommand{\@pnumwidth}{2.4em}
+\renewcommand{\@tocrmarg}{3.2em}
+\renewcommand{\@dotsep}{2.5}
+\makeatother
+
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\passthrough}[1]{#1}
+
+\hypersetup{pdftitle={$title$}, pdfauthor={$author$}}
+
+\begin{document}
+\frontmatter
+\thispagestyle{empty}
+\vspace*{24mm}
+\molduratopo{\codigolargura}{\rotulo{ufpb · centro de informática}}{$semestre$}
+\vspace{7mm}
+{\raggedright\fontsize{31}{35}\selectfont\bfseries $title$\par}
+\vspace{6mm}
+{\raggedright\large\itshape\color{apagado} $subtitle$\par}
+\vfill
+\molduratopo{\codigolargura}{\rotulo{o que este livro afere}}{}
+\vspace{1mm}
+{\ttfamily\footnotesize\color{apagado}
+ \begin{tabbing}
+ \hspace{46mm}\=\kill
+ sistema-base            \> {\color{tinta}$sistema$}\\
+ padrão-alvo             \> {\color{tinta}$padrao$}\\
+ portão                  \> {\color{tinta}$portao$}\\
+ estrutura               \> {\color{tinta}$estrutura$}\\
+ trechos de código       \> {\color{tinta}$trechos$}\\
+ \end{tabbing}}
+\vspace{-2mm}
+\moldurafecha{\codigolargura}{$author$}
+\clearpage
+
+\pagestyle{fancy}
+\sumario
+
+\mainmatter
+$body$
+\end{document}

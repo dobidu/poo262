@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="$lang$">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="$author$">
+<meta name="description" content="$subtitle$">
+<title>$title$</title>
+<style>/* AS-FOLHAS */</style>
+</head>
+<body>
+<p class="so-impresso">Esta é a versão de tela. O artefato de impressão
+   deste livro é <code>livro/poo-v2.pdf</code>, composto para papel A4 com
+   campo de aferição na margem: imprima aquele, não esta página.</p>
+<header id="capa">
+  <div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">UFPB · CENTRO DE INFORMÁTICA · $semestre$</span><span class="moldura__canto">├</span><span class="moldura__regua">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span class="moldura__canto">─┐</span></div>
+  <p class="capa__rot--oculto">UFPB · Centro de Informática · $semestre$</p>
+  <h1 class="capa__titulo">$title$</h1>
+  <p class="capa__sub">$subtitle$</p>
+  <div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">O QUE ESTE LIVRO AFERE</span><span class="moldura__canto">├</span><span class="moldura__regua">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span class="moldura__canto">─┐</span></div>
+  <dl class="capa__afere">
+    <dt>sistema-base</dt><dd>$sistema$</dd>
+    <dt>padrão-alvo</dt><dd>$padrao$</dd>
+    <dt>portão</dt><dd>$portao$</dd>
+    <dt>estrutura</dt><dd>$estrutura$</dd>
+    <dt>trechos de código</dt><dd>$trechos$</dd>
+  </dl>
+  <p class="capa__autor">$author$</p>
+  <div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span class="moldura__canto">─┘</span></div>
+</header>
+$if(toc)$
+<nav id="TOC" role="doc-toc" aria-label="Sumário">
+<div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">SUMÁRIO</span><span class="moldura__canto">├</span><span class="moldura__regua">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span class="moldura__canto">─┐</span></div>
+$table-of-contents$
+<div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><span class="moldura__canto">─┘</span></div>
+</nav>
+$endif$
+$body$
+<footer id="pe">
+  <p>$title$ · $author$ · UFPB, Centro de Informática, $semestre$</p>
+  <p>O artefato primário deste livro é o PDF de impressão. Esta é a versão de
+     tela, e ela herda a mesma estrutura.</p>
+</footer>
+</body>
+</html>

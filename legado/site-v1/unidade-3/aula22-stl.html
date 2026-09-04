@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 22 — STL Panorâmica | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link active"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 22 — STL Panorâmica</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula21-tratamento-erros.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula23-concorrencia.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 22 · 21/jul</span>
+          <h2 class="slide-title hero-title">STL: Contêineres, Algoritmos e Iteradores</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Escolher o contêiner correto para cada situação</li><li>Usar algoritmos STL em vez de loops manuais</li><li>Compreender o modelo iterador e como a STL é extensível</li><li>Aplicar algoritmos ao processamento de áudio</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="conteineres">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Guia de Escolha de Contêiner</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Contêiner</th><th>Acesso</th><th>Inserção</th><th>Uso típico no Sintonia</th></tr></thead><tbody><tr><td>vector&lt;T&gt;</td><td>O(1)</td><td>O(1) final, O(n) meio</td><td>Amostras de áudio, lista de efeitos</td></tr><tr><td>deque&lt;T&gt;</td><td>O(1)</td><td>O(1) ambas as pontas</td><td>Fila de eventos MIDI</td></tr><tr><td>list&lt;T&gt;</td><td>O(n)</td><td>O(1) em qualquer lugar</td><td>Raramente — preferir vector</td></tr><tr><td>map&lt;K,V&gt;</td><td>O(log n)</td><td>O(log n)</td><td>Config: nome→valor</td></tr><tr><td>unordered_map&lt;K,V&gt;</td><td>O(1) médio</td><td>O(1) médio</td><td>Lookup frequente por chave</td></tr><tr><td>set&lt;T&gt;</td><td>O(log n)</td><td>O(log n)</td><td>Conjunto de plugins únicos</td></tr><tr><td>array&lt;T,N&gt;</td><td>O(1)</td><td>Impossível</td><td>Buffer de tamanho fixo em stack</td></tr></tbody></table>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Regra default: use vector</div>
+              <p>Na maioria dos casos, <code>std::vector</code> é o contêiner certo. Sua memória contígua é cache-friendly. Só mude para outro quando tiver razão concreta.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="algoritmos">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Algoritmos STL no Processamento de Áudio</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Algoritmos comuns em contexto de áudio</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <algorithm>
+#include <numeric>
+
+std::vector<float> buf = get_samples();
+
+// std::transform: aplicar ganho
+std::transform(buf.begin(), buf.end(), buf.begin(),
+               [](float s) { return s * 0.5f; });
+
+// std::max_element: pico
+auto pk = std::max_element(buf.begin(), buf.end(),
+    [](float a, float b) { return std::abs(a) < std::abs(b); });
+
+// std::accumulate: RMS
+float rms = std::sqrt(
+    std::accumulate(buf.begin(), buf.end(), 0.0f,
+        [](float acc, float s) { return acc + s*s; }) / buf.size()
+);
+
+// std::copy_if: extrair samples acima de threshold
+std::vector<float> loud;
+std::copy_if(buf.begin(), buf.end(), std::back_inserter(loud),
+             [](float s) { return std::abs(s) > 0.5f; });
+
+// std::fill: silenciar
+std::fill(buf.begin(), buf.end(), 0.0f);
+
+// std::sort: ordenar por magnitude
+std::sort(buf.begin(), buf.end(),
+          [](float a, float b) { return std::abs(a) > std::abs(b); });</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente um detector de silêncio em áudio usando apenas algoritmos STL (sem loops manuais): dado um vector&lt;float&gt;, retorne os intervalos [início, fim] onde abs(sample) &lt; threshold por mais de min_duration_samples amostras consecutivas."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs tendem a implementar em loops manuais quando a versão STL seria mais clara. Peça explicitamente 'sem loops for/while manuais' e observe se eles conseguem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Reimplemente <code>audio_buffer::rms_level()</code> usando apenas <code>std::transform</code> e <code>std::accumulate</code>. Compare com a implementação atual.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Use <code>std::adjacent_difference</code> para implementar um detector de zero-crossings (pontos onde o sinal muda de sinal). Quantos zero-crossings tem uma senoide de 440 Hz em 44100 samples?</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente uma função que encontra os N samples de maior magnitude num buffer usando <code>std::partial_sort</code> ou <code>std::nth_element</code>. Qual algoritmo é mais eficiente para esse caso?</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Compare <code>std::map</code> vs. <code>std::unordered_map</code> para um registro de plugins de áudio (nome→factory) com 1000 plugins. Meça tempo de busca e consumo de memória.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula21-tratamento-erros.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Tratamento de Erros</span></div>
+      </a>
+      <a href="aula23-concorrencia.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Concorrência</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

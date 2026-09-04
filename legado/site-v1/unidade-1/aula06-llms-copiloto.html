@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 06 — LLMs como Copiloto | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e OO</a>
+<a href="aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos fundamentais</a>
+<a href="aula03-classificacao-linguagens.html" class="nav-link"><span class="num">03.</span>Classificação de linguagens</a>
+<a href="aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python→C++</a>
+<a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+<a href="aula06-llms-copiloto.html" class="nav-link active"><span class="num">06.</span>LLMs como copiloto</a>
+<a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+<a href="aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e objetos</a>
+<a href="aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 06 — LLMs como Copiloto</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula05-git-github.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula07-uml-leve.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 06 · 14/mai</span>
+          <h2 class="slide-title hero-title">LLMs como Copiloto no Desenvolvimento OO</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Usar LLMs de forma produtiva para modelagem, refatoração e testes</li><li>Reconhecer os padrões de erro mais comuns em código C++ gerado por LLM</li><li>Escrever prompts eficazes para C++17 OO</li><li>Estabelecer um workflow de revisão crítica</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="workflow">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Workflow de Desenvolvimento com LLM</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Tarefa</th><th>Efetividade do LLM</th><th>O que verificar</th></tr></thead><tbody><tr><td>Esboço de classe (interface)</td><td>⭐⭐⭐⭐⭐</td><td>Convenções, const, noexcept</td></tr><tr><td>Implementação de método simples</td><td>⭐⭐⭐⭐</td><td>Regra dos 5, exceções</td></tr><tr><td>Testes Catch2</td><td>⭐⭐⭐⭐</td><td>Cobertura, Approx para float</td></tr><tr><td>Refatoração SOLID</td><td>⭐⭐⭐</td><td>LSP, ISP geralmente errados</td></tr><tr><td>Templates complexos</td><td>⭐⭐</td><td>Dedução de tipo, SFINAE</td></tr><tr><td>Concorrência</td><td>⭐</td><td>Race conditions sutis</td></tr></tbody></table>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Use o LLM como par de programação, não como oráculo</div>
+              <p>O LLM é como um colega experiente que às vezes dorme na roda. Revise tudo, compile, teste com sanitizers.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="prompts">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Anatomia de um Prompt Eficaz</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">text</span>
+              <span class="code-caption">Estrutura recomendada</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-text">Contexto:
+  Projeto: Sintonia (mini-DAW em C++17)
+  Convenções: snake_case, inglês, comentários PT, sem new/delete
+
+Tarefa:
+  [Descrição clara e específica]
+
+Restrições:
+  - C++17 (não C++20)
+  - Sem includes desnecessários
+  - Compilar limpo com -Wall -Wextra
+
+Saída esperada:
+  - arquivo.hpp com declaração
+  - arquivo.cpp com implementação
+  - Comentários explicando cada decisão</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="erros">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Padrões de Erro em Código Gerado por LLM</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Erro</th><th>Frequência</th><th>Como detectar</th></tr></thead><tbody><tr><td>Sem destrutor virtual</td><td>Muito comum</td><td>Compilar com -Wall</td></tr><tr><td>Object slicing em vector</td><td>Comum</td><td>Testar com ASan</td></tr><tr><td>PascalCase em vez de snake_case</td><td>Muito comum</td><td>Revisão visual</td></tr><tr><td>new/delete em vez de unique_ptr</td><td>Comum</td><td>grep 'new '</td></tr><tr><td>Sem noexcept em move</td><td>Comum</td><td>Checar headers</td></tr><tr><td>Testes sem Catch::Approx para float</td><td>Comum</td><td>Revisar testes</td></tr></tbody></table>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">Veja os exercícios do repositório</div>
+              <p>Os arquivos <code>sintonia/llms/code-review-exercises/</code> contêm código gerado por LLM com bugs reais para você identificar e corrigir.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Revise o código C++17 abaixo e identifique: (1) todos os warnings que -Wall -Wextra emitiria, (2) comportamentos indefinidos, (3) violações de boas práticas C++ modernas. Para cada problema, cite a linha e proponha a correção."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs são auto-validadores ruins — tendem a dizer 'o código está correto' quando não está. Sempre compile você mesmo. Use o LLM para revisão, mas o compilador como árbitro final.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Pegue o exercício <code>llms/code-review-exercises/ex01_audio_buffer.cpp</code>, sem olhar o gabarito, identifique todos os problemas. Compare com <code>ex01_gabarito.md</code>.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Use um LLM para implementar a classe <code>reverb_effect</code> seguindo a interface em <code>include/sintonia/effects/effect.hpp</code>. Compile com <code>-Wall -fsanitize=address</code> e reporte os problemas encontrados.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Escreva um prompt de revisão de código e aplique-o ao <code>ex02_effect_chain.cpp</code>. O LLM encontrou todos os 7 problemas do gabarito? Em qual ele falhou?</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Explore: use um LLM para gerar testes Catch2 para <code>audio_buffer</code>. Quantos dos testes gerados já existem em <code>tests/test_audio_buffer.cpp</code>? Quantos casos não cobertos ele identificou?</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula05-git-github.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Git e GitHub</span></div>
+      </a>
+      <a href="aula07-uml-leve.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">UML Leve</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

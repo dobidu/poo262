@@ -1,0 +1,39 @@
+replay semente=7 mapa=estacao-01
+entidades 10
+sonda 9,3 carga=0
+norte ok 9,2 carga=0
+norte ok 9,1 carga=0
+oeste ok 8,1 carga=0
+oeste ok 7,1 carga=0
+oeste ok 6,1 carga=3
+sul ok 6,2 carga=3
+sul ok 6,3 carga=3
+sul ok 6,4 carga=3
+leste ok 7,4 carga=3
+esperar ok 7,4 carga=3
+leste ok 8,4 carga=3
+leste ok 9,4 carga=3
+norte ok 9,3 carga=3
+oeste ok 8,3 carga=3
+mapa estacao-01 20x10
+entrada 9,3
+####################
+#...............!.!#
+#.####.......####..#
+#.#..#..@....#!.#..#
+#d#.d#...R...#..#..#
+#.####.......####.!#
+#..................#
+#..####.....####..!#
+#..#..........#....#
+####################
+entidades 9
+  d drone @ 4,4
+  d drone @ 1,4
+  ! sucata @ 16,1
+  ! sucata @ 18,1
+  ! sucata @ 14,3
+  ! sucata @ 18,5
+  ! sucata @ 18,7
+  R sonda_reparadora @ 9,4
+  @ sonda @ 8,3

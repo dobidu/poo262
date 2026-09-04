@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 20 — Concepts (C++20) e Ranges | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link active"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 20 — Concepts (C++20) e Ranges</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula19-templates-crtp.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula21-tratamento-erros.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 20 · 14/jul</span>
+          <h2 class="slide-title hero-title">Concepts C++20 e Introdução a Ranges</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Usar <code>concept</code> para restringir parâmetros de template com sintaxe legível</li><li>Contrastar concepts com <code>static_assert</code> de C++17</li><li>Usar ranges básicos: <code>views::filter</code>, <code>views::transform</code></li><li>Conhecer o que está no horizonte além de C++17</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="concepts">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Concepts — Restrições Legíveis</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Concept vs. static_assert — C++20 vs. C++17</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button><a href="https://godbolt.org" target="_blank" class="godbolt-btn">▶ playground</a></div>
+            </div>
+<pre><code class="language-cpp">// C++17: static_assert (funciona mas mensagem de erro ruim)
+template <typename T>
+class buffer {
+    static_assert(std::is_arithmetic_v<T>, "T deve ser aritmético");
+};
+
+// C++20: concept (mensagem de erro clara + sintaxe elegante)
+template <typename T>
+concept audio_sample = std::is_arithmetic_v<T>;
+
+// Sintaxe de concept em templates:
+template <audio_sample T>   // versão concisa
+class buffer_v2 { ... };
+
+// Ou com requires:
+template <typename T>
+requires audio_sample<T>
+class buffer_v3 { ... };
+
+// Concept composto:
+template <typename T>
+concept processable_buffer = requires(T b, std::size_t i) {
+    { b[i] }       -> std::convertible_to<float>;
+    { b.size() }   -> std::same_as<std::size_t>;
+    { b.apply([](float s){ return s; }) };
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="ranges">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Ranges e Views</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Ranges básicos — algoritmos sem índices</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button><a href="https://godbolt.org" target="_blank" class="godbolt-btn">▶ playground</a></div>
+            </div>
+<pre><code class="language-cpp">#include <ranges>
+#include <vector>
+#include <algorithm>
+
+std::vector<float> samples = get_samples();
+
+// C++17: algoritmos STL tradicionais
+std::vector<float> loud;
+std::copy_if(samples.begin(), samples.end(),
+             std::back_inserter(loud),
+             [](float s){ return std::abs(s) > 0.5f; });
+
+// C++20: ranges — composíveis, lazy
+auto loud_range = samples
+    | std::views::filter([](float s){ return std::abs(s) > 0.5f; })
+    | std::views::transform([](float s){ return s * 2.0f; });
+
+// Lazy: nenhum dado é processado até iterar
+for (float s : loud_range) { /* processa */ }</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="suporte">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Suporte de Compiladores</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Feature</th><th>GCC</th><th>Clang</th><th>MSVC</th><th>Status</th></tr></thead><tbody><tr><td>Concepts básicos</td><td>11+</td><td>12+</td><td>19.28+</td><td>✅ Estável</td></tr><tr><td>Ranges views</td><td>12+</td><td>13+</td><td>19.29+</td><td>✅ Estável</td></tr><tr><td>std::expected (C++23)</td><td>12+</td><td>16+</td><td>19.34+</td><td>⚠️ Parcial</td></tr><tr><td>std::mdspan (C++23)</td><td>13+</td><td>17+</td><td>—</td><td>⚠️ Parcial</td></tr></tbody></table>
+        <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div class="callout-content">
+              <div class="callout-title">Projeto Sintonia usa C++17</div>
+              <p>O repositório Sintonia é deliberadamente C++17 para compatibilidade. Para estudar concepts e ranges, compile com <code>-std=c++20</code> nos exemplos específicos.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Converta a função <code>buffer::apply(Func f)</code> de C++17 (sem concepts) para C++20, adicionando um concept que restringe Func a ser invocável com T e retornar T. Mostre a mensagem de erro com e sem concept."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs às vezes confundem concepts com SFINAE e com static_assert. São mecanismos diferentes: SFINAE é para sobrecarga, concepts são para restrições legíveis, static_assert para verificação em compilação.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Escreva um concept <code>audio_container</code> que requer: <code>operator[](size_t)</code>, <code>size()</code> retornando <code>size_t</code>, e iteradores bidirecionais. Verifique que <code>buffer&lt;float&gt;</code> satisfaz o concept.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Use <code>std::views::transform</code> para aplicar ganho a um buffer sem modificar o original. Compare com <code>buffer::transformed()</code> em legibilidade.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Compile o mesmo código com <code>-std=c++17</code> (usando static_assert) e <code>-std=c++20</code> (usando concept). Compare as mensagens de erro quando você passa um tipo errado.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Pesquise <code>std::expected</code> (C++23). Como ele se compara com <code>std::optional</code> para indicar falha com informação de erro? Implemente <code>wav_reader::load</code> usando <code>std::expected</code>.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula19-templates-crtp.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Templates e CRTP</span></div>
+      </a>
+      <a href="aula21-tratamento-erros.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Tratamento de Erros</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 03 — Classificação de Linguagens e Sistemas de Tipos | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade I</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade I — Fundamentos</div>
+        <a href="aula01-complexidade-oo.html" class="nav-link"><span class="num">01.</span>Complexidade e OO</a>
+<a href="aula02-conceitos-fundamentais.html" class="nav-link"><span class="num">02.</span>Conceitos fundamentais</a>
+<a href="aula03-classificacao-linguagens.html" class="nav-link active"><span class="num">03.</span>Classificação de linguagens</a>
+<a href="aula04-transicao-cpp.html" class="nav-link"><span class="num">04.</span>Transição C/Python→C++</a>
+<a href="aula05-git-github.html" class="nav-link"><span class="num">05.</span>Git e GitHub</a>
+<a href="aula06-llms-copiloto.html" class="nav-link"><span class="num">06.</span>LLMs como copiloto</a>
+<a href="aula07-uml-leve.html" class="nav-link"><span class="num">07.</span>UML leve</a>
+<a href="aula08-classes-objetos.html" class="nav-link"><span class="num">08.</span>Classes e objetos</a>
+<a href="aula09-ciclo-de-vida.html" class="nav-link"><span class="num">09.</span>Ciclo de vida</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade I</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 03 — Classificação de Linguagens e Sistemas de Tipos</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula02-conceitos-fundamentais.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula04-transicao-cpp.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 03 · 05/mai</span>
+          <h2 class="slide-title hero-title">Classificação de Linguagens Baseadas em Objetos</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Distinguir linguagens baseadas em objetos de linguagens OO completas</li><li>Comparar sistemas de tipos: estático vs. dinâmico, forte vs. fraco</li><li>Compreender single dispatch vs. multiple dispatch</li><li>Posicionar C++ no espectro de linguagens</li></ul>
+          </div>
+          
+        </div>
+      </section>
+      <section class="slide" id="classificacao">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">Baseada em Objetos vs. OO</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Característica</th><th>Baseada em Objetos</th><th>Orientada a Objetos</th></tr></thead><tbody><tr><td>Encapsulamento</td><td>✅</td><td>✅</td></tr><tr><td>Objetos e classes</td><td>✅</td><td>✅</td></tr><tr><td>Herança</td><td>❌ (ex: VBA antigo)</td><td>✅</td></tr><tr><td>Polimorfismo</td><td>❌</td><td>✅</td></tr><tr><td>Exemplo</td><td>JavaScript ES3, VBA</td><td>C++, Java, Smalltalk</td></tr></tbody></table>
+        <div class="callout callout-info">
+            <span class="callout-icon">ℹ️</span>
+            <div class="callout-content">
+              <div class="callout-title">JavaScript moderno é OO</div>
+              <p>JavaScript com ES6+ tem herança via prototype chain e polimorfismo. É considerado OO — mas com um modelo diferente do C++. Python também é OO completo.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="tipos">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Sistemas de Tipos</h2>
+        </div>
+        <div class="slide-body"><table class="slide-table"><thead><tr><th>Dimensão</th><th>Opção A</th><th>Opção B</th></tr></thead><tbody><tr><td>Quando checar</td><td>Estático (compilação)</td><td>Dinâmico (execução)</td></tr><tr><td>Conversão implícita</td><td>Fraco (C)</td><td>Forte (Python, Haskell)</td></tr><tr><td>Declaração</td><td>Explícita (C++)</td><td>Inferida (auto, var)</td></tr></tbody></table>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">C++ — tipagem estática e forte (com nuances)</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">int x = 42;
+// x = "hello"; // ERRO em compilação — sistema de tipos estático
+auto y = 3.14;  // tipo inferido em compilação — ainda estático
+float f = x;    // conversão implícita int→float — ponto fraco de C</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="dispatch">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">Single vs. Multiple Dispatch</h2>
+        </div>
+        <div class="slide-body"><p>Em C++, a resolução de método virtual depende <strong>apenas do tipo do receptor</strong> (single dispatch). Em linguagens com multiple dispatch (Julia, Common Lisp), depende dos tipos de todos os argumentos.</p>
+        <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Single dispatch em C++</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class effect {
+public:
+    virtual void process(audio_buffer& b) = 0; // despacho por tipo de *this
+};
+
+// C++ não tem multiple dispatch nativo — workaround: visitor pattern
+class effect_visitor {
+public:
+    virtual void visit(gain_effect& g)   = 0;
+    virtual void visit(reverb_effect& r) = 0;
+};</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Compare os sistemas de tipos de C++, Python e Java em uma tabela. Para cada um: estático/dinâmico, forte/fraco, single/multiple dispatch, garbage collected. Mostre um exemplo de erro de tipo em cada linguagem."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente classificam C++ como 'fortemente tipado' sem mencionar as conversões implícitas problemáticas (int→float→double) e os C-style casts que quebram a segurança de tipos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Compile e teste: <code>int x = 42; void* p = &x; double* d = (double*)p; std::cout << *d;</code>. O que acontece? Por que isso é um problema de sistema de tipos?</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Python é tipado dinamicamente mas fortemente tipado. Demonstre isso: mostre um erro que Python lança em tempo de execução por incompatibilidade de tipos, mas que C++ detectaria em compilação.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente o padrão Visitor em C++ para simular multiple dispatch entre dois tipos de <code>effect</code> e dois tipos de <code>audio_format</code>.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Pesquise: o que é <em>duck typing</em>? Compare com o uso de templates em C++ (polimorfismo estático). Qual abordagem você usaria para uma biblioteca de processamento de áudio? Por quê?</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula02-conceitos-fundamentais.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Conceitos Fundamentais</span></div>
+      </a>
+      <a href="aula04-transicao-cpp.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Transição C/Python→C++</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

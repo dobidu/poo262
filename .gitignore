@@ -1,0 +1,90 @@
+# ---------------------------------------------------------------------------
+# O que NÃO entra, e por quê.
+#
+# Todo item aqui é REGENERÁVEL por um alvo do Makefile. A regra é essa: se o
+# build sabe refazer, o repositório não guarda. O que o build NÃO sabe refazer
+# fica versionado, mesmo sendo binário - é o caso das fontes em WOFF2 e do
+# `legado/`, que é a prova de que nenhuma seção do v1 ficou órfã na migração.
+# ---------------------------------------------------------------------------
+
+# o venv do projeto: brotli, fonttools e pymupdf. `make venv` o refaz.
+build/venv/
+
+# as fontes em TTF para o XeLaTeX, convertidas dos WOFF2. `make fontes-tex`.
+build/fontes-tex/
+
+# os intermediários do XeLaTeX e o markdown montado. `make livro-pdf`.
+build/tex/
+
+# a saída do CMake do Deriva.
+exemplos/deriva/build/
+exemplos/deriva/**/build/
+
+# o arquivo que o estudante recebe na Aula 04, sem as marcas de defeito.
+# `make sem-marcas` o refaz de `gerado.hpp`; versioná-lo duplicaria a fonte.
+exemplos/deriva/revisao_ia/gerado_sem_marcas.hpp
+
+# processo de desenho: capturas de revisão e o sidecar. O registro que fica é
+# o `DESIGN.md` na raiz.
+.impeccable/
+
+# Ferramenta do autor, e não material da disciplina.
+#
+# Aqui vivem definições de agente que apontam para documentos fora deste
+# repositório, e publicá-las expunha caminhos de máquina sem servir a quem
+# clonasse. O padrão editorial que elas fazem cumprir está descrito no README e
+# destilado em `build/verifica_voz.py`, que é o que o build precisa.
+.claude/
+
+# ---------------------------------------------------------------------------
+# ruído de ferramenta
+# ---------------------------------------------------------------------------
+__pycache__/
+*.pyc
+.DS_Store
+*.swp
+*~
+node_modules/
+
+# ---------------------------------------------------------------------------
+# duplicatas e empacotamentos
+# ---------------------------------------------------------------------------
+
+# `poo.docx` na raiz é byte-idêntico a `legado/poo.docx`, que é o que
+# `build/extrair_livro.py` lê. Uma cópia, uma fonte.
+/poo.docx
+
+# o site v1 empacotado. `legado/site-v1/` já o tem desempacotado, e é de lá
+# que `build/extrair_v1.py` extrai.
+/poo-zip.zip
+
+# ---------------------------------------------------------------------------
+# recortes fiéis do v1: regeneráveis de `legado/`
+#
+# Eles são a prova, item por item, de que nenhuma seção ficou órfã na
+# migração - e a prova que FICA é `livro/MIGRACAO.md` e
+# `conteudo/PENDENCIAS.md`, que são texto e versionados. O recorte em si sai
+# de `make extrai` e `make livro`.
+# ---------------------------------------------------------------------------
+conteudo/extraido/
+livro/extraido/
+
+# o markdown montado do livro, intermediário entre os capítulos e o PDF
+livro/livro.md
+
+# o .docx do livro: artefato secundário. O primário é `livro/poo-v2.pdf`, e
+# manter dois binários do mesmo livro é convidá-los a divergir.
+livro/poo-v2.docx
+
+# ---------------------------------------------------------------------------
+# O que É versionado de propósito, apesar de gerado
+#
+# `poo/*.html` e `poo/plano-de-ensino.docx`: o site é o que o GitHub Pages
+# serve, e o estudante o abre sem clonar nem construir.
+# `livro/poo-v2.pdf`: é o artefato primário do livro, e o estudante o baixa.
+# `livro/livro.html`: a versão de tela, um arquivo único que abre offline.
+# `poo/assets/fontes/*.woff2`: SIL OFL 1.1, redistribuídas com o aviso em
+# `LICENCAS.md`; sem elas o site cai para fonte de sistema.
+# `conteudo/codigo_deriva.py` e `conteudo/medidas.py`: gerados, mas um clone
+# sem compilador precisa deles para o site sair igual.
+# ---------------------------------------------------------------------------

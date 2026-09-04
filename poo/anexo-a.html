@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anexo A - Concepts e Ranges (C++20) · POO · UFPB</title>
+<meta name="description" content="Concepts e Ranges como anexo rotulado C++20: conteúdo que mudou de estatuto porque o alvo da disciplina é C++17.">
+<meta property="og:title" content="Anexo A - Concepts e Ranges (C++20) · POO · UFPB">
+<meta property="og:description" content="Concepts e Ranges como anexo rotulado C++20: conteúdo que mudou de estatuto porque o alvo da disciplina é C++17.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0C0B'/><text x='2' y='12' font-family='monospace' font-size='11' fill='%23F2A93B'>@</text></svg>">
+<link rel="prev" href="plano-de-ensino.html">
+<link rel="next" href="anexo-b.html">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/pagina.css">
+<script src="js/app.js" defer></script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="barra">
+  <div class="migalha">
+    <span class="badge-ufpb">UFPB · CI</span>
+    <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
+    <span class="sep">/</span><span class="atual">ANEXO A</span>
+  </div>
+  <div class="ferramentas">
+    <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
+    <a class="tecla" href="glossario.html">GLOSSÁRIO</a>
+    <button class="tecla" type="button" data-acao="projecao" aria-pressed="false">F PROJEÇÃO</button>
+  </div>
+</header>
+
+<div class="aula">
+<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE I · FUNDAMENTOS</div><div class="arvore__medidor" data-unidade-conta="a01,a02,a03,a04,a05,a06,a07,a08,a09"><b>0</b>/9 lidas · Deriva v0.0 → v0.3</div></div>
+<ol>
+<li><a href="aula-01.html" data-slug="a01"><span class="galho">├</span><span class="num">01</span>Do procedural ao objeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-02.html" data-slug="a02"><span class="galho">├</span><span class="num">02</span>Infraestrutura: CMake, FetchContent, gdb<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-03.html" data-slug="a03"><span class="galho">├</span><span class="num">03</span>Fundamentos de C++17<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-04.html" data-slug="a04"><span class="galho">├</span><span class="num">04</span>Git, LLM e a rubrica<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-05.html" data-slug="a05"><span class="galho">├</span><span class="num">05</span>Linguagens e sistemas de tipos<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-06.html" data-slug="a06"><span class="galho">├</span><span class="num">06</span>UML que serve ao código<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-07.html" data-slug="a07"><span class="galho">├</span><span class="num">07</span>Classes, objetos e o contador `vivos`<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-08.html" data-slug="a08"><span class="galho">├</span><span class="num">08</span>Ciclo de vida e RAII<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-09.html" data-slug="a09"><span class="galho">╰</span><span class="num">09</span>Regra do zero e do três<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE II · HIERARQUIAS, POSSE E DESPACHO</div><div class="arvore__medidor" data-unidade-conta="a10,a11,a12,a13,a14,a15,a16,a17,a18"><b>0</b>/9 lidas · Deriva v1.0 → v1.8</div></div>
+<ol>
+<li><a href="aula-10.html" data-slug="a10"><span class="galho">├</span><span class="num">10</span>Herança simples<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-11.html" data-slug="a11"><span class="galho">├</span><span class="num">11</span>Funções virtuais e vtable<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-12.html" data-slug="a12"><span class="galho">├</span><span class="num">12</span>Posse exclusiva: unique_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-13.html" data-slug="a13"><span class="galho">├</span><span class="num">13</span>Posse compartilhada: shared_ptr e weak_ptr<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-14.html" data-slug="a14"><span class="galho">├</span><span class="num">14</span>Movimento e a regra dos cinco<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-15.html" data-slug="a15"><span class="galho">├</span><span class="num">15</span>Sobrecarga de operadores<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-16.html" data-slug="a16"><span class="galho">├</span><span class="num">16</span>Catch2 e replay determinístico<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-17.html" data-slug="a17"><span class="galho">├</span><span class="num">17</span>Herança múltipla e o diamante<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-18.html" data-slug="a18"><span class="galho">╰</span><span class="num">18</span>Polimorfismo dinâmico e RTTI<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">UNIDADE III · GENERICIDADE, ROBUSTEZ E PROJETO</div><div class="arvore__medidor" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div></div>
+<ol>
+<li><a href="aula-19.html" data-slug="a19"><span class="galho">├</span><span class="num">19</span>Templates, CRTP e contador_de_instancias&lt;T&gt;<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-20.html" data-slug="a20"><span class="galho">├</span><span class="num">20</span>Tratamento de erros<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-21.html" data-slug="a21"><span class="galho">├</span><span class="num">21</span>STL e lambdas<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-22.html" data-slug="a22"><span class="galho">├</span><span class="num">22</span>Panorâmica de concorrência<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-23.html" data-slug="a23"><span class="galho">├</span><span class="num">23</span>Serialização e versionamento<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-24.html" data-slug="a24"><span class="galho">├</span><span class="num">24</span>SOLID e invariância<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-25.html" data-slug="a25"><span class="galho">├</span><span class="num">25</span>Padrões de projeto<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+<li><a href="aula-26.html" data-slug="a26"><span class="galho">╰</span><span class="num">26</span>Qt sobre o mesmo núcleo<span class="tem-int" title="tem exemplo interativo">▶</span></a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>
+<li><a href="anexo-a.html"><span class="galho">├</span><span class="num">A</span>Concepts e Ranges (C++20) <span class="c20">C++20</span></a></li>
+<li><a href="anexo-b.html"><span class="galho">├</span><span class="num">B</span>Referência rápida de C++17</a></li>
+<li><a href="anexo-c.html"><span class="galho">╰</span><span class="num">C</span>O Deriva: as 20 versões</a></li>
+</ol>
+<div class="arvore__unidade"><div class="arvore__rot">MATERIAL</div></div><ol>
+<li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
+<li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
+<li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
+<li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
+<li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
+</ol></nav>
+<main class="corpo" id="conteudo">
+  <div class="cabeca-aula">
+    <h1>Anexo A · Concepts e Ranges <span class="c20">C++20</span></h1>
+    <p class="sub">CONTEÚDO FORA DO PADRÃO-ALVO · 20 MINUTOS NA AULA 19 · DERIVA v2.1 (opcional)</p>
+  </div>
+  <section class="slide">
+    <aside class="callout" data-t="info">
+      <div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · MUDANÇA DE ESTATUTO</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div>
+      <div class="callout__corpo"><p>Deixou de ser aula porque deixou de caber: são 20 minutos dentro da Aula 19. O conteúdo não foi descartado - mudou de estatuto. Nada no material obrigatório depende dele, e o alvo da disciplina segue C++17.</p>
+      <p>Nenhum exemplo do material obrigatório depende deste anexo, e o que está aqui
+      compila em alvo separado e opcional, com <code>-std=c++20</code>. A
+      <a href="aula-19.html">Aula 19</a> o referencia em vinte minutos, como panorama de
+      para onde a linguagem foi depois do padrão-alvo da disciplina.</p></div>
+      <div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
+    </aside>
+  </section>
+<section class="slide" id="intro"><div class="slide__cab"><span class="slide__n">01</span><h2>Concepts e Ranges: o que vem depois do padrão-alvo <span class="c20">C++20</span></h2></div><p>Este anexo existe para dizer para onde a linguagem foi, sem que nenhum exemplo da disciplina passe a exigir C++20. A restrição é <strong>pedagógica</strong>, e não técnica: o laboratório tem g++ 13, que suporta os dois padrões, e o teto é C++17 porque quem está aprendendo objeto pela primeira vez não precisa de duas gramáticas de restrição de template ao mesmo tempo.</p>
+<p>O código deste anexo está em <code>exemplos/deriva/c20/restricoes.hpp</code>, compila num alvo próprio com <code>-DDERIVA_COM_CPP20=ON</code>, e o arquivo recusa a compilação com um <code>#error</code> se o padrão for menor que C++20. Ele fica <strong>fora</strong> das quatro condições de <code>make verifica</code>, que são de C++17 - de forma que nada aqui está sob o portão, e é bom que se saiba.</p></section><section class="slide" id="concepts"><div class="slide__cab"><span class="slide__n">02</span><h2>Concepts - a restrição com nome <span class="c20">C++20</span></h2></div><p>Um <code>concept</code> é um predicado sobre tipos, com nome, avaliado em compilação. O do anexo se chama <code>guardavel</code> e diz o que a <code>grade_de&lt;T&gt;</code> da Aula 19 já exigia por três <code>static_assert</code>: que <code>T</code> seja construível por padrão, que não seja referência, e que não seja <code>bool</code>. A <code>grade_restrita&lt;T&gt;</code> o usa na própria declaração do template, no lugar onde a versão de C++17 escreveria <code>enable_if</code> no tipo de retorno.</p>
+<p>A diferença que se <strong>vê</strong> é a mensagem de erro, e é ela o argumento inteiro dos concepts. Com <code>static_assert</code>, o compilador aponta a linha do assert, dentro da definição do template, e o estudante lê a frase que o autor da classe escreveu. Com <code>concept</code>, ele aponta a <strong>chamada</strong> e diz qual restrição falhou, pelo nome dela - <code>guardavel</code>, e não uma expressão de <code>type_traits</code> desdobrada.</p>
+<p>A restrição é verificável no próprio arquivo, por quatro <code>static_assert</code> que afirmam o que o <code>concept</code> aceita e o que ele recusa: <code>celula</code> e <code>int</code> passam, <code>bool</code> e <code>int&amp;</code> não. É a mesma técnica das Aulas 7 e 12 - a afirmação vive no código, e não na prosa.</p>
+<aside class="callout" data-t="info"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · Concept não substitui static_assert em todo lugar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Os dois respondem perguntas diferentes. <code>concept</code> restringe <strong>quem pode instanciar</strong> o template, e participa da resolução de sobrecarga: um tipo que não satisfaz o concept faz a sobrecarga sair da lista, em silêncio, o que é o que substitui SFINAE. <code>static_assert</code> afirma uma condição e <strong>quebra a compilação</strong> quando ela é falsa, o que é outro efeito.</p><p>É por isso que a Aula 19 continua com <code>static_assert</code> sem prejuízo: ela não precisa de sobrecarga condicional, precisa de mensagem de erro própria. Trocar por concept ali seria trocar de padrão para ganhar nada.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section><section class="slide" id="ranges"><div class="slide__cab"><span class="slide__n">03</span><h2>Ranges e views - composição sem contêiner intermediário <span class="c20">C++20</span></h2></div><p>Uma <em>view</em> não é contêiner: é uma vista sobre uma sequência, que não possui os elementos e não os copia. <code>std::views::filter</code> e <code>std::views::transform</code> devolvem vistas preguiçosas, e nada é calculado até alguém iterar - o que muda o custo do encadeamento inteiro.</p>
+<p>A função <code>glifos_de_parede</code>, no arquivo do anexo, percorre as células de uma grade filtrando as de parede e tomando as primeiras, e o resultado sai de uma expressão só, com <code>|</code> ligando as vistas. Em C++17 o equivalente seria um <code>std::copy_if</code> para um vetor temporário e um percurso depois: dois laços e uma alocação, para o mesmo resultado.</p>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · Vista preguiçosa e tempo de vida</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>A vista não possui os elementos, e é exatamente a armadilha do <code>std::string_view</code> da Aula 3 outra vez: guardar uma vista sobre um contêiner temporário deixa a vista pendurada sobre memória que já foi devolvida. A regra prática é a mesma - consuma a vista na mesma expressão em que a criou, ou garanta que a origem viva mais que ela.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section><section class="slide" id="suporte"><div class="slide__cab"><span class="slide__n">04</span><h2>Suporte de compiladores <span class="c20">C++20</span></h2></div><div style="overflow-x:auto;max-width:100%"><table class="tabela"><thead><tr><th>Recurso</th><th>GCC</th><th>Clang</th><th>MSVC</th><th>Estado</th></tr></thead><tbody><tr><td>Concepts básicos</td><td>11+</td><td>12+</td><td>19.28+</td><td>✓ Estável</td></tr><tr><td>Ranges e views</td><td>12+</td><td>13+</td><td>19.29+</td><td>✓ Estável</td></tr><tr><td><code>std::expected</code> (C++23)</td><td>12+</td><td>16+</td><td>19.34+</td><td>▲ Parcial</td></tr><tr><td><code>std::mdspan</code> (C++23)</td><td>13+</td><td>17+</td><td>-</td><td>▲ Parcial</td></tr></tbody></table></div>
+<aside class="callout" data-t="info"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">· NOTA · O Deriva é C++17, e é teto</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>O repositório declara <code>CXX_EXTENSIONS OFF</code> e alvo C++17, e código que só compila com <code>-std=gnu++17</code> não é C++17. Nenhuma das vinte versões da trilha depende deste anexo, e a v2.1, que seria a dele, é a única versão sem código obrigatório - de propósito.</p><p>Para estudar o que está aqui, configure o alvo opcional com <code>-DDERIVA_COM_CPP20=ON</code>. Ele compila com <code>-std=c++20</code>, e o que ele afirma vale para C++20, não para o portão da disciplina.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section><section class="slide" id="llm"><div class="slide__cab"><span class="slide__n">05</span><h2>LLMs neste tópico <span class="c20">C++20</span></h2></div><aside class="callout" data-t="llm"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">◇ LLM · Prompt sugerido</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p><em>"Esta classe é <code>grade_de&lt;T&gt;</code> em C++17, restrita por três <code>static_assert</code>. Converta as restrições para um <code>concept</code> de C++20 com nome, mantendo o comportamento, e mostre lado a lado a mensagem de erro que cada versão produz quando instanciada com <code>bool</code>."</em></p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside>
+<aside class="callout" data-t="warn"><div class="moldura" aria-hidden="true"><span class="moldura__canto">┌─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">▲ ATENÇÃO · O que o modelo costuma errar</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┐</span></div><div class="callout__corpo"><p>Modelos confundem os três mecanismos com frequência, e o pedido de C++17 é o teste mais rápido disso: SFINAE serve à seleção de sobrecarga, <code>concept</code> nomeia a restrição e participa da resolução, e <code>static_assert</code> afirma e quebra. Pedir código de C++17 e receber <code>concept</code> é o erro mais comum de todos neste tópico, e ele passa despercebido porque o código parece bom.</p></div><div class="moldura" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div></aside></section>
+  <nav class="nav-pe">
+    <a href="plano-de-ensino.html" rel="prev"><div class="tecla-rot">◀ J · PLANO</div><div class="alvo">Plano de ensino</div></a>
+    <div class="meio">ANEXO A</div>
+    <a href="anexo-b.html" rel="next"><div class="tecla-rot">ANEXO B · K ▶</div><div class="alvo">Referência rápida de C++17</div></a>
+  </nav>
+</main>
+</div>
+
+<footer class="pe">
+  <span class="badge-ufpb">UFPB · CI · DI</span>
+  <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</span>
+  <span>bidu@ci.ufpb.br</span>
+  <span style="margin-left:auto">C++17 · FTXUI v5.0.0 · Catch2</span>
+</footer>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 12 — Semântica de Movimento | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade II</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade II — Herança</div>
+        <a href="aula10-raii-rule-of-five.html" class="nav-link"><span class="num">10.</span>RAII e Regra dos 0/3/5</a>
+<a href="aula11-smart-pointers.html" class="nav-link"><span class="num">11.</span>Smart pointers</a>
+<a href="aula12-move-semantics.html" class="nav-link active"><span class="num">12.</span>Move semantics</a>
+<a href="aula13-sobrecarga-operadores.html" class="nav-link"><span class="num">13.</span>Sobrecarga de operadores</a>
+<a href="aula14-testes-catch2.html" class="nav-link"><span class="num">14.</span>Testes com Catch2</a>
+<a href="aula15-heranca-simples.html" class="nav-link"><span class="num">15.</span>Herança simples</a>
+<a href="aula16-heranca-multipla.html" class="nav-link"><span class="num">16.</span>Herança múltipla</a>
+<a href="aula17-funcoes-virtuais.html" class="nav-link"><span class="num">17.</span>Funções virtuais</a>
+<a href="aula18-polimorfismo-dinamico.html" class="nav-link"><span class="num">18.</span>Polimorfismo dinâmico</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade II</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 12 — Semântica de Movimento</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula11-smart-pointers.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula13-sobrecarga-operadores.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 12 · 11/jun</span>
+          <h2 class="slide-title hero-title">Semântica de Movimento: rvalues e std::move</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Distinguir lvalues de rvalues</li><li>Implementar construtor e atribuição de movimento</li><li>Usar <code>std::move</code> corretamente</li><li>Compreender NRVO e quando o compilador otimiza</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v1.2 — audio_buffer com movimento</div>
+            <p>Adicionamos construtor de movimento a <code>audio_buffer</code>. Retornar um buffer de <code>render()</code> agora é gratuito via NRVO.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="lvalue-rvalue">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">lvalue vs. rvalue</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Identificando lvalues e rvalues</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// lvalue: tem nome, endereço, pode aparecer à esquerda de =
+int x = 42;        // x é lvalue
+std::string s = "hello"; // s é lvalue
+
+// rvalue: temporário, sem nome, não pode aparecer à esquerda de =
+42              // literal → rvalue
+x + 1           // expressão temporária → rvalue
+std::string{"world"}  // temporário → rvalue
+
+// Referência a rvalue — captura temporários
+std::string&& r = std::string{"tmp"};  // estende o lifetime do temporário
+
+// Consequência para audio_buffer:
+audio_buffer buf{1024, 44100.0f};
+audio_buffer copia = buf;             // lvalue → cópia (caro: aloca + copia)
+audio_buffer moved = std::move(buf);  // rvalue → movimento (barato: só troca ponteiros)</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="move-impl">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Implementando o Movimento</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Construtor e atribuição de movimento</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">class audio_buffer {
+    std::vector<float> data_;
+    float sample_rate_;
+public:
+    // ✅ noexcept: sem noexcept, std::vector nunca usará movimento ao realocar!
+    audio_buffer(audio_buffer&& other) noexcept
+        : data_{std::move(other.data_)},
+          sample_rate_{other.sample_rate_}
+    {
+        other.sample_rate_ = 0.0f;  // deixar other num estado válido mas "vazio"
+        // other.data_ já está vazio — vector garante isso após move
+    }
+
+    audio_buffer& operator=(audio_buffer&& other) noexcept {
+        if (this != &other) {        // auto-atribuição: raro mas possível
+            data_        = std::move(other.data_);
+            sample_rate_ = other.sample_rate_;
+            other.sample_rate_ = 0.0f;
+        }
+        return *this;
+    }
+};</code></pre>
+          </div>
+        <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">std::move não move nada!</div>
+              <p><code>std::move(x)</code> apenas faz um cast para rvalue reference. O movimento real acontece no construtor/atribuição que recebe o rvalue. Após <code>std::move(x)</code>, x está num estado válido mas indeterminado — não use mais.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="nrvo">
+        <div class="slide-header">
+          <span class="slide-num">§3</span>
+          <h2 class="slide-title">NRVO — Named Return Value Optimization</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">NRVO: retorno eficiente sem movimento explícito</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// track::render() retorna audio_buffer por valor
+// NRVO: o compilador constrói o resultado DIRETAMENTE no destino
+audio_buffer track::render() const {
+    audio_buffer out{buffer_};     // cópia necessária (buffer_ preservado)
+    out *= gain_;
+    effects_.process(out);
+    return out;                    // NRVO: sem movimento extra no return
+}
+
+// Na chamada:
+auto result = track.render();  // result é construído diretamente — zero cópias extras
+
+// Para garantir NRVO: retornar SEMPRE a mesma variável local
+// NÃO retornar via if/else diferentes variáveis: quebra NRVO</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente uma função <code>merge_buffers</code> que combina N audio_buffers em um, maximizando eficiência com semântica de movimento. Mostre por que o retorno por valor é eficiente em C++17."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>LLMs frequentemente adicionam <code>std::move</code> no <code>return</code> de variáveis locais: isso DESABILITA o NRVO. O compilador moderno já otimiza o retorno. Não escreva <code>return std::move(local);</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Adicione prints no construtor de cópia e de movimento de <code>audio_buffer</code>. Meça quantas cópias e movimentos ocorrem em: <code>std::vector&lt;audio_buffer&gt; v; v.push_back(audio_buffer{1024, 44100.0f});</code></span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Implemente um benchmark comparando cópia vs. movimento de <code>audio_buffer</code> com 1M, 10M e 100M samples. Em qual tamanho o movimento começa a fazer diferença significativa?</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>O <code>std::sort</code> usa movimentos internamente. Verifique isso adicionando prints no move constructor de <code>audio_buffer</code> e ordenando um <code>vector&lt;audio_buffer&gt;</code>.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Por que declarar o move constructor sem <code>noexcept</code> impede que <code>std::vector</code> use movimento ao realocar? Demonstre isso com um exemplo mensurável.</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula11-smart-pointers.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Smart Pointers</span></div>
+      </a>
+      <a href="aula13-sobrecarga-operadores.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">Sobrecarga de Operadores</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

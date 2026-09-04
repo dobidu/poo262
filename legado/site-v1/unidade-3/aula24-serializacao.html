@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 24 — Serialização | POO UFPB 2026.1</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+<div id="reading-progress"></div>
+<div class="site-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="ufpb-badge">UFPB / CI / DI — 2026.1</span>
+      <h1><span class="emoji">🎵</span> POO em C++</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <a href="../index.html" class="nav-link">← Início</a>
+        <a href="index.html" class="nav-link">Unidade III</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-title">Unidade III — Abstração</div>
+        <a href="aula19-templates-crtp.html" class="nav-link"><span class="num">19.</span>Templates e CRTP</a>
+<a href="aula20-concepts-ranges.html" class="nav-link"><span class="num">20.</span>Concepts e Ranges</a>
+<a href="aula21-tratamento-erros.html" class="nav-link"><span class="num">21.</span>Tratamento de erros</a>
+<a href="aula22-stl.html" class="nav-link"><span class="num">22.</span>STL panorâmica</a>
+<a href="aula23-concorrencia.html" class="nav-link"><span class="num">23.</span>Concorrência</a>
+<a href="aula24-serializacao.html" class="nav-link active"><span class="num">24.</span>Serialização</a>
+<a href="aula25-solid.html" class="nav-link"><span class="num">25.</span>SOLID</a>
+<a href="aula26-design-patterns.html" class="nav-link"><span class="num">26.</span>Padrões de projeto</a>
+<a href="aula27-qt-llms.html" class="nav-link"><span class="num">27.</span>Qt e LLMs</a>
+
+      </div>
+    </nav></aside>
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-breadcrumb">
+        <a href="../index.html">POO</a>
+        <span class="topbar-sep">/</span>
+        <a href="index.html">Unidade III</a>
+        <span class="topbar-sep">/</span>
+        <span>Aula 24 — Serialização</span>
+      </div>
+      <div class="topbar-nav">
+        <a href="aula23-concorrencia.html" class="nav-btn">← anterior <kbd>←</kbd></a>
+        <a href="aula25-solid.html" class="nav-btn">próxima → <kbd>→</kbd></a>
+      </div>
+    </header>
+    <main class="slides-container">
+      <section class="slide slide-hero" id="intro">
+        <div class="slide-header">
+          <span class="slide-num">Aula 24 · 28/jul</span>
+          <h2 class="slide-title hero-title">Serialização: JSON, Formato Próprio e Versionamento</h2>
+        </div>
+        <div class="slide-body">
+          <div class="objectives">
+            <div class="objectives-title">🎯 Objetivos</div>
+            <ul><li>Serializar e desserializar objetos C++ com <code>nlohmann/json</code></li><li>Implementar o princípio DIP na serialização (repositório abstrato)</li><li>Versionar o formato para compatibilidade futura</li><li>Tratar invariantes durante desserialização</li></ul>
+          </div>
+          <div class="callout callout-sintonia">
+          <span class="callout-icon">🎵</span>
+          <div class="callout-content">
+            <div class="callout-title">Sintonia — v2.2 — Serialização JSON</div>
+            <p><code>json_repository</code> salva e carrega projetos completos. Veja <code>src/io/json_repository.cpp</code> e os testes em <code>tests/test_project.cpp</code>.</p>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section class="slide" id="nlohmann">
+        <div class="slide-header">
+          <span class="slide-num">§1</span>
+          <h2 class="slide-title">nlohmann/json — Serialização Idiomática</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Serializando project com nlohmann/json</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
+// Para/de JSON: sobrecarregar to_json/from_json (extensão não-intrusiva)
+void to_json(json& j, const audio_buffer& buf) {
+    j = json{{
+        {{"size", buf.size()}},
+        {{"sample_rate", buf.sample_rate()}},
+        {{"samples", std::vector<float>(buf.begin(), buf.end())}}
+    }};
+}
+
+void from_json(const json& j, audio_buffer& buf) {
+    auto samples = j.at("samples").get<std::vector<float>>();
+    float sr = j.at("sample_rate").get<float>();
+    buf = audio_buffer{samples.size(), sr};
+    for (std::size_t i = 0; i < samples.size(); ++i)
+        buf[i] = samples[i];
+}
+
+// Uso na json_repository:
+json j;
+j["version"]  = 1;
+j["name"]     = project.name();
+j["tracks"]   = json::array();
+for (const auto& t : project.tracks())
+    j["tracks"].push_back(json(t));  // chama to_json
+std::ofstream{path} << j.dump(2);   // indentado com 2 espaços</code></pre>
+          </div></div>
+      </section>
+      <section class="slide" id="versionamento">
+        <div class="slide-header">
+          <span class="slide-num">§2</span>
+          <h2 class="slide-title">Versionamento de Formato</h2>
+        </div>
+        <div class="slide-body"><div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">cpp</span>
+              <span class="code-caption">Compatibilidade entre versões de formato</span>
+              <div class="code-actions"><button class="copy-btn">copiar</button></div>
+            </div>
+<pre><code class="language-cpp">// json_repository.cpp — tratamento de versões
+std::unique_ptr<project> json_repository::load(const std::string& path) {
+    std::ifstream f{path};
+    if (!f) throw std::runtime_error{"arquivo não encontrado: " + path};
+
+    json j;
+    try { f >> j; }
+    catch (const json::exception& e) {
+        throw std::runtime_error{"JSON inválido: " + std::string{e.what()}};
+    }
+
+    int version = j.value("version", 1);  // default 1 para retrocompat.
+    switch (version) {
+        case 1: return load_v1(j);
+        case 2: return load_v2(j);
+        default:
+            throw std::runtime_error{
+                "versão de formato não suportada: " + std::to_string(version)};
+    }
+}</code></pre>
+          </div>
+        <div class="callout callout-tip">
+            <span class="callout-icon">💡</span>
+            <div class="callout-content">
+              <div class="callout-title">Sempre inclua versão no formato</div>
+              <p>Versione o formato desde o primeiro commit. Adicionar version depois é trabalhoso e quebra arquivos existentes.</p>
+            </div>
+          </div></div>
+      </section>
+      <section class="slide" id="llm">
+        <div class="slide-header"><span class="slide-num">🤖</span><h2 class="slide-title">LLMs neste Tópico</h2></div>
+        <div class="slide-body">
+          <div class="callout callout-llm">
+            <span class="callout-icon">🤖</span>
+            <div class="callout-content">
+              <div class="callout-title">Prompt sugerido</div>
+              <p><em>"Implemente serialização JSON para a hierarquia de efeitos do Sintonia: serialize gain_effect, reverb_effect e delay_effect de forma que desserialização recrie o tipo correto. Use o padrão Factory."</em></p>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <span class="callout-icon">⚠️</span>
+            <div class="callout-content">
+              <div class="callout-title">O que o LLM costuma errar</div>
+              <p>Serializar hierarquias polimórficas é difícil: o LLM frequentemente esquece de salvar o tipo concreto, impossibilitando a desserialização. Sempre inclua um campo 'type' no JSON.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="exercicios">
+        <div class="slide-header"><span class="slide-num">Ex.</span><h2 class="slide-title">Exercícios Propostos</h2></div>
+        <div class="exercises"><div class="exercise-item"><span class="exercise-num">01.</span><span>Adicione serialização JSON completa para <code>effect_chain</code> (incluindo todos os tipos de efeito). Escreva um teste round-trip: salva → carrega → verifica que os efeitos são idênticos.</span></div><div class="exercise-item"><span class="exercise-num">02.</span><span>Implemente uma migração: versão 1 do formato salva samples como array de floats; versão 2 comprime com delta encoding. Escreva um <code>migrate_v1_to_v2(json&)</code>.</span></div><div class="exercise-item"><span class="exercise-num">03.</span><span>Implemente <code>memory_repository</code> (armazena projetos em memória sem arquivo) que implementa a mesma interface de <code>project_repository</code>. Use-o nos testes sem criar arquivos.</span></div><div class="exercise-item"><span class="exercise-num">04.</span><span>Compare o tamanho do arquivo JSON vs. WAV para um projeto com 4 tracks de 10 segundos de 44100 Hz. Por que a diferença é tão grande? Como compressão poderia ajudar?</span></div></div>
+      </section></main>
+    <nav class="lecture-nav">
+      <a href="aula23-concorrencia.html" class="lecture-nav-btn prev">
+        ← <div><span class="label">anterior</span><span class="title">Concorrência</span></div>
+      </a>
+      <a href="aula25-solid.html" class="lecture-nav-btn next">
+        <div><span class="label">próxima</span><span class="title">SOLID</span></div> →
+      </a>
+    </nav>
+  </div>
+</div>
+<div class="kbd-hint"><kbd>←</kbd> anterior &nbsp; <kbd>→</kbd> próxima &nbsp; <kbd>Esc</kbd> índice</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
