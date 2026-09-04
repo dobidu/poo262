@@ -64,7 +64,7 @@ antes de serem exigidas: o contador de instâncias vivas, a instrumentação de
 ciclo de vida, e o `gdb` com ponto de parada em destrutor.
 
 **Todo trecho de código do material é extraído de arquivo que compila**, nunca
-digitado no texto. São 152 trechos, declarados por âncora em
+digitado no texto. São 156 trechos, declarados por âncora em
 `conteudo/trechos.py`, e o build falha se uma âncora deixar de existir.
 
 **Todo número que a prosa afirma é medido.** `conteudo/medidas.py` é gerado

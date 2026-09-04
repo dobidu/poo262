@@ -205,7 +205,7 @@ O **Deriva v0.0→v0.3** compilando em `exemplos/deriva/`: `vetor2`,
 instrumentação de ciclo de vida, 188 testes com Catch2 v3.5.2, replay
 determinístico, `make verifica` 4 de 4, ASan e UBSan limpos, e as duas
 variantes deliberadamente quebradas (`terminal_bruto` sem destrutor; cópia rasa
-em `grade` - caça ao bug 1) com o roteiro de observação de cada uma. Os 22
+em `grade` - caça ao bug 1) com o roteiro de observação de cada uma. Os 156
 trechos que site e livro publicam saem de lá, com arquivo e linha no rodapé de
 cada bloco.
 

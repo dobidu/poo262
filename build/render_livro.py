@@ -531,7 +531,22 @@ def main() -> int:
         print(f"tex: {tex.relative_to(RAIZ)} · {tex.stat().st_size // 1024} KB")
         return 0
 
-    for passada in (1, 2):
+    # Roda o XeLaTeX até CONVERGIR, e não duas vezes.
+    #
+    # Duas passadas bastavam num diretório quente e não a frio, e a diferença
+    # não aparecia porque `build/tex/` é ignorado: eu construía sempre sobre o
+    # `.aux` das rodadas anteriores. Num clone limpo, os carimbos de aferição
+    # saíam a 577 pt num papel de 595 - fora do papel, com o texto cortado em
+    # seis caracteres - porque `marginnote` decide a posição a partir do que a
+    # rodada anterior gravou, e na primeira não há rodada anterior.
+    #
+    # A terceira passada assenta. Aqui a condição de parada é o `.aux` deixar
+    # de mudar, com teto de cinco: número fixo de passadas é aposta, e esta
+    # aposta já saiu errada uma vez.
+    aux = SAIDA / "livro.aux"
+    antes, passada = None, 0
+    while passada < 5:
+        passada += 1
         r = subprocess.run(
             ["xelatex", "-interaction=nonstopmode", "-halt-on-error",
              "-file-line-error", "livro.tex"],
@@ -542,6 +557,13 @@ def main() -> int:
             print(f"XeLaTeX falhou na passada {passada}:")
             print("\n".join(erros) or r.stdout[-3000:])
             return 1
+        agora = aux.read_bytes() if aux.exists() else b""
+        if passada >= 2 and agora == antes:
+            break
+        antes = agora
+    else:
+        print(f"AVISO: o XeLaTeX não convergiu em {passada} passadas - "
+              "o `.aux` ainda muda, e a posição de carimbo pode estar instável")
 
     pdf = SAIDA / "livro.pdf"
     destino = LIVRO / "poo-v2.pdf"
@@ -552,7 +574,8 @@ def main() -> int:
         paginas = int(m.group(1))
     over = len(re.findall(r"^Overfull \\hbox", r.stdout, re.M))
     print(f"PDF: {destino.relative_to(RAIZ)} · {destino.stat().st_size // 1024} KB · "
-          f"{paginas} páginas · {over} linhas transbordando")
+          f"{paginas} páginas · {over} linhas transbordando · "
+          f"{passada} passadas até convergir")
     return 0
 
 

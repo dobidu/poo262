@@ -580,6 +580,20 @@ def main():
     # `--semear` é explícito e DESTRUTIVO: descarta a reescrita e volta ao
     # recorte cru do v1.
     semear = "--semear" in sys.argv
+    # Sem linha de base não há divergência a detectar.
+    #
+    # `conteudo/extraido/` é regenerável e por isso não é versionado, então num
+    # clone limpo ele não existe - e comparar contra o que não existe fazia os
+    # 27 arquivos "divergirem" e `make verifica` falhar na primeira vez que
+    # alguém clonasse. O portão existe para pegar recorte velho, não ausência
+    # de recorte, e a checagem vem ANTES do relatório para não anunciar uma
+    # divergência que ninguém pode consertar.
+    sem_base = conferir and not any(EXTRAIDO.glob("*.py"))
+    if sem_base:
+        print("conferido: conteudo/extraido/ ainda não existe (clone limpo) - "
+              "nada a comparar, e `make extrai` o cria")
+        return 0
+
     contas = dict(novos=0, semeados=0, atualizados=0, intocados=0, preservados=0)
     mudou = 0
     for d in aulas:

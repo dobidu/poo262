@@ -149,8 +149,27 @@ o faz ler como interface e não como decoração.
 - Três famílias e três papéis semânticos, mais um suplemento geométrico
 - Campo de aferição na margem externa, com procedência conferível
 - Prancha de código atravessando texto mais campo, sem refluxo
+- Diagrama recebido por âncora, na mesma moldura de procedência da prancha
 - Um tema só, escuro na tela e claro no papel; nenhuma inversão de paleta
 - Zero raio de canto, zero sombra, zero emoji
+
+### O diagrama é elemento, e não figura solta
+
+Os quatro diagramas em Mermaid entraram depois do resto deste registro, e
+entraram pelo caminho da prancha: eles vivem em
+`exemplos/deriva/diagramas/*.mmd`, são declarados por âncora em
+`conteudo/trechos.py`, e o slide os recebe por referência - a moldura mostra
+`diagramas/mapa-tem-grade.mmd:8`, do mesmo modo que a prancha mostra
+`src/mapa.cpp:66`.
+
+A razão é a mesma da prancha, e é mais forte aqui: diagrama digitado no texto
+pode afirmar uma hierarquia que o código não tem, e nada o denuncia. Por
+âncora, `build/extrair_codigo.py` falha se a âncora sair do arquivo, e
+`testes/test_uml.cpp` afirma as relações que o desenho declara.
+
+Um diagrama declara `inline` em `trechos.py`, e por isso NÃO entra na seção
+"O código, extraído do Deriva" do fim da página: ele é renderizado no slide
+que o explica, e repeti-lo o mostraria duas vezes.
 
 ## Colors
 
@@ -245,7 +264,7 @@ esses glifos são os portadores semânticos que a acessibilidade exige.
   Parágrafo sem recuo, separado por `0.55\baselineskip`.
 - **Código** (400, `{typography.codigo.fontSize}`, 1.55; 8,8 pt no impresso,
   piso 6,9 pt): a prancha. O corpo é calculado por bloco a partir da linha mais
-  larga, com teto de 98 colunas em 174 mm; das 147 amostras só duas encolhem.
+  larga, com teto de 98 colunas em 174 mm; das 156 amostras só duas encolhem.
 - **Estado** (400, `{typography.estado.fontSize}`): tabela densa, sumário,
   moldura de capítulo, dados da capa.
 - **Rótulo** (600, `{typography.rotulo.fontSize}`, `0.12em`, caixa-alta; 6,4/8

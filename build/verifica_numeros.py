@@ -166,6 +166,29 @@ def main() -> int:
             erros.append(f"testes declarados para versão que a trilha não tem: "
                          f"{fantasma}")
 
+    # A contagem de trechos nos documentos de projeto.
+    #
+    # `README.md`, `PRODUCT.md` e `DESIGN.md` afirmam quantos trechos o
+    # material publica, e os três já ficaram velhos: o PRODUCT dizia 152 e o
+    # DESIGN 147 depois de os quatro diagramas entrarem por âncora. Nada os
+    # media, porque `AFIRMACOES` cobre o material e não os documentos que
+    # descrevem o projeto - e é justamente neles que o número aparece solto.
+    try:
+        from codigo_deriva import CODIGO as _COD
+    except ModuleNotFoundError:
+        _COD = {}
+    if _COD:
+        n_trechos = len(_COD)
+        for rel in ("README.md", "PRODUCT.md", "DESIGN.md"):
+            caminho = RAIZ / rel
+            if not caminho.exists():
+                continue
+            for m in re.finditer(r"\b(\d+)\s+(?:trechos|amostras)\b",
+                                 caminho.read_text(encoding="utf-8")):
+                if int(m.group(1)) != n_trechos:
+                    erros.append(f"{rel}: diz “{m.group()}”, e "
+                                 f"`extrair_codigo.py` publica {n_trechos}")
+
     # Colchete angular comido pelo HTML do v1.
     #
     # O site v1 deixava `<...>` sem escapar dentro de bloco de código, e o
