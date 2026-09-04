@@ -17,7 +17,9 @@ PYV  := $(VENV)/bin/python
 
 .PHONY: all verifica site livro semear-livro extrai mapa contrato codigo deriva voz medidas numeros fontes limpa
 
-all: verifica site livro livro-pdf
+# o livro vem ANTES do site: a capa linka o PDF, e `conferir_links`
+# do build_site precisa que o arquivo exista para nao reprovar
+all: verifica livro livro-pdf site
 	@echo "── pronto: poo/ e livro/"
 
 mapa:

@@ -568,6 +568,7 @@ def main() -> int:
     pdf = SAIDA / "livro.pdf"
     destino = LIVRO / "poo-v2.pdf"
     shutil.copy(pdf, destino)
+
     paginas = 0
     m = re.search(r"Output written on .*?\((\d+) pages", r.stdout)
     if m:

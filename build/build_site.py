@@ -133,6 +133,7 @@ def pagina(*, titulo, descricao, corpo, css_extra=(), js_extra=(), prev=None,
   <span class="badge-ufpb">UFPB · CI · DI</span>
   <span>PROGRAMAÇÃO ORIENTADA A OBJETOS · {mapa.SEMESTRE}</span>
   <span>{mapa.EMAIL}</span>
+  <span><a href="LICENCAS.md">licenças</a></span>
   <span style="margin-left:auto">{mapa.PADRAO} · FTXUI v5.0.0 · Catch2</span>
 </footer>
 </body>
@@ -632,6 +633,9 @@ def pag_index():
          "os sete itens das três caças ao bug"),
         ("verifica.html", "▸ PORTÃO", "make verifica",
          "warning · ctest · replay · contadores em zero"),
+        ("livro/poo-v2.pdf", "▸ LIVRO", "As 299 páginas, para imprimir",
+         "PDF de impressão · e a versão de tela em livro/livro.html, "
+         "um arquivo que abre sem rede"),
         ("plano-de-ensino.html", "▸ PLANO", f"Plano de ensino {mapa.SEMESTRE}",
          "15 semanas · 12 laboratórios · avaliação"),
         ("exercicios.html", "▸ EXERCÍCIOS", f"{n_ex} itens, aula por aula",
@@ -1568,7 +1572,58 @@ def main():
     # morto para ele volta a ser erro como qualquer outro. A tolerância
     # existia porque o arquivo era feito à mão, e foi ela que permitiu ele
     # ficar 17 horas atrás do plano que representa.
+    # O livro entra no site, e não só ao lado dele.
+    #
+    # O site não o linkava em lugar nenhum: um estudante em `bidu.tv/poo` não
+    # tinha como chegar às 299 páginas. A capa agora traz o atalho, e o arquivo
+    # é copiado para `poo/livro/` para que publicar seja copiar UM diretório -
+    # link para `../livro/` obrigaria a servir o diretório pai.
+    #
+    # `poo/livro/` é cópia gerada e não é versionada: versioná-la duplicaria
+    # 2,3 MB de binário, e as duas cópias iriam divergir.
+    import shutil
+    dentro = SAIDA / "livro"
+    pendentes = []
+    # O aviso de licença viaja com o site.
+    #
+    # A SIL OFL das fontes do IBM Plex exige que ele acompanhe os arquivos, e o
+    # site as serve. Diferente do livro, esta cópia é VERSIONADA: tem 3 KB, é
+    # texto, e um clone limpo precisa dela para o link do rodapé não morrer.
+    # Em `--conferir` o portão recusa a cópia velha, como faz com o plano.
+    lic_fonte, lic_alvo = RAIZ / "LICENCAS.md", SAIDA / "LICENCAS.md"
+    if lic_fonte.exists():
+        if CONFERIR:
+            if not lic_alvo.exists() or \
+                    lic_alvo.stat().st_mtime < lic_fonte.stat().st_mtime:
+                print("LICENÇA ERRO: poo/LICENCAS.md falta ou está mais antigo "
+                      "que a raiz - rode `python3 build/build_site.py`")
+                return 2
+        else:
+            shutil.copy(lic_fonte, lic_alvo)
+
+    for nome in ("poo-v2.pdf", "livro.html"):
+        origem = RAIZ / "livro" / nome
+        alvo = dentro / nome
+        if alvo.exists() and origem.exists() and \
+                alvo.stat().st_mtime >= origem.stat().st_mtime:
+            continue
+        if origem.exists() and not CONFERIR:
+            dentro.mkdir(parents=True, exist_ok=True)
+            shutil.copy(origem, alvo)
+        elif not alvo.exists():
+            # `--conferir` não escreve, então em modo de conferência o alvo
+            # pode faltar tendo origem: nos dois casos o link é satisfazível
+            # por um alvo do Makefile, e não é link morto.
+            pendentes.append((nome, origem.exists()))
+
     faltando = conferir_links(paginas)
+    if pendentes:
+        faltando = [e for e in faltando if "livro/" not in e]
+        for nome, tem_origem in pendentes:
+            print(f"aviso: poo/livro/{nome} ainda não está no site - "
+                  + ("`make site` o copia" if tem_origem
+                     else "`make livro-pdf` o constrói"))
+
     duros = list(faltando)
     if duros:
         for e in duros:

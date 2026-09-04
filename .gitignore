@@ -69,6 +69,11 @@ node_modules/
 conteudo/extraido/
 livro/extraido/
 
+# o livro copiado para dentro do site, para `poo/` ser diretório autocontido
+# e publicar ser copiar um diretório só. `make livro-pdf` o refaz.
+poo/livro/
+
+
 # o markdown montado do livro, intermediário entre os capítulos e o PDF
 livro/livro.md
 
