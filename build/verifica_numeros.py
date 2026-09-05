@@ -189,6 +189,49 @@ def main() -> int:
                     erros.append(f"{rel}: diz “{m.group()}”, e "
                                  f"`extrair_codigo.py` publica {n_trechos}")
 
+    # A extensão do livro, nos documentos de projeto.
+    #
+    # `PRODUCT.md` dizia 283 páginas em dois lugares, de antes da composição
+    # final; o PDF tem 299 e a capa do site exibe o número. O que faltava era
+    # justamente isto: o portão do PDF (`verifica_pdf.py`) confere o artefato
+    # contra `mapa.PAGINAS_LIVRO`, e aqui conferimos os documentos contra o
+    # mapa - senão a correção de um deixa os outros para trás.
+    # As FORMAS que de fato afirmam a extensão do livro, e não uma janela
+    # de proximidade. A janela pegava "38 páginas de site, o livro" e "a
+    # folha das 38 páginas" como se fossem do livro - e portão que dá
+    # alarme falso é portão que se aprende a ignorar. Aqui a forma é
+    # estreita: ou o número vem logo depois de "livro", ou "do livro" vem
+    # logo depois do número. O que escapar de forma nova escapa em
+    # silêncio, e isso é melhor que o inverso.
+    PG_LIVRO = re.compile(
+        r"livro(?:\s+de\s+apoio)?\s*(?:de|com|:|\||-|,)?\s*(\d{2,4})\s+páginas"
+        r"|(\d{2,4})\s+páginas\s+(?:do|deste)\s+livro", re.I)
+    for rel in ("README.md", "PRODUCT.md", "DESIGN.md"):
+        caminho = RAIZ / rel
+        if not caminho.exists():
+            continue
+        texto = re.sub(r"\s+", " ", caminho.read_text(encoding="utf-8"))
+        for m in PG_LIVRO.finditer(texto):
+            n = int(m.group(1) or m.group(2))
+            if n != mapa.PAGINAS_LIVRO:
+                erros.append(f"{rel}: diz “{m.group()}” e mapa.PAGINAS_LIVRO "
+                             f"diz {mapa.PAGINAS_LIVRO}")
+
+    # A taxonomia dos interativos.
+    #
+    # A capa dizia "28 interativos em 8 tipos" e são dez tipos distintos: os
+    # oito instrumentos, a corrida reaproveitada de LPII e o diagrama de
+    # classes, que é ferramenta. Três dos vinte e oito usos não são de
+    # instrumento, e a afirmação cobria os três como se fossem.
+    n_instr = sum(1 for d in mapa.INTERATIVOS.values() if 1 <= d["n"] <= 8)
+    n_tipos = len({c for a in mapa.AULAS for c in a["interativos"]})
+    if n_instr != 8:
+        erros.append(f"o mapa tem {n_instr} instrumentos (n de 1 a 8), e o "
+                     "material fala de oito em nove lugares")
+    if n_tipos != len(mapa.INTERATIVOS):
+        erros.append(f"{n_tipos} tipos de interativo usados nas aulas contra "
+                     f"{len(mapa.INTERATIVOS)} declarados em mapa.INTERATIVOS")
+
     # Colchete angular comido pelo HTML do v1.
     #
     # O site v1 deixava `<...>` sem escapar dentro de bloco de código, e o

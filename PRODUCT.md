@@ -4,11 +4,12 @@
 
 O material completo da disciplina de **Programação Orientada a Objetos em C++17**
 do Centro de Informática da UFPB: um site de 38 páginas, um livro de apoio de
-283 páginas, e o repositório do sistema que atravessa o curso.
+299 páginas, e o repositório do sistema que atravessa o curso.
 
 Três artefatos, uma fonte. `conteudo/mapa.py` é a tabela canônica - 26 aulas em
-3 unidades, 3 anexos, 20 versões do sistema, 12 laboratórios, 8 tipos de exemplo
-interativo -, e site e livro derivam dela. Livro e site divergem quando não há
+3 unidades, 3 anexos, 20 versões do sistema, 12 laboratórios, 10 tipos de exemplo
+interativo (oito instrumentos, a corrida reaproveitada de LPII e o diagrama de
+classes, que é ferramenta) -, e site e livro derivam dela. Livro e site divergem quando não há
 fonte única, e foi o que aconteceu na versão anterior.
 
 - **Autor e docente:** Carlos Eduardo Coelho Freire Batista · `bidu@ci.ufpb.br`
@@ -81,10 +82,10 @@ leitor um trabalho que é nosso, e esconder é pior.
 | artefato | estado |
 |---|---|
 | site | 38 páginas, geradas · 26 aulas, 3 anexos, trilha, 12 laboratórios, rubrica, portão, plano de ensino, glossário |
-| livro | 283 páginas · 26 capítulos + 3 anexos + glossário e referências · Aula N = Capítulo N |
+| livro | 299 páginas · 26 capítulos + 3 anexos + glossário e referências · Aula N = Capítulo N |
 | Deriva | v0.0 → v2.7 · 188 testes verdes · `make verifica` 4 de 4 · 4 variantes quebradas |
 | laboratórios | 12, com enunciado, esqueleto e solução de referência verificada pelo `ctest` |
-| interativos | 9 peças, 8 tipos canônicos, contrato testado sem navegador |
+| interativos | 9 peças em 8 instrumentos, mais a corrida e o diagrama · 28 usos · contrato testado sem navegador |
 
 ## O idioma visual, que já está estabelecido
 

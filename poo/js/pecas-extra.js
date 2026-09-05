@@ -263,7 +263,12 @@
 
       var linhas = fonte.map(function (l, k) {
         var marca = acesas[k];
-        return '<div' + (marca ? ' style="background:var(--falha-lav);box-shadow:inset 3px 0 0 var(--falha)"' : "") +
+        // Sem a barra de 3px: a linha marcada ja tem tres portadores - a
+        // lavagem, o texto em --leitura e o "◀ R3" com o nome do item da
+        // rubrica no fim. A barra era o quarto, e o unico box-shadow que
+        // restava no build inteiro depois que a arvore trocou a dela por
+        // um caractere.
+        return '<div' + (marca ? ' style="background:var(--falha-lav)"' : "") +
           '><span style="color:var(--fantasma)">' + String(k + 1).padStart(2, "0") + "</span>  " +
           '<span style="color:' + (marca ? "var(--leitura)" : gerado ? "var(--apagado)" : "var(--leitura)") + '">' +
           esc(l) + "</span>" +

@@ -25,7 +25,7 @@
   <div class="migalha">
     <span class="badge-ufpb">UFPB · CI</span>
     <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
-    <span class="sep">/</span><span class="atual">RUBRICA</span>
+    <span class="atual">RUBRICA</span>
   </div>
   <div class="ferramentas">
     <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
@@ -80,7 +80,7 @@
 <li><a href="trilha.html"><span class="galho">├</span><span class="num">▸</span>Trilha do Deriva</a></li>
 <li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
 <li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
-<li><a href="rubrica.html" aria-current="page"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
+<li><a href="rubrica.html" aria-current="page"><span class="galho">┣</span><span class="num">▸</span>Rubrica de revisão</a></li>
 <li><a href="verifica.html"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
 <li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
 <li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
@@ -99,49 +99,49 @@
     lugares na ordem em que compensa olhar, de forma que a revisão comece pela posse do
     recurso e termine no que o teste efetivamente prova.</p>
     <div class="trilha"><div class="versao">
-  <div class="versao__tag">R1<span class="aula">verifique</span></div>
+  <div class="versao__tag">R1<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">Posse</div>
     <div class="versao__conc">Quem possui cada recurso, e em que linha ele é liberado? Há um `delete[]` para cada `new[]` - ou, melhor, nenhum dos dois?</div>
     <div class="versao__testes" style="color:var(--falha)">▲ o que costuma aparecer: contêiner público com posse; `delete` no código do estudante; `shared_ptr` onde bastava `unique_ptr`</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">R2<span class="aula">verifique</span></div>
+  <div class="versao__tag">R2<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">Operações especiais</div>
     <div class="versao__conc">Se há destrutor, há também cópia e atribuição, ou as duas estão `= delete`? A regra do zero não resolveria melhor?</div>
     <div class="versao__testes" style="color:var(--falha)">▲ o que costuma aparecer: destrutor declarado e cópia esquecida - cópia rasa silenciosa</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">R3<span class="aula">verifique</span></div>
+  <div class="versao__tag">R3<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">const-correctness</div>
     <div class="versao__conc">Todo método que não altera o objeto é `const`? Todo parâmetro só de leitura é `const&` ou `string_view`? Nenhum acesso devolve referência não-const a membro privado?</div>
     <div class="versao__testes" style="color:var(--falha)">▲ o que costuma aparecer: getter não-const; retorno ignorado sem `[[nodiscard]]`</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">R4<span class="aula">verifique</span></div>
+  <div class="versao__tag">R4<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">Limites e ausência</div>
     <div class="versao__conc">Todo índice é verificado, ou a pré-condição está escrita e quem chama a cumpre? Ausência de resultado é `std::optional`, e não valor mágico?</div>
     <div class="versao__testes" style="color:var(--falha)">▲ o que costuma aparecer: índice sem verificação e sem pré-condição escrita; -1 como "não achei"</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">R5<span class="aula">verifique</span></div>
+  <div class="versao__tag">R5<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">Hierarquia</div>
     <div class="versao__conc">Base com método virtual tem destrutor virtual? Toda sobrescrita está marcada `override`?</div>
     <div class="versao__testes" style="color:var(--falha)">▲ o que costuma aparecer: hierarquia sem `~base()` virtual - o teste passa e o objeto vaza, e com `unique_ptr` nem aviso aparece</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">R6<span class="aula">verifique</span></div>
+  <div class="versao__tag">R6<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">Invariante e estado</div>
     <div class="versao__conc">O construtor estabelece a invariante, e nenhum método público a deixa quebrada no retorno? Nada lê o objeto de origem depois de um `std::move`?</div>
     <div class="versao__testes" style="color:var(--falha)">▲ o que costuma aparecer: campo público mutável; `assert(origem.empty())` depois do move</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">R7<span class="aula">verifique</span></div>
+  <div class="versao__tag">R7<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">Prova e justificativa</div>
     <div class="versao__conc">O teste falha se o comportamento mudar - e não se a implementação mudar? Cada função de biblioteca chamada existe, com essa assinatura, em C++17? Para cada decisão aceita há uma frase que a sustenta, escrita por quem entrega?</div>

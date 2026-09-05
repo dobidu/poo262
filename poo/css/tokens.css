@@ -22,6 +22,12 @@
   --fosforo-alto: #FFD79A;
   --leitura:      #E4E7E2;
   --apagado:      #8A928C;
+  /* --fantasma e ANDAIME, e nao texto: 2.14:1 sobre --painel-alto, abaixo
+     do piso de 3:1 para texto grande. O lugar dele e o galho da arvore, o
+     numero da aula e o glifo que estrutura a linha - coisa que se ve sem
+     se ler. Texto que carrega informacao usa --apagado (5.4:1). Quatro
+     lugares o usavam como texto: a nota do cartao da capa, o medidor da
+     unidade, o medidor da arvore e o botao de saltar a abertura. */
   --fantasma:     #4A524C;
 
   --ok:           #6FD08C;
@@ -56,6 +62,14 @@
   --lh-cod: 1.55;
 
   /* ---- espaço ------------------------------------------------ */
+  /* Dois degraus abaixo de --e1, e eles existem porque faltavam: dezessete
+     lugares usavam 1, 2, 3, 4, 5 e 7px LITERAIS para ajuste otico dentro de
+     componentes - recuo de badge, nudge de linha de base, vao entre celulas
+     de byte. Literal nao escala: em projecao (--s: 1.45) tudo em volta
+     crescia 45% e esses ficavam parados, e o ajuste otico virava
+     desalinhamento justamente na tela grande. */
+  --e00: calc(2px * var(--s));
+  --e0:  calc(4px * var(--s));
   --e1: calc(6px * var(--s));
   --e2: calc(12px * var(--s));
   --e3: calc(18px * var(--s));
@@ -66,6 +80,7 @@
   /* ---- grade ------------------------------------------------- */
   --medida: 68ch;          /* prosa: nunca mais que isso        */
   --arvore: 300px;         /* navegação lateral das 26 aulas    */
+  --campo: 230px;          /* campo de aferição, o mesmo do livro */
   --pagina-max: 1500px;
 
   color-scheme: dark;

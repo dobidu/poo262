@@ -38,7 +38,7 @@ try:
 except ModuleNotFoundError:      # ainda não rodou build/medir_deriva.py
     MEDIDAS = {"versao": "?", "testes": 0, "variantes_escritas": []}
 import trechos                                  # noqa: E402
-from comum import esc, link_ce, moldura, realcar  # noqa: E402
+from comum import esc, link_ce, moldura, realcar, tabela_de_carimbos  # noqa: E402
 
 SEM_NOTAS = "--sem-notas" in sys.argv
 CONFERIR = "--conferir" in sys.argv
@@ -141,6 +141,20 @@ def pagina(*, titulo, descricao, corpo, css_extra=(), js_extra=(), prev=None,
 """
 
 
+def galho_de(i: int, n: int, corrente: bool) -> str:
+    """O galho da arvore, com peso grosso na aula corrente.
+
+    O marcador de pagina corrente era `box-shadow: inset 2px 0 0` - uma barra
+    ambar de 2px, que e a versao em CSS de um caractere que o alfabeto do site
+    ja tem. O IBM Plex Mono cobre o bloco U+2500..U+257F inteiro, entao o par
+    grosso existe e alinha na mesma celula do fino.
+    """
+    fim = i == n - 1
+    if corrente:
+        return "\u2517" if fim else "\u2523"      # heavy: la esta voce
+    return "\u2570" if fim else "\u251c"          # leve: o resto da trilha
+
+
 def arvore(atual=None):
     """T6 · a árvore das 26 aulas mais os anexos. Vira gaveta em ≤860px."""
     out = ['<nav class="arvore" aria-label="Aulas da disciplina" data-aberta="0">']
@@ -154,8 +168,9 @@ def arvore(atual=None):
                    "</div>")
         out.append("<ol>")
         for i, a in enumerate(aulas):
-            galho = "╰" if i == len(aulas) - 1 else "├"
-            cur = ' aria-current="page"' if a["slug"] == atual else ""
+            corrente = a["slug"] == atual
+            galho = galho_de(i, len(aulas), corrente)
+            cur = ' aria-current="page"' if corrente else ""
             marca = ('<span class="tem-int" title="tem exemplo interativo">▶</span>'
                      if a["interativos"] else "")
             out.append(f'<li><a href="aula-{a["n"]:02d}.html" data-slug="{a["slug"]}"{cur}>'
@@ -165,8 +180,9 @@ def arvore(atual=None):
         out.append("</ol>")
     out.append('<div class="arvore__unidade"><div class="arvore__rot">ANEXOS</div></div><ol>')
     for i, x in enumerate(mapa.ANEXOS):
-        galho = "╰" if i == len(mapa.ANEXOS) - 1 else "├"
-        cur = ' aria-current="page"' if x["slug"] == atual else ""
+        corrente = x["slug"] == atual
+        galho = galho_de(i, len(mapa.ANEXOS), corrente)
+        cur = ' aria-current="page"' if corrente else ""
         selo = ' <span class="c20">C++20</span>' if x["c20"] else ""
         out.append(f'<li><a href="{x["slug"]}.html"{cur}><span class="galho">{galho}</span>'
                    f'<span class="num">{x["letra"]}</span>{esc(x["curto"])}{selo}</a></li>')
@@ -177,8 +193,9 @@ def arvore(atual=None):
               ("verifica.html", "Portão make verifica"), ("exercicios.html", "Exercícios"),
               ("plano-de-ensino.html", "Plano de ensino")]
     for i, (href, rot) in enumerate(extras):
-        galho = "╰" if i == len(extras) - 1 else "├"
-        cur = ' aria-current="page"' if href == atual else ""
+        corrente = href == atual
+        galho = galho_de(i, len(extras), corrente)
+        cur = ' aria-current="page"' if corrente else ""
         out.append(f'<li><a href="{href}"{cur}><span class="galho">{galho}</span>'
                    f'<span class="num">▸</span>{esc(rot)}</a></li>')
     out.append("</ol></nav>")
@@ -202,7 +219,7 @@ def bl_tabela(b):
     cab = "".join(f"<th>{c}</th>" for c in b["cabeca"])
     linhas = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in l) + "</tr>"
                      for l in b["linhas"])
-    return ('<div style="overflow-x:auto;max-width:100%"><table class="tabela">'
+    return ('<div class="rolo"><table class="tabela">'
             + (f"<thead><tr>{cab}</tr></thead>" if cab else "")
             + f"<tbody>{linhas}</tbody></table></div>")
 
@@ -498,6 +515,92 @@ def nota_migracao(d):
             f'{fatia}<p>{esc(d["nota_migracao"])}</p>{pend}</div></details>')
 
 
+CARIMBOS = tabela_de_carimbos()
+_PARAGRAFO = re.compile(r"<p(?![a-z])[^>]*>.*?</p>", re.S)
+_CODIGO_EM_LINHA = re.compile(r"<code[^>]*>.*?</code>", re.S)
+
+
+def carimbar_html(corpo: str, gastos: set) -> str:
+    """Ancora o campo de aferição depois do parágrafo que afirma o número.
+
+    O livro (impresso e em tela) já dizia, na margem, onde cada número foi
+    medido e com qual comando; as 26 páginas de aula não diziam. É a mesma
+    tabela de `comum.tabela_de_carimbos()`, e o mesmo dispositivo visual da
+    folha do livro - o site e o livro afirmam a mesma procedência.
+
+    O carimbo entra como IRMÃO do parágrafo, e não dentro dele: acima de
+    1360px `.slide` é uma grade de três colunas, e só um filho direto cai
+    na coluna do campo.
+
+    Cada grandeza carimba uma vez por aula. A margem é campo de conferência,
+    não de repetição.
+    """
+    def num_em_prosa(par: str, valor) -> bool:
+        """O número tem de estar na prosa, e não dentro de `<code>`.
+
+        Sem isto, `std::vector<std::unique_ptr<entidade>>` num trecho em
+        linha casaria com a busca de `entidade` e o carimbo apontaria para
+        uma afirmação que o parágrafo não faz.
+        """
+        limpo = _CODIGO_EM_LINHA.sub(lambda m: " " * len(m.group()), par)
+        return bool(valor.search(limpo))
+
+    def de(m):
+        par = m.group()
+        for palavra, valor, grandeza, cmd, arq, exibe in CARIMBOS:
+            if grandeza in gastos or not palavra.search(par):
+                continue
+            if not num_em_prosa(par, valor):
+                continue
+            gastos.add(grandeza)
+            v = exibe or valor.search(
+                _CODIGO_EM_LINHA.sub(lambda x: " " * len(x.group()), par)).group().strip()
+            return par + (
+                '<aside class="carimbo">'
+                f'<span class="carimbo__regua" aria-hidden="true">{"─" * 60}</span>'
+                f'<span class="carimbo__valor">{esc(v)}</span>'
+                f'<span class="carimbo__grandeza">{esc(grandeza)}</span>'
+                f'<span class="carimbo__como">aferido por</span>'
+                f'<code>{esc(cmd)}</code><br><code>{esc(arq)}</code>'
+                "</aside>")
+        return par
+
+    # Só parágrafo de PRIMEIRO NÍVEL do slide. Cinco dos oito carimbos
+    # caíam dentro de `.callout__corpo`: ali o aside nunca alcança
+    # `grid-column: campo` - ele é neto da grade, e não filho -, e o que
+    # se via era uma caixa com fio dentro de um painel tingido, caixa
+    # dentro de caixa. As caixas já trazem a própria procedência (a do
+    # Deriva nomeia a versão, a de código traz o arquivo no pé), então o
+    # campo fica com o que é prosa corrida da aula.
+    saida, pos, prof = [], 0, 0
+    for m in re.finditer(r"<(/?)(aside|details|section|div|p)\b[^>]*?(/?)>", corpo):
+        fecha, tag, vazio = m.group(1), m.group(2), m.group(3)
+        if tag == "p":
+            if not fecha and prof == 0:
+                fim = corpo.find("</p>", m.start())
+                if fim != -1:
+                    fim += 4
+                    saida.append(corpo[pos:m.start()])
+                    saida.append(_PARAGRAFO.sub(de, corpo[m.start():fim]))
+                    pos = fim
+            continue
+        if vazio:
+            continue
+        prof += -1 if fecha else 1
+    saida.append(corpo[pos:])
+    return "".join(saida)
+
+
+
+# A taxonomia dos interativos, derivada do mapa e nao digitada. A capa dizia
+# "28 interativos em 8 tipos" e sao DEZ tipos distintos: os oito instrumentos
+# (n 1..8), mais a corrida de dados (n 9, reaproveitada de LPII) e o diagrama
+# de classes (n 0, que e ferramenta e nao instrumento). Tres dos 28 usos nao
+# sao de instrumento, e a capa afirmava que todos eram.
+N_INSTRUMENTOS = sum(1 for d in mapa.INTERATIVOS.values() if 1 <= d["n"] <= 8)
+N_TIPOS_INT = len({c for a in mapa.AULAS for c in a["interativos"]})
+
+
 # ---------------------------------------------------------------------------
 # páginas
 # ---------------------------------------------------------------------------
@@ -508,6 +611,8 @@ def pag_aula(a):
     next = f"aula-{n+1:02d}.html" if n < 26 else "anexo-a.html"
     prev_rot = mapa.aula(n - 1)["curto"] if n > 1 else "Índice das 26 aulas"
     next_rot = mapa.aula(n + 1)["curto"] if n < 26 else "Anexo A · Concepts e Ranges"
+
+    gastos: set = set()          # cada grandeza carimba uma vez por aula
 
     conteudo = []
     if d["objetivos"]:
@@ -524,7 +629,7 @@ def pag_aula(a):
         conteudo.append(f'<section class="slide" id="{esc(s["id"]) or f"s{numero}"}">'
                         f'<div class="slide__cab"><span class="slide__n">{numero:02d}</span>'
                         f'<h2>{esc(s["titulo"])}{marca}</h2></div>'
-                        f'{blocos(s["blocos"])}</section>')
+                        f'{carimbar_html(blocos(s["blocos"]), gastos)}</section>')
         numero += 1
 
     cod = secao_codigo_deriva(n, f"{numero:02d}")
@@ -562,18 +667,69 @@ def pag_aula(a):
         numero += 1
 
     u = mapa.unidade(a["unidade"])
-    barras = "".join('<i data-vista="0"></i>' for _ in range(numero - 1))
-    sub = (f'UNIDADE {u["n"]} · AULA {n:02d} DE 26 · CAP. {n} DO LIVRO'
-           + (f' · DERIVA {a["deriva"]}' if a["deriva"] else "")
-           + (f' · {a["lab"]}' if a["lab"] else ""))
+    # O mapa das secoes. Antes: `<i data-vista="0">` para cada uma, e nada
+    # em poo/js/ escrevia `data-vista="1"` nem `data-atual="1"` - sete fios
+    # cinzas identicos, `aria-hidden`, no elemento mais largo da pagina.
+    # Agora cada fio e um elo para a sua secao, com o nome dela como nome
+    # acessivel, e app.js acende o corrente.
+    corpo_slides = "\n".join(conteudo)
+    # Varredura tolerante, e nao uma regex de forma unica: as secoes vem de
+    # cinco construtores diferentes e nao concordam no espacamento nem na
+    # ordem interna (`secao_interativo` poe `{rot}` onde as outras poem
+    # `<span class="slide__n">`, e a do diagrama abre com uma quebra de
+    # linha). Uma regex rigida casava 9 de 10 na Aula 06.
+    secoes = []
+    for pedaco in corpo_slides.split('<section class="slide"')[1:]:
+        sid = re.search(r'id="([^"]+)"', pedaco[:200])
+        sn = re.search(r'class="slide__n">\s*(\d+)\s*<', pedaco)
+        tit = re.search(r"<h2[^>]*>(.*?)</h2>", pedaco, re.S)
+        if not (sid and tit):
+            continue
+        secoes.append((sid.group(1), sn.group(1) if sn else "", tit.group(1)))
+    # A conta antiga era `range(numero - 1)`, e `numero` comeca em 1 porque a
+    # secao de objetivos e a `00`: o mapa saia com um fio de menos, e a
+    # secao "O que voce sai sabendo" nunca aparecia nele. A invariante certa
+    # nao e uma aritmetica de contador - e que TODA secao emitida tenha
+    # casado, porque um fio faltando e um pedaco da aula inalcancavel.
+    emitidas = corpo_slides.count('<section class="slide"')
+    assert len(secoes) == emitidas, (
+        f"aula {n:02d}: {len(secoes)} secoes casadas para {emitidas} emitidas - "
+        "o mapa de secoes ficaria incompleto em silencio")
+    barras = "".join(
+        f'<a href="#{sid}" data-secao="{sid}" data-vista="0"><i></i>'
+        f'<span class="progresso__nome">{sn} {esc(re.sub(chr(60) + "[^" + chr(62) + "]*" + chr(62), "", tit))}</span></a>'
+        for sid, sn, tit in secoes)
+    # A ficha da aula. Era uma linha de `.sub` com ~60 caracteres de
+    # maiusculas em Mono - "UNIDADE II · AULA 12 DE 26 · CAP. 12 DO LIVRO ·
+    # DERIVA v1.2" -, densa e ilegivel justamente por ser a informacao de
+    # referencia da pagina: qual versao do Deriva, qual capitulo do livro,
+    # qual laboratorio. Acima de 1360px ela vai para o campo da margem, como
+    # no livro; abaixo, volta a ser uma linha que embrulha.
+    # Valores curtos de proposito: o campo tem 230px e a ficha divide a
+    # primeira linha da grade com o h1. O nome da unidade nao entra aqui -
+    # a arvore lateral ja o traz, em corpo maior, no cabecalho da unidade.
+    ficha = [("UNIDADE", u["n"]),
+             ("AULA", f'{n:02d} de 26'),
+             # "12 do livro" embrulhava em duas linhas no campo em projeção,
+             # e o rótulo CAPÍTULO já diz de onde é o capítulo.
+             ("CAPÍTULO", str(n))]
+    if a["deriva"]:
+        ficha.append(("DERIVA", a["deriva"]))
+        nt = MEDIDAS.get("testes_por_versao", {}).get(a["deriva"], 0)
+        ficha.append(("TESTES", f'{acumulado_ate(a["deriva"])}'
+                                + (f' · +{nt}' if nt else "")))
+    if a["lab"]:
+        ficha.append(("LABORATÓRIO", a["lab"]))
+    sub = "".join(f'<span class="ficha__par"><b>{esc(r)}</b> {esc(v)}</span>'
+                  for r, v in ficha)
 
     corpo = f"""<div class="aula" data-aula-slug="{a['slug']}">
 {arvore(a['slug'])}
 <main class="corpo" id="conteudo">
   <div class="cabeca-aula">
     <h1>{esc(a['titulo'])}</h1>
-    <p class="sub">{sub}</p>
-    <div class="progresso" aria-hidden="true">{barras}</div>
+    <aside class="ficha">{sub}</aside>
+    <nav class="progresso" aria-label="Seções desta aula">{barras}</nav>
   </div>
 {chr(10).join(conteudo)}
 {nota_migracao(d)}
@@ -591,8 +747,12 @@ def pag_aula(a):
                    f"em C++17 (UFPB/CI): {a['titulo']}."),
         corpo=corpo, prev=prev, next=next,
         js_extra=("interativo.js", "pecas.js", "pecas-extra.js", "uml.js"),
-        migalha=(f'<span class="sep">/</span><span class="unid">UNIDADE {u["n"]}</span>'
-                 f'<span class="sep">/</span><span class="atual">AULA {n:02d}</span>'))
+        # A secao corrente entra aqui, e nao na cabeca de aula: durante a
+        # projecao a cabeca rola para fora da tela em segundos, e a barra
+        # grudada e o que fica. app.js preenche e desconde.
+        migalha=(f'<span class="unid">UNIDADE {u["n"]}</span>'
+                 f'<span class="atual">AULA {n:02d}</span>'
+                 '<span class="secao" data-secao-atual hidden></span>'))
 
 
 def pag_index():
@@ -621,35 +781,69 @@ def pag_index():
     n_slides = sum(len(CONTEUDO[a["slug"]]["slides"]) for a in mapa.AULAS)
     obrig = [t for t in mapa.TRILHA if not t.get("opcional")]
 
-    atalhos = [
-        ("trilha.html", "▸ TRILHA", f"As {len(obrig)} versões do Deriva",
-         f"v0.0 → v2.7 · {len(mapa.quebradas())} variantes quebradas de propósito, "
-         f"{len(MEDIDAS['variantes_escritas'])} já escritas"),
-        ("galeria.html", "▸ INTERATIVOS", "Os oito instrumentos",
-         "leiaute · ciclo de vida · despacho · move · posse · SOLID · compilação · rubrica"),
-        ("laboratorios.html", "▸ LABORATÓRIOS", "Doze, antes das aulas que os exigem",
-         "esqueleto · solução de referência · portão executável"),
-        ("rubrica.html", "▸ RUBRICA", "Revisão de código OO gerado por IA",
-         "os sete itens das três caças ao bug"),
-        ("verifica.html", "▸ PORTÃO", "make verifica",
-         "warning · ctest · replay · contadores em zero"),
-        ("livro/poo-v2.pdf", "▸ LIVRO", "As 299 páginas, para imprimir",
-         "PDF de impressão · e a versão de tela em livro/livro.html, "
-         "um arquivo que abre sem rede"),
-        ("plano-de-ensino.html", "▸ PLANO", f"Plano de ensino {mapa.SEMESTRE}",
-         "15 semanas · 12 laboratórios · avaliação"),
-        ("exercicios.html", "▸ EXERCÍCIOS", f"{n_ex} itens, aula por aula",
-         "de todas as 26, numa página"),
-        ("glossario.html", "▸ REFERÊNCIA", "Glossário e bibliografia",
-         f"{len(GLOSSARIO)} verbetes · {len(BIBLIO)} referências auditadas"),
+    # Os nove destinos, em tres familias. Eram nove cartoes de peso igual
+    # num `auto-fit`, e a grade quebrava em 5+4 ou 6+3 - nunca nas
+    # fronteiras do que ali existe. As familias sao a topologia real: o
+    # livro e um artefato de 299 paginas e fica sozinho; quatro destinos
+    # acompanham a aula da semana; quatro sao instrumento de processo.
+    familias = [
+        ("├─ AO LADO DA AULA", [
+            ("trilha.html", "▸ TRILHA", f"As {len(obrig)} versões do Deriva",
+             f"v0.0 → v2.7 · {len(mapa.quebradas())} variantes quebradas de propósito, "
+             f"{len(MEDIDAS['variantes_escritas'])} já escritas"),
+            ("galeria.html", "▸ INTERATIVOS", "Os oito instrumentos",
+             "leiaute · ciclo de vida · despacho · move · posse · SOLID · compilação · rubrica"),
+            ("laboratorios.html", "▸ LABORATÓRIOS", "Doze, antes das aulas que os exigem",
+             "esqueleto · solução de referência · portão executável"),
+            ("exercicios.html", "▸ EXERCÍCIOS", f"{n_ex} itens, aula por aula",
+             "de todas as 26, numa página"),
+        ]),
+        ("╰─ INSTRUMENTO E PROCESSO", [
+            ("verifica.html", "▸ PORTÃO", "make verifica",
+             "warning · ctest · replay · contadores em zero"),
+            ("rubrica.html", "▸ RUBRICA", "Revisão de código OO gerado por IA",
+             "os sete itens das três caças ao bug"),
+            ("plano-de-ensino.html", "▸ PLANO", f"Plano de ensino {mapa.SEMESTRE}",
+             "15 semanas · 12 laboratórios · avaliação"),
+            ("glossario.html", "▸ REFERÊNCIA", "Glossário e bibliografia",
+             f"{len(GLOSSARIO)} verbetes · {len(BIBLIO)} referências auditadas"),
+        ]),
     ]
-    ats = "".join(f'<a class="atalho" href="{h}"><span class="atalho__rot">{r}</span>'
-                  f'<span class="atalho__nome">{esc(n)}</span>'
-                  f'<span class="atalho__nota">{esc(o)}</span></a>'
-                  for h, r, n, o in atalhos)
+
+    def cartoes(itens):
+        return "".join(
+            f'<a class="atalho" href="{h}"><span class="atalho__rot">{r}</span>'
+            f'<span class="atalho__nome">{esc(n)}</span>'
+            f'<span class="atalho__nota">{esc(o)}</span></a>'
+            for h, r, n, o in itens)
+
+    # O livro tem duas saidas - PDF de impressao e um arquivo de tela que
+    # abre sem rede -, e a nota do cartao antigo dizia a segunda em prosa
+    # porque um <a> nao aceita dois <a> dentro.
+    destinos = (
+        '<section class="familia">'
+        '<h3 class="familia__rot">├─ PARA LEVAR</h3>'
+        '<div class="levar"><div class="levar__txt">'
+        f'<p class="levar__tit">O livro de apoio, {mapa.PAGINAS_LIVRO} páginas</p>'
+        '<p class="levar__nota">26 capítulos, 3 anexos, glossário e referências. '
+        'A Aula N é o Capítulo N, e todo número afirmado traz no campo da margem '
+        'onde foi medido.</p>'
+        '</div><div class="levar__acoes">'
+        '<a class="bt bt--primario" href="livro/poo-v2.pdf">PDF PARA IMPRIMIR</a>'
+        '<a class="bt" href="livro/livro.html">VERSÃO DE TELA</a>'
+        '</div></div></section>'
+        + "".join(f'<section class="familia"><h3 class="familia__rot">{esc(rot)}</h3>'
+                  f'<div class="familia__itens">{cartoes(itens)}</div></section>'
+                  for rot, itens in familias))
 
     corpo = f"""<main class="capa">
   <section class="abertura" data-abertura aria-label="Sequência de inicialização">
+    <!-- O log e a linha de estado sao separados de proposito: recolhida, a
+         abertura some com o log e conserva o estado. Com os oito no mesmo
+         contentor, `visibility: hidden` deixava as sete primeiras linhas
+         ocupando espaco e o teto de altura cortava justamente a oitava, que
+         e a que tem de ficar. -->
+    <div class="abertura__log" id="abertura-log">
     <div data-post><span class="fa">$</span> <span class="am">deriva</span> --init</div>
     <div data-post><span class="fa">…</span> UFPB · CENTRO DE INFORMÁTICA · DEPARTAMENTO DE INFORMÁTICA</div>
     <div data-post><span class="fa">…</span> PROGRAMAÇÃO ORIENTADA A OBJETOS · {mapa.SEMESTRE}</div>
@@ -657,7 +851,8 @@ def pag_index():
     <div data-post><span class="fa">…</span> ftxui v5.0.0 <span class="ok">OK</span> · catch2 <span class="ok">OK</span> · make verifica <span class="ok">OK</span></div>
     <div data-post><span class="fa">…</span> 26 aulas · {n_slides} slides · {n_ex} exercícios · {len(obrig)} versões do Deriva · 12 laboratórios</div>
     <div data-post><span class="fa">…</span> sonda de inspeção <span class="am">montada</span> - a estação orbital não responde</div>
-    <div data-post><span class="ok">▸</span> sistema pronto <span class="cursor">█</span></div>
+    </div>
+    <div class="abertura__pronto" data-post><span class="ok">▸</span> sistema pronto <span class="cursor">█</span></div>
     <button class="saltar" type="button" data-saltar>pressione qualquer tecla para saltar</button>
   </section>
 
@@ -671,10 +866,10 @@ def pag_index():
     <div class="capa__meta">
       <span>Prof. <b>{esc(mapa.AUTOR)}</b></span>
       <span>alvo <b>{mapa.PADRAO}</b></span>
-      <span><b>26</b> aulas · <b>3</b> unidades · <b>3</b> anexos</span>
+      <span><b>{len(mapa.AULAS)}</b> aulas · <b>{len(mapa.UNIDADES)}</b> unidades · <b>{len(mapa.ANEXOS)}</b> anexos</span>
       <span><b>{n_ex}</b> exercícios</span>
-      <span><b>12</b> laboratórios</span>
-      <span><b>{n_int}</b> interativos em <b>8</b> tipos</span>
+      <span><b>{len(mapa.LABS)}</b> laboratórios</span>
+      <span><b>{n_int}</b> interativos · <b>{N_INSTRUMENTOS}</b> instrumentos, a corrida e o diagrama</span>
     </div>
   </div>
 
@@ -704,9 +899,9 @@ def pag_index():
     {moldura(None, None, sistema=True, base=True)}
   </section>
 
-  <h2 id="conteudo" style="font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.18em;color:var(--fosforo);margin:var(--e5) 0 0;font-weight:500">├─ AS 26 AULAS</h2>
+  <h2 id="conteudo" class="capa__secao">├─ AS 26 AULAS</h2>
   <div class="unidades">{"".join(unidades)}</div>
-  <div class="atalhos">{ats}</div>
+  <div class="destinos">{destinos}</div>
 </main>"""
 
     return pagina(titulo=f"Programação Orientada a Objetos em C++ · POO · UFPB",
@@ -718,7 +913,7 @@ def pag_index():
                       "objeto, contagem de referências."),
                   corpo=corpo, css_extra=("index.css",), js_extra=("heroi-vtable.js",),
                   next="aula-01.html", com_arvore=False,
-                  migalha=f'<span class="sep">/</span><span class="atual">{mapa.SEMESTRE}</span>')
+                  migalha=f'<span class="atual">{mapa.SEMESTRE}</span>')
 
 
 def pag_galeria():
@@ -744,13 +939,16 @@ def pag_galeria():
     n_ex = N_EX
     n_slides = sum(len(CONTEUDO[a["slug"]]["slides"]) for a in mapa.AULAS)
 
-    corpo = f"""<main class="pg" style="padding:0 var(--goteira) var(--e5)">
+    # O `id="conteudo"` estava na primeira <section>, e nao no <main>: o
+    # link "Pular para o conteudo" passava por cima do h1. Nas outras 35
+    # paginas ele esta no <main>.
+    corpo = f"""<main class="pg" id="conteudo">
   <div class="cabeca-aula">
     <h1>Os oito instrumentos</h1>
-    <p class="sub">UMA MOLDURA · OITO TIPOS · {n_int} USOS NAS 26 AULAS</p>
+    <p class="sub">UMA MOLDURA · {N_INSTRUMENTOS} INSTRUMENTOS + A CORRIDA E O DIAGRAMA · {n_int} USOS NAS {len(mapa.AULAS)} AULAS</p>
   </div>
 
-  <section class="slide" id="conteudo">
+  <section class="slide">
     <p>Os oito instrumentos compartilham a mesma moldura e o mesmo contrato: o estado exibido é
     função de <em>(cenário, passo)</em>, o avanço do passo é sempre seu, cada peça oferece ao
     menos um cenário que <strong>demonstra a falha</strong> e outro que a evita, e o painel de
@@ -798,7 +996,7 @@ def pag_galeria():
                              "de classes interativo: o que a execução real não mostra."),
                   corpo=corpo, prev="index.html", next="trilha.html", com_arvore=False,
                   js_extra=("interativo.js", "pecas.js", "pecas-extra.js", "uml.js"),
-                  migalha='<span class="sep">/</span><span class="atual">OS OITO INSTRUMENTOS</span>')
+                  migalha='<span class="atual">OS OITO INSTRUMENTOS</span>')
 
 
 def pag_trilha():
@@ -809,7 +1007,7 @@ def pag_trilha():
         opc = (' <span style="color:var(--outro)">· opcional, fora do padrão-alvo</span>'
                if t.get("opcional") else "")
         linhas.append(f"""<div class="versao">
-  <div class="versao__tag">{t["v"]}{selo}<span class="aula">{aulas or "anexo A"}</span></div>
+  <div class="versao__tag">{t["v"]}{selo}<span class="versao__aula">{aulas or "anexo A"}</span></div>
   <div class="versao__o">
     <div class="versao__entrega">{esc(t["entrega"])}{opc}</div>
     <div class="versao__conc">{esc(t["conceitos"])}</div>
@@ -819,7 +1017,7 @@ def pag_trilha():
         if t.get("quebrada"):
             tag, o_que, como = t["quebrada"]
             linhas.append(f"""<div class="versao versao--quebrada">
-  <div class="versao__tag">{tag}<span class="aula">{aulas}</span></div>
+  <div class="versao__tag">{tag}<span class="versao__aula">{aulas}</span></div>
   <div class="versao__o">
     <span class="aviso-proposito">▲ QUEBRADA DE PROPÓSITO</span>
     <div class="versao__entrega">{esc(o_que)}</div>
@@ -888,7 +1086,7 @@ def pag_trilha():
                   descricao=(f"As {len(obrig)} versões do Deriva, uma por aula, com as "
                              "variantes deliberadamente quebradas e as três caças ao bug."),
                   corpo=corpo, prev="galeria.html", next="laboratorios.html",
-                  migalha='<span class="sep">/</span><span class="atual">TRILHA</span>')
+                  migalha='<span class="atual">TRILHA</span>')
 
 
 EXTENSO = {0: "nenhum", 1: "um", 2: "dois", 3: "três", 4: "quatro", 5: "cinco",
@@ -979,7 +1177,7 @@ def pag_laboratorios():
                   descricao=("Os doze laboratórios preparatórios da disciplina, com "
                              "esqueleto, solução de referência e portão de correção."),
                   corpo=corpo, prev="trilha.html", next="rubrica.html",
-                  migalha='<span class="sep">/</span><span class="atual">LABORATÓRIOS</span>')
+                  migalha='<span class="atual">LABORATÓRIOS</span>')
 
 
 # A rubrica vive em `conteudo/mapa.py`, e só lá: ela existia aqui, no Cap. 04
@@ -991,7 +1189,7 @@ RUBRICA = [(r["id"], r["titulo"], r["pergunta"], r["costuma_aparecer"])
 def pag_rubrica():
     """T13 - a rubrica como instrumento com que se trabalha, não texto que se lê."""
     linhas = "".join(f"""<div class="versao">
-  <div class="versao__tag">{r}<span class="aula">verifique</span></div>
+  <div class="versao__tag">{r}<span class="versao__aula">verifique</span></div>
   <div class="versao__o">
     <div class="versao__entrega">{esc(t)}</div>
     <div class="versao__conc">{p}</div>
@@ -1038,7 +1236,7 @@ def pag_rubrica():
                              "objetos gerado por IA, instrumento das três caças ao bug."),
                   corpo=corpo, prev="laboratorios.html", next="verifica.html",
                   js_extra=("interativo.js", "pecas.js", "pecas-extra.js"),
-                  migalha='<span class="sep">/</span><span class="atual">RUBRICA</span>')
+                  migalha='<span class="atual">RUBRICA</span>')
 
 
 def pag_verifica():
@@ -1059,7 +1257,7 @@ def pag_verifica():
          "acusa qualquer destrutor que deixou de rodar, sem depender de ferramenta externa."),
     ]
     linhas = "".join(f"""<div class="versao">
-  <div class="versao__tag">{p}<span class="aula">portão</span></div>
+  <div class="versao__tag">{p}<span class="versao__aula">portão</span></div>
   <div class="versao__o">
     <div class="versao__entrega"><code>{esc(cmd)}</code></div>
     <div class="versao__conc">{txt}</div>
@@ -1118,7 +1316,7 @@ def pag_verifica():
                   descricao=("As quatro condições do portão de correção da disciplina: "
                              "warning, ctest, replay determinístico e contadores em zero."),
                   corpo=corpo, prev="rubrica.html", next="plano-de-ensino.html",
-                  migalha='<span class="sep">/</span><span class="atual">PORTÃO</span>')
+                  migalha='<span class="atual">PORTÃO</span>')
 
 
 def pag_plano():
@@ -1150,7 +1348,7 @@ def pag_plano():
         sem.append((s, f"semana {s}{marca}", rot))
 
     linhas = "".join(f"""<div class="versao{' versao--quebrada' if 'CAÇA' in r else ''}">
-  <div class="versao__tag">S{n:02d}<span class="aula">{esc(r.split(' · ')[-1]) if 'CAÇA' in r else ''}</span></div>
+  <div class="versao__tag">S{n:02d}{f'<span class="versao__aula">{esc(r.split(chr(32) + chr(183) + chr(32))[-1])}</span>' if 'CAÇA' in r else ''}</div>
   <div class="versao__o">{''.join(f'<div class="versao__entrega">{x}</div>' for x in xs)}</div>
 </div>""" for n, r, xs in sem)
 
@@ -1186,7 +1384,7 @@ def pag_plano():
   </section>
   <section class="slide">
     <div class="slide__cab"><span class="slide__n">02</span><h2>Os 12 laboratórios</h2></div>
-    <div style="overflow-x:auto"><table class="tabela"><thead><tr><th>id</th><th>título</th>
+    <div class="rolo"><table class="tabela"><thead><tr><th>id</th><th>título</th>
     <th>prepara</th><th>portão</th></tr></thead><tbody>{labs}</tbody></table></div>
   </section>
   <section class="slide">
@@ -1208,7 +1406,7 @@ def pag_plano():
                   descricao=("Plano de ensino da disciplina de Programação Orientada a "
                              "Objetos, UFPB/CI: 26 aulas, 15 semanas, 12 laboratórios."),
                   corpo=corpo, prev="verifica.html", next="anexo-a.html",
-                  migalha='<span class="sep">/</span><span class="atual">PLANO DE ENSINO</span>')
+                  migalha='<span class="atual">PLANO DE ENSINO</span>')
 
 
 C17_REF = [
@@ -1302,7 +1500,7 @@ def pag_anexos():
         descricao=("Concepts e Ranges como anexo rotulado C++20: conteúdo que mudou de "
                    "estatuto porque o alvo da disciplina é C++17."),
         corpo=corpo, prev="plano-de-ensino.html", next="anexo-b.html",
-        migalha='<span class="sep">/</span><span class="atual">ANEXO A</span>')
+        migalha='<span class="atual">ANEXO A</span>')
 
     # ---- Anexo B: referência rápida de C++17 (nova) ------------------------
     linhas = "".join(
@@ -1322,7 +1520,7 @@ def pag_anexos():
     <code>std::filesystem</code> ou de <code>std::tuple</code>, ao mesmo tempo que ensinava
     Concepts e Ranges, que são C++20. Está aqui o que passou a ser exigido, com o capítulo
     em que cada construção entra e a armadilha que costuma acompanhá-la.</p>
-    <div style="overflow-x:auto"><table class="tabela"><thead><tr><th>construção</th>
+    <div class="rolo"><table class="tabela"><thead><tr><th>construção</th>
     <th>cap.</th><th>forma</th><th>o que costuma dar errado</th></tr></thead>
     <tbody>{linhas}</tbody></table></div>
   </section>
@@ -1337,7 +1535,7 @@ def pag_anexos():
         titulo="Anexo B - Referência rápida de C++17 · POO · UFPB",
         descricao="Tabela de consulta das construções de C++17 exigidas pela disciplina.",
         corpo=corpo, prev="anexo-a.html", next="anexo-c.html",
-        migalha='<span class="sep">/</span><span class="atual">ANEXO B</span>')
+        migalha='<span class="atual">ANEXO B</span>')
 
     # ---- Anexo C: o Deriva, as 20 versões ---------------------------------
     corpo = f"""<div class="aula">
@@ -1366,7 +1564,7 @@ def pag_anexos():
         titulo="Anexo C - O Deriva: as 20 versões · POO · UFPB",
         descricao="As 20 versões do Deriva e o capítulo que introduz cada uma.",
         corpo=corpo, prev="anexo-b.html", next="glossario.html",
-        migalha='<span class="sep">/</span><span class="atual">ANEXO C</span>')
+        migalha='<span class="atual">ANEXO C</span>')
     return saidas
 
 
@@ -1414,7 +1612,7 @@ def pag_exercicios():
     return pagina(titulo="Exercícios · POO · UFPB",
                   descricao=f"Os {N_EX} itens de exercício da disciplina, agregados por aula.",
                   corpo=corpo, prev="index.html", next="glossario.html",
-                  migalha='<span class="sep">/</span><span class="atual">EXERCÍCIOS</span>')
+                  migalha='<span class="atual">EXERCÍCIOS</span>')
 
 
 GLOSSARIO = [
@@ -1515,7 +1713,7 @@ def pag_glossario():
     <p>Duas correções em relação ao v1 estão aplicadas: a autoria do Catch2, que é de Nash e
     Hořeňovský, e a edição de <em>Programming: Principles and Practice</em>, que é a 3ª, de
     2024. Entrou também o Josuttis, por cobrir o padrão-alvo capítulo por capítulo.</p>
-    <div style="overflow-x:auto"><table class="tabela"><thead><tr><th>autoria</th>
+    <div class="rolo"><table class="tabela"><thead><tr><th>autoria</th>
     <th>título</th><th>edição</th><th>para que serve aqui</th></tr></thead>
     <tbody>{bib}</tbody></table></div>
   </section>
@@ -1529,7 +1727,7 @@ def pag_glossario():
     return pagina(titulo="Glossário e bibliografia · POO · UFPB",
                   descricao="Glossário dos conceitos da disciplina e bibliografia auditada.",
                   corpo=corpo, prev="anexo-c.html", next="index.html",
-                  migalha='<span class="sep">/</span><span class="atual">GLOSSÁRIO</span>')
+                  migalha='<span class="atual">GLOSSÁRIO</span>')
 
 
 # ---------------------------------------------------------------------------

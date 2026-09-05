@@ -23,7 +23,7 @@
   <div class="migalha">
     <span class="badge-ufpb">UFPB · CI</span>
     <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
-    <span class="sep">/</span><span class="atual">2026.2</span>
+    <span class="atual">2026.2</span>
   </div>
   <div class="ferramentas">
     
@@ -34,6 +34,12 @@
 
 <main class="capa">
   <section class="abertura" data-abertura aria-label="Sequência de inicialização">
+    <!-- O log e a linha de estado sao separados de proposito: recolhida, a
+         abertura some com o log e conserva o estado. Com os oito no mesmo
+         contentor, `visibility: hidden` deixava as sete primeiras linhas
+         ocupando espaco e o teto de altura cortava justamente a oitava, que
+         e a que tem de ficar. -->
+    <div class="abertura__log" id="abertura-log">
     <div data-post><span class="fa">$</span> <span class="am">deriva</span> --init</div>
     <div data-post><span class="fa">…</span> UFPB · CENTRO DE INFORMÁTICA · DEPARTAMENTO DE INFORMÁTICA</div>
     <div data-post><span class="fa">…</span> PROGRAMAÇÃO ORIENTADA A OBJETOS · 2026.2</div>
@@ -41,7 +47,8 @@
     <div data-post><span class="fa">…</span> ftxui v5.0.0 <span class="ok">OK</span> · catch2 <span class="ok">OK</span> · make verifica <span class="ok">OK</span></div>
     <div data-post><span class="fa">…</span> 26 aulas · 130 slides · 112 exercícios · 20 versões do Deriva · 12 laboratórios</div>
     <div data-post><span class="fa">…</span> sonda de inspeção <span class="am">montada</span> - a estação orbital não responde</div>
-    <div data-post><span class="ok">▸</span> sistema pronto <span class="cursor">█</span></div>
+    </div>
+    <div class="abertura__pronto" data-post><span class="ok">▸</span> sistema pronto <span class="cursor">█</span></div>
     <button class="saltar" type="button" data-saltar>pressione qualquer tecla para saltar</button>
   </section>
 
@@ -58,7 +65,7 @@
       <span><b>26</b> aulas · <b>3</b> unidades · <b>3</b> anexos</span>
       <span><b>112</b> exercícios</span>
       <span><b>12</b> laboratórios</span>
-      <span><b>28</b> interativos em <b>8</b> tipos</span>
+      <span><b>28</b> interativos · <b>8</b> instrumentos, a corrida e o diagrama</span>
     </div>
   </div>
 
@@ -88,7 +95,7 @@
     <div class="moldura moldura--sistema" aria-hidden="true"><span class="moldura__canto">└─</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__canto">─┘</span></div>
   </section>
 
-  <h2 id="conteudo" style="font-family:var(--maquina);font-size:var(--t-rot);letter-spacing:.18em;color:var(--fosforo);margin:var(--e5) 0 0;font-weight:500">├─ AS 26 AULAS</h2>
+  <h2 id="conteudo" class="capa__secao">├─ AS 26 AULAS</h2>
   <div class="unidades"><section class="unidade">
   <div class="moldura" aria-hidden="true"><span class="moldura__canto">╭─</span><span class="moldura__canto">─┤</span><span class="moldura__titulo">UNIDADE I</span><span class="moldura__canto">├</span><span class="moldura__regua" data-fill>────────</span><span class="moldura__nota">┤ Fundamentos ├</span><span class="moldura__canto">─╮</span></div>
   <div class="unidade__corpo">
@@ -111,7 +118,7 @@
   </div>
   <div class="unidade__pe" data-unidade-conta="a19,a20,a21,a22,a23,a24,a25,a26"><b>0</b>/8 lidas · Deriva v2.0 → v2.7</div>
 </section></div>
-  <div class="atalhos"><a class="atalho" href="trilha.html"><span class="atalho__rot">▸ TRILHA</span><span class="atalho__nome">As 20 versões do Deriva</span><span class="atalho__nota">v0.0 → v2.7 · 4 variantes quebradas de propósito, 4 já escritas</span></a><a class="atalho" href="galeria.html"><span class="atalho__rot">▸ INTERATIVOS</span><span class="atalho__nome">Os oito instrumentos</span><span class="atalho__nota">leiaute · ciclo de vida · despacho · move · posse · SOLID · compilação · rubrica</span></a><a class="atalho" href="laboratorios.html"><span class="atalho__rot">▸ LABORATÓRIOS</span><span class="atalho__nome">Doze, antes das aulas que os exigem</span><span class="atalho__nota">esqueleto · solução de referência · portão executável</span></a><a class="atalho" href="rubrica.html"><span class="atalho__rot">▸ RUBRICA</span><span class="atalho__nome">Revisão de código OO gerado por IA</span><span class="atalho__nota">os sete itens das três caças ao bug</span></a><a class="atalho" href="verifica.html"><span class="atalho__rot">▸ PORTÃO</span><span class="atalho__nome">make verifica</span><span class="atalho__nota">warning · ctest · replay · contadores em zero</span></a><a class="atalho" href="livro/poo-v2.pdf"><span class="atalho__rot">▸ LIVRO</span><span class="atalho__nome">As 299 páginas, para imprimir</span><span class="atalho__nota">PDF de impressão · e a versão de tela em livro/livro.html, um arquivo que abre sem rede</span></a><a class="atalho" href="plano-de-ensino.html"><span class="atalho__rot">▸ PLANO</span><span class="atalho__nome">Plano de ensino 2026.2</span><span class="atalho__nota">15 semanas · 12 laboratórios · avaliação</span></a><a class="atalho" href="exercicios.html"><span class="atalho__rot">▸ EXERCÍCIOS</span><span class="atalho__nome">112 itens, aula por aula</span><span class="atalho__nota">de todas as 26, numa página</span></a><a class="atalho" href="glossario.html"><span class="atalho__rot">▸ REFERÊNCIA</span><span class="atalho__nome">Glossário e bibliografia</span><span class="atalho__nota">10 verbetes · 9 referências auditadas</span></a></div>
+  <div class="destinos"><section class="familia"><h3 class="familia__rot">├─ PARA LEVAR</h3><div class="levar"><div class="levar__txt"><p class="levar__tit">O livro de apoio, 299 páginas</p><p class="levar__nota">26 capítulos, 3 anexos, glossário e referências. A Aula N é o Capítulo N, e todo número afirmado traz no campo da margem onde foi medido.</p></div><div class="levar__acoes"><a class="bt bt--primario" href="livro/poo-v2.pdf">PDF PARA IMPRIMIR</a><a class="bt" href="livro/livro.html">VERSÃO DE TELA</a></div></div></section><section class="familia"><h3 class="familia__rot">├─ AO LADO DA AULA</h3><div class="familia__itens"><a class="atalho" href="trilha.html"><span class="atalho__rot">▸ TRILHA</span><span class="atalho__nome">As 20 versões do Deriva</span><span class="atalho__nota">v0.0 → v2.7 · 4 variantes quebradas de propósito, 4 já escritas</span></a><a class="atalho" href="galeria.html"><span class="atalho__rot">▸ INTERATIVOS</span><span class="atalho__nome">Os oito instrumentos</span><span class="atalho__nota">leiaute · ciclo de vida · despacho · move · posse · SOLID · compilação · rubrica</span></a><a class="atalho" href="laboratorios.html"><span class="atalho__rot">▸ LABORATÓRIOS</span><span class="atalho__nome">Doze, antes das aulas que os exigem</span><span class="atalho__nota">esqueleto · solução de referência · portão executável</span></a><a class="atalho" href="exercicios.html"><span class="atalho__rot">▸ EXERCÍCIOS</span><span class="atalho__nome">112 itens, aula por aula</span><span class="atalho__nota">de todas as 26, numa página</span></a></div></section><section class="familia"><h3 class="familia__rot">╰─ INSTRUMENTO E PROCESSO</h3><div class="familia__itens"><a class="atalho" href="verifica.html"><span class="atalho__rot">▸ PORTÃO</span><span class="atalho__nome">make verifica</span><span class="atalho__nota">warning · ctest · replay · contadores em zero</span></a><a class="atalho" href="rubrica.html"><span class="atalho__rot">▸ RUBRICA</span><span class="atalho__nome">Revisão de código OO gerado por IA</span><span class="atalho__nota">os sete itens das três caças ao bug</span></a><a class="atalho" href="plano-de-ensino.html"><span class="atalho__rot">▸ PLANO</span><span class="atalho__nome">Plano de ensino 2026.2</span><span class="atalho__nota">15 semanas · 12 laboratórios · avaliação</span></a><a class="atalho" href="glossario.html"><span class="atalho__rot">▸ REFERÊNCIA</span><span class="atalho__nome">Glossário e bibliografia</span><span class="atalho__nota">10 verbetes · 9 referências auditadas</span></a></div></section></div>
 </main>
 
 <footer class="pe">

@@ -154,6 +154,17 @@ def main() -> int:
             falhas.append(f"{transbordos} linhas transbordando (teto: {TETO_TRANSBORDO})")
 
     carimbos = sum(1 for pg in d if "aferido por" in pg.get_text())
+
+    # A extensão que a capa do site afirma. Estava digitada à mão em
+    # build_site.py; agora vem de mapa.PAGINAS_LIVRO, e aqui é conferida
+    # contra o artefato - a prosa não afirma número que o PDF negue.
+    sys.path.insert(0, str(RAIZ))
+    from conteudo import mapa  # noqa: E402
+    if d.page_count != mapa.PAGINAS_LIVRO:
+        falhas.append(f"o PDF tem {d.page_count} páginas e mapa.PAGINAS_LIVRO diz "
+                      f"{mapa.PAGINAS_LIVRO} - conserte o mapa (a capa do site "
+                      "exibe esse número)")
+
     if falhas:
         print("── PDF REPROVADO")
         for f in falhas:

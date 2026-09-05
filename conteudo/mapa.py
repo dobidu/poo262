@@ -632,6 +632,13 @@ AUTOR = "Carlos Eduardo C. F. Batista"
 EMAIL = "bidu@ci.ufpb.br"
 PADRAO = "C++17"
 
+# A extensão do livro composto. Estava digitada à mão na capa do site ("As
+# 299 páginas") e desencontrada no PRODUCT.md (283, de antes da composição
+# final). Aqui ela é declarada uma vez, e `build/verifica_pdf.py` recusa o
+# PDF que não tiver este número - a mesma regra dos outros números do
+# material: declarado na tabela, conferido contra o artefato.
+PAGINAS_LIVRO = 299
+
 
 def aula(n):
     for a in AULAS:

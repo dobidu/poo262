@@ -22,7 +22,27 @@ body {
 }
 ::selection { background: var(--fosforo); color: var(--vazio); }
 
+/* ---- as superficies que o navegador desenha -------------------
+   Barra de rolagem, cursor de texto e sublinhado saiam no cinza padrao
+   sobre `#0A0C0B`, e nesta pagina isso aparece: todo bloco de codigo tem
+   `overflow-x: auto` e a arvore das 26 aulas tem `overflow-y: auto`. A
+   folha do livro (poo/css/livro.css) ja os tematizava; esta, que serve as
+   38 paginas, nao.                                               */
+* { scrollbar-color: var(--grade-alta) transparent; scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--vazio); }
+::-webkit-scrollbar-thumb { background: var(--grade-alta); border: 2px solid var(--vazio); }
+::-webkit-scrollbar-thumb:hover { background: var(--fantasma); }
+::-webkit-scrollbar-corner { background: var(--vazio); }
+
+body { caret-color: var(--fosforo); }
+/* numero em figura tabular: as tabelas de sizeof so alinham assim */
+table, .int__estado, .hv__est, .arvore__medidor, .selo, .carimbo {
+  font-variant-numeric: tabular-nums;
+}
+
 a { color: var(--frio); text-decoration: none; border-bottom: 1px solid rgba(95,195,214,.4); }
+a:not([class]) { text-underline-offset: .18em; }
 a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); }
 
 /* Foco visível NA estética: moldura em fósforo, não o outline
@@ -58,18 +78,29 @@ a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); 
 }
 .moldura--sistema { color: var(--grade-alta); }
 .moldura__canto { flex: 0 0 auto; }
-.moldura__regua { flex: 1 1 auto; overflow: hidden; }
+.moldura__regua { flex: 1 1 0; min-width: 0; overflow: hidden; }
+/* O titulo era `flex: 0 0 auto`: em 390px ele nao encolhia, empurrava o
+   `─┐` para fora do `overflow: hidden` do pai, e a caixa DERIVA saia
+   truncada em "o mundo passa a poss" SEM o canto. Moldura de box-drawing
+   desalinhada e um dos sinais que o PRODUCT.md nomeia. Agora o titulo
+   cede antes do canto, e cede com reticencia. */
 .moldura__titulo {
-  flex: 0 0 auto; padding: 0 .35em;
+  flex: 0 1 auto; min-width: 3ch; padding: 0 .35em;
+  overflow: hidden; text-overflow: ellipsis;
   color: var(--fosforo); letter-spacing: .16em; font-weight: 600;
 }
-.moldura__nota { flex: 0 0 auto; padding: 0 .35em; color: var(--apagado); letter-spacing: .1em; }
+.moldura__nota {
+  flex: 0 1 auto; min-width: 0; padding: 0 .35em;
+  overflow: hidden; text-overflow: ellipsis;
+  color: var(--apagado); letter-spacing: .1em;
+}
 
 /* =============================================================
    T1 · PÁGINA DE AULA
    ============================================================= */
 
-.pg { max-width: var(--pagina-max); margin: 0 auto; }
+/* a galeria e a unica pagina sem arvore lateral */
+.pg { max-width: var(--pagina-max); margin: 0 auto; padding: 0 var(--goteira) var(--e5); }
 
 .barra {
   position: sticky; top: 0; z-index: 20;
@@ -79,14 +110,25 @@ a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); 
   font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em;
   color: var(--apagado);
 }
+/* Cada migalha traz o proprio separador como `::before`. Havia um
+   `<span class="sep">/</span>` solto no HTML antes de cada uma, e em 860px
+   `.unid { display: none }` deixava o separador orfao: a barra saia
+   "/ POO / / AULA 12". Separador que pertence a migalha desaparece com
+   ela, e o defeito deixa de existir por construcao.                 */
 .migalha { display: flex; align-items: center; gap: .5em; min-width: 0; }
 .migalha b { color: var(--fosforo); font-weight: 500; }
 .migalha .sep { color: var(--fantasma); }
-.migalha .atual { color: var(--leitura); overflow: hidden; text-overflow: ellipsis; }
+.migalha .unid, .migalha .atual, .migalha .secao { white-space: nowrap; }
+.migalha .unid::before, .migalha .atual::before, .migalha .secao::before {
+  content: "/"; color: var(--fantasma); margin-right: .5em;
+}
+.migalha .atual { color: var(--leitura); }
+/* so a secao cede: ela e a mais longa e a menos essencial das quatro */
+.migalha .secao { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 .badge-ufpb {
   display: inline-flex; align-items: center; gap: .4em;
-  padding: 3px 7px; background: var(--ufpb); color: #fff;
+  padding: var(--e00) var(--e1); background: var(--ufpb); color: #fff;
   font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .12em;
 }
 
@@ -115,46 +157,151 @@ a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); 
 .arvore__unidade { padding: var(--e3) var(--e3) var(--e1); }
 .arvore__unidade:first-child { padding-top: 0; }
 .arvore__rot { color: var(--fosforo); letter-spacing: .16em; font-size: var(--t-rot); }
-.arvore__medidor { margin-top: 4px; color: var(--fantasma); letter-spacing: .08em; }
-.arvore__medidor b { color: var(--apagado); font-weight: 400; }
+.arvore__medidor { margin-top: var(--e1); color: var(--apagado); letter-spacing: .08em; }
+.arvore__medidor b { color: var(--leitura); font-weight: 500; }
 .arvore ol { list-style: none; margin: var(--e1) 0 0; padding: 0; }
 .arvore a {
   display: flex; gap: .6em; align-items: baseline;
-  min-height: calc(28px * var(--s)); padding: 4px var(--e3) 4px var(--e3);
+  min-height: calc(28px * var(--s)); padding: var(--e0) var(--e3);
   border: none; color: var(--apagado); line-height: 1.4;
 }
+/* `contador_de_instancias<T>` tem 25 caracteres e nao cabe em 300px sem
+   quebrar. Mas `anywhere` no <a> inteiro quebrava tambem o numero da
+   aula: `02` saia como `0` numa linha e `2` na seguinte. Quem quebra e o
+   titulo; o numero e o galho sao celulas de largura fixa. */
+.arvore a { overflow-wrap: anywhere; }
+.arvore a .num, .arvore a .galho, .arvore a .tem-int { white-space: nowrap; }
 .arvore a:hover { background: var(--painel); color: var(--leitura); }
 .arvore a .galho { color: var(--fantasma); }
 .arvore a .num { color: var(--fantasma); }
 .arvore a[data-visitada="1"] { color: var(--leitura); }
 .arvore a[data-visitada="1"] .num::after { content: "·"; color: var(--ok); margin-left: .3em; }
+/* A aula corrente era marcada por uma barra ambar de 2px (`inset 2px 0 0`).
+   Num idioma cujo alfabeto e box-drawing, a barra e a versao em CSS de um
+   caractere que existe: o gerador troca o galho por `>` na aula corrente
+   (build_site.py, `arvore()`), e aqui ele acende. Tres portadores - glifo,
+   fundo e cor - e nenhum deles e a cor sozinha.                        */
 .arvore a[aria-current="page"] {
   background: var(--fosforo-lav); color: var(--fosforo-alto);
-  box-shadow: inset 2px 0 0 var(--fosforo);
 }
-.arvore a[aria-current="page"] .galho, .arvore a[aria-current="page"] .num { color: var(--fosforo); }
+.arvore a[aria-current="page"] .galho { color: var(--fosforo); }
+.arvore a[aria-current="page"] .num { color: var(--fosforo); }
 
 .gaveta-abre { display: none; }
 
 /* ---- corpo de slides --------------------------------------- */
+/* ---- a casca do conteudo -------------------------------------
+   `.aula` nao tinha largura maxima nenhuma, e `.pg` (1500px) nunca foi
+   aplicada aqui - so em galeria.html. Em 1920 o conteudo media 1532px de
+   caixa com a prosa travada em 68ch: a regua da cabeca de aula e a barra de
+   progresso atravessavam a largura inteira sobre uma coluna de 660px, e a
+   moldura anunciava uma largura que o conteudo nunca preenchia. A medida
+   estava certa; o contorno estava mentindo.                     */
 .corpo { padding: 0 var(--goteira) var(--e5); min-width: 0; }
 
-.cabeca-aula { padding: var(--e5) 0 var(--e4); border-bottom: var(--rule-w) solid var(--grade); }
+/* Sem `border-bottom`: o mapa das secoes JA e a regua. As duas coisas
+   corriam a 27px uma da outra, e o par lia como uma regua quebrada -
+   sete tracinhos cinzas em cima de um fio continuo. Agora o fio e
+   segmentado de proposito, um segmento por secao, e o segmento da secao
+   corrente acende. E o idioma da casa: regua feita de caractere. */
+.cabeca-aula { padding: var(--e5) 0 var(--e3); }
+/* Nas onze paginas sem mapa de secoes nao ha regua nenhuma, e a cabeca
+   ficava solta sobre o primeiro paragrafo. Ali o fio continuo volta. */
+.cabeca-aula:not(:has(.progresso)) {
+  padding-bottom: var(--e4);
+  border-bottom: var(--rule-w) solid var(--grade);
+}
 .cabeca-aula h1 {
   margin: 0; font-family: var(--humana); font-size: var(--t-h1);
   line-height: 1.2; font-weight: 600; letter-spacing: -.01em;
   max-width: 30ch; text-wrap: balance; color: var(--leitura);
 }
+/* A legenda de uma linha das outras onze paginas (trilha, laboratorios,
+   rubrica, portao, plano, glossario, exercicios, galeria e os tres
+   anexos). Continua sendo `.sub`, e continua sendo uma linha: essas
+   paginas nao tem versao do Deriva nem capitulo do livro para fichar. */
 .cabeca-aula .sub {
   margin: var(--e2) 0 0; font-family: var(--maquina); font-size: var(--t-est);
   color: var(--apagado); letter-spacing: .08em;
 }
-.progresso { display: flex; gap: 3px; margin-top: var(--e3); }
-.progresso i {
-  flex: 1 1 0; height: 3px; background: var(--grade);
+
+/* ---- a ficha da aula -----------------------------------------
+   Era `.sub`: uma linha de ~60 caracteres em maiusculas Mono espacadas,
+   com a informacao de referencia da pagina (versao do Deriva, capitulo
+   do livro, laboratorio) comprimida no formato mais dificil de ler que
+   existe. Por padrao ela e uma linha que embrulha; acima de 1360px vai
+   para o campo da margem, empilhada, como no livro.            */
+.ficha {
+  display: flex; flex-wrap: wrap; gap: var(--e1) var(--e3);
+  margin: var(--e2) 0 0;
+  font-family: var(--maquina); font-size: var(--t-rot);
+  font-variant-numeric: tabular-nums; color: var(--leitura);
 }
-.progresso i[data-vista="1"] { background: var(--fosforo); }
-.progresso i[data-atual="1"] { background: var(--fosforo-alto); }
+.ficha__par { white-space: nowrap; }
+.ficha__par b { color: var(--apagado); font-weight: 400; letter-spacing: .14em; }
+.ficha__par b::after { content: " "; }
+/* ---- o mapa das secoes da aula --------------------------------
+   Isto era um enfeite morto: o gerador emitia `<i data-vista="0">` para
+   cada secao e NADA em poo/js/ escrevia `data-vista="1"` nem
+   `data-atual="1"`. Sete fios cinzas identicos, `aria-hidden`, no
+   elemento mais largo da pagina - e no segundo lugar de proeminencia
+   das 26 aulas. Em regime de predicao, "em que passo dos sete estamos"
+   e exatamente o que a turma precisa da moldura, e o widget que diria
+   isso estava desligado.
+
+   Agora cada fio e um elo para a sua secao, com o nome dela como nome
+   acessivel, e app.js (`mapaDeSecoes`) acende o corrente. O nome da
+   secao corrente vai para a migalha grudada no topo, que e o que fica
+   visivel na projecao depois que a cabeca de aula rola para fora.  */
+.progresso { display: flex; gap: calc(3px * var(--s)); margin-top: var(--e3); }
+.progresso a {
+  flex: 1 1 0; min-width: 0; display: block; border: none; position: relative;
+  padding: calc(7px * var(--s)) 0;   /* alvo clicavel maior que o fio */
+}
+.progresso a i {
+  display: block; height: calc(3px * var(--s)); background: var(--grade);
+  /* so a cor transiciona: animar `height` num fio de 3px anima leiaute em
+     ate dez elementos de uma vez, e o ganho e de 2px. */
+  transition: background-color 160ms ease-out;
+}
+.progresso a:hover i { background: var(--fantasma); }
+.progresso a[data-vista="1"] i { background: var(--apagado); }
+.progresso a[data-atual="1"] i { background: var(--fosforo); height: calc(5px * var(--s)); }
+.progresso a:focus-visible { outline-offset: -2px; }
+.progresso__nome {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) { .progresso a i { transition: none; } }
+@media (pointer: coarse) { .progresso a { padding: calc(11px * var(--s)) 0; } }
+
+.migalha .secao { color: var(--fosforo); }
+
+/* ---- campo de afericao ---------------------------------------
+   O mesmo dispositivo do livro em tela (poo/css/livro.css) e do impresso
+   (livro/estilo/livro.tex): onde cada numero afirmado foi medido, e com
+   qual comando. Fora do fluxo de leitura da prosa e subordinado a ela -
+   `--t-rot` em `--apagado`, nunca competindo.
+
+   Por padrao ele vive na coluna da prosa, com regua a esquerda. So acima
+   de 1360px ele vai para a terceira coluna, porque abaixo disso tomar
+   230px da prosa apertaria a medida abaixo do piso de leitura.       */
+.carimbo {
+  margin: var(--e3) 0; max-width: var(--medida);
+  border-left: var(--rule-w) solid var(--grade-alta);
+  padding-left: var(--e3);
+  font-family: var(--maquina); font-size: var(--t-rot); line-height: 1.5;
+  color: var(--apagado);
+}
+.carimbo__regua { display: none; }
+.carimbo__valor { color: var(--fosforo); font-weight: 600; }
+.carimbo__grandeza { color: var(--leitura); }
+.carimbo__valor::after { content: " · "; color: var(--fantasma); font-weight: 400; }
+.carimbo__como { display: block; margin-top: var(--e00); font-style: italic; }
+.carimbo code {
+  font-family: var(--maquina); font-size: inherit;
+  color: var(--leitura); background: var(--painel-alto); padding: 0 .3em;
+}
 
 .slide { padding: var(--e5) 0 0; scroll-margin-top: calc(60px * var(--s)); }
 .slide__cab { display: flex; align-items: baseline; gap: var(--e2); }
@@ -171,6 +318,10 @@ a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); 
 .slide p code, .slide li code, td code {
   font-family: var(--maquina); font-size: .88em; color: var(--fosforo-alto);
   background: var(--painel-alto); padding: .1em .35em;
+  /* `std::vector<std::unique_ptr<entidade>>` estourava o fio direito em
+     390px. Codigo EM LINHA pode quebrar; bloco de codigo nunca (`.codigo
+     pre` tem `white-space: pre` e rola). Sao coisas diferentes.        */
+  overflow-wrap: anywhere;
 }
 .slide ul, .slide ol { max-width: var(--medida); }
 
@@ -185,7 +336,7 @@ a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); 
 .codigo__cab .arq { color: var(--leitura); }
 .codigo__acoes { display: flex; gap: var(--e1); align-items: center; }
 .codigo pre {
-  margin: 0; padding: var(--e3) var(--e2);
+  margin: 0; padding: var(--e3);
   background: var(--painel-alto); border: var(--rule-w) solid var(--grade);
   overflow-x: auto;                    /* NUNCA quebra linha de C++ */
   font-family: var(--maquina); font-size: var(--t-cod); line-height: var(--lh-cod);
@@ -208,28 +359,72 @@ a:hover { color: var(--fosforo-alto); border-bottom-color: var(--fosforo-alto); 
 .selo-estado[data-t="ok"] { color: var(--ok); }
 .selo-estado[data-t="falha"] { color: var(--falha); }
 
-.linha-erro { display: block; background: var(--falha-lav); box-shadow: inset 3px 0 0 var(--falha); }
-.linha-ok   { display: block; background: var(--ok-lav);    box-shadow: inset 3px 0 0 var(--ok); }
 
 /* realce de sintaxe: dois tons + os semânticos, sem arco-íris  */
 .tk-kw  { color: var(--fosforo); }
 .tk-tipo{ color: var(--fosforo-alto); }
 .tk-str { color: var(--ok); }
 .tk-num { color: var(--frio); }
-.tk-com { color: var(--fantasma); font-style: italic; }
-.tk-pre { color: var(--apagado); }
+/* Estavam trocados em relacao ao DESIGN.md: comentario e --apagado e
+   diretiva e --fantasma. Comentario de codigo a 2,17:1 sobre --painel-alto
+   sao 41 ocorrencias so na Aula 02, e comentario e prosa do programador -
+   e para ser lido. */
+.tk-com { color: var(--apagado); font-style: italic; }
+.tk-pre { color: var(--fantasma); }
 .tk-c20 { color: var(--outro); }
 
 /* ---- T8 · selo C++20 -------------------------------------- */
 .c20 {
   display: inline-flex; align-items: center; gap: .3em;
-  padding: 1px 5px; border: 1px solid var(--outro); color: var(--outro);
+  padding: 1px var(--e0); border: 1px solid var(--outro); color: var(--outro);
   background: var(--outro-lav);
   font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .1em;
   vertical-align: middle; white-space: nowrap;
 }
 h2 .c20, h1 .c20 { margin-left: .5em; }
 .arvore a .c20 { padding: 0 3px; border-color: var(--outro); }
+
+/* =============================================================
+   TABELA - 37 delas, em 20 paginas
+   Nao havia uma linha de CSS para `.tabela` em nenhuma das tres folhas
+   de tela: `th` saia serif negrito centralizado do navegador, sem fio,
+   sem Mono ambar e sem `tabular-nums`. Numa disciplina cuja tese e ler
+   assinatura, a tabela de assinaturas era o pior lugar para perder a
+   grade. O tratamento e o mesmo da folha do livro (livro.css:286-314).
+   ============================================================= */
+.rolo { overflow-x: auto; max-width: 100%; }
+.tabela {
+  border-collapse: collapse; width: 100%;
+  /* sem piso, a tabela comprimia em vez de rolar: em 900px a coluna de
+     assinaturas embrulhava `[[nodiscard]]` fora da assinatura. */
+  /* o piso escala com --s: `42rem` e relativo a raiz e ficava parado em
+     672px enquanto o conteudo crescia 45% em projecao */
+  min-width: min(100%, calc(42rem * var(--s)));
+  /* SEM `font-family`: o corpo da tabela herda Serif, como no livro
+     (livro.css nao declara familia no `td`). Estava em `--rotulo`, e Sans
+     e papel de LEGENDA - o corpo de 37 tabelas em 20 paginas saia numa
+     familia que a regra dos tres papeis nao lhe da, e site e livro
+     discordavam na mesma tabela. */
+  font-size: var(--t-est);
+  font-variant-numeric: tabular-nums;
+}
+.tabela th, .tabela td {
+  text-align: left; vertical-align: top;
+  padding: var(--e1) var(--e2);
+  border-bottom: var(--rule-w) solid var(--grade);
+}
+.tabela th {
+  font-family: var(--maquina); font-size: var(--t-rot); font-weight: 600;
+  letter-spacing: .1em; color: var(--fosforo);
+  border-bottom-color: var(--grade-alta); white-space: nowrap;
+}
+.tabela tbody tr:last-child td { border-bottom: 0; }
+.tabela tbody tr:hover td { background: var(--painel); }
+.tabela td code, .tabela th code { font-size: inherit; white-space: nowrap; }
+.tabela caption {
+  caption-side: bottom; text-align: left; padding: var(--e2) var(--e2) 0;
+  font-family: var(--rotulo); font-size: var(--t-rot); color: var(--apagado);
+}
 
 /* =============================================================
    T4 · CALLOUTS (5 tipos)
@@ -241,7 +436,9 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
   border-inline: var(--rule-w) solid var(--grade);
   background: var(--painel);
 }
-.callout__corpo { padding: var(--e2); }
+/* recuo horizontal maior que o vertical: a 12px nos quatro lados a prosa
+   encostava no fio lateral do painel */
+.callout__corpo { padding: var(--e2) var(--e3); }
 .callout__corpo p { margin: 0; max-width: none; }
 .callout__corpo p + p { margin-top: var(--e2); }
 .callout .moldura__titulo { letter-spacing: .18em; }
@@ -256,12 +453,15 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 .callout[data-t="info"]   .moldura, .callout[data-t="info"] .moldura__titulo { color: var(--apagado); }
 
 /* o deriva costura as 26 aulas ao projeto: tratamento mais forte */
+/* Laterais em regua, como todos os outros: o topo e a base sao a moldura
+   de box-drawing. Aqui havia `border` nos quatro lados ALEM da moldura, e
+   o resultado era regua dobrada em cima e embaixo - o `border-top: none`
+   no corpo, logo abaixo, era a tentativa de esconder metade do sintoma. */
 .callout[data-t="deriva"] {
-  border: var(--rule-w) solid var(--fosforo);
+  border-inline: var(--rule-w) solid var(--fosforo);
   background: var(--fosforo-lav);
 }
 .callout[data-t="deriva"] .moldura, .callout[data-t="deriva"] .moldura__titulo { color: var(--fosforo); }
-.callout[data-t="deriva"] .callout__corpo { border-top: none; }
 .callout[data-t="deriva"] .versao {
   display: inline-block; margin-right: .5em; padding: 0 5px;
   background: var(--fosforo); color: var(--vazio);
@@ -346,7 +546,7 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 }
 .int__legenda .rot {
   flex: 0 0 auto; font-family: var(--maquina); font-size: var(--t-rot);
-  letter-spacing: .14em; color: var(--fosforo); padding-top: 2px;
+  letter-spacing: .14em; color: var(--fosforo); padding-top: var(--e00);
 }
 .int__legenda p { margin: 0; font-family: var(--rotulo); font-size: calc(14px * var(--s)); max-width: 76ch; color: var(--leitura); }
 
@@ -356,7 +556,7 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
   font-family: var(--maquina); font-size: var(--t-est); min-width: 0;
 }
 .caixa__cab {
-  padding: 3px var(--e1); border-bottom: var(--rule-w) solid var(--grade);
+  padding: var(--e00) var(--e1); border-bottom: var(--rule-w) solid var(--grade);
   color: var(--apagado); font-size: var(--t-rot); letter-spacing: .12em;
   display: flex; justify-content: space-between; gap: var(--e1);
 }
@@ -372,7 +572,7 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 .seta[data-t="falha"] { color: var(--falha); }
 
 /* faixa de bytes do inspetor de objeto ----------------------- */
-.bytes { display: flex; flex-wrap: wrap; gap: 2px; }
+.bytes { display: flex; flex-wrap: wrap; gap: var(--e00); }
 .bytes i {
   width: calc(13px * var(--s)); height: calc(17px * var(--s));
   background: var(--grade); font-style: normal;
@@ -387,7 +587,6 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 .exercicio { margin: var(--e3) 0 0; border-inline: var(--rule-w) solid var(--grade); background: var(--painel); }
 .exercicio__corpo { padding: var(--e2); }
 .exercicio__corpo > p:first-child { margin-top: 0; }
-.exercicio__n { font-family: var(--maquina); color: var(--fosforo); letter-spacing: .1em; }
 .exercicio details { margin-top: var(--e2); border-top: var(--rule-w) solid var(--grade); }
 .exercicio summary {
   cursor: pointer; list-style: none; min-height: var(--tap);
@@ -422,13 +621,11 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 .classe[data-tipo="interface"] .classe__estereo { color: var(--frio); }
 .classe[data-tipo="abstrata"] .classe__nome { font-style: italic; }
 .classe[data-tipo="abstrata"] { border-color: var(--fosforo); }
-.classe[data-sel="1"] { box-shadow: 0 0 0 2px var(--fosforo); }
+/* `box-shadow: 0 0 0 2px` e border disfarcada, e o DESIGN.md afirma que
+   nao existe um box-shadow em todo o build. `outline` diz o que e. */
+.classe[data-sel="1"] { outline: 2px solid var(--fosforo); outline-offset: -1px; }
 .uml__liga { font-family: var(--maquina); color: var(--grade-alta); font-size: var(--t-est); line-height: 1; text-align: center; }
 .uml__liga b { color: var(--apagado); font-weight: 400; letter-spacing: .1em; font-size: var(--t-rot); }
-.uml__legenda {
-  display: flex; gap: var(--e3); flex-wrap: wrap;
-  font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .08em;
-}
 
 /* =============================================================
    T5 · TRILHA DERIVA
@@ -443,18 +640,25 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
   font-family: var(--maquina); font-size: var(--t-est); letter-spacing: .06em;
   color: var(--fosforo); white-space: nowrap;
 }
-.versao__tag .aula { display: block; color: var(--fantasma); font-size: var(--t-rot); margin-top: 3px; }
+/* `.versao__aula`, e nao `.aula`: `.aula` e a CASCA da pagina
+   (`display: grid`, coluna de 300px para a arvore), e este era um rotulo
+   em linha com o mesmo nome, emitido 51 vezes em trilha, rubrica, plano e
+   portao. As 51 estavam salvas por `.versao__tag .aula` ter mais peso;
+   uma unica emissao fora de `.versao__tag` viraria um bloco de grade de
+   300px no meio da lista. Nome que colide com o do contentor nao e bug
+   hoje, e uma armadilha para quem editar amanha. */
+.versao__tag .versao__aula { display: block; color: var(--apagado); font-size: var(--t-rot); margin-top: var(--e00); }
 .versao__o { min-width: 0; }
 .versao__entrega { font-family: var(--rotulo); font-size: calc(15px * var(--s)); color: var(--leitura); }
-.versao__conc { margin-top: 4px; font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .04em; }
-.versao__testes { margin-top: 6px; font-family: var(--maquina); font-size: var(--t-rot); color: var(--ok); letter-spacing: .08em; }
+.versao__conc { margin-top: var(--e0); font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .04em; }
+.versao__testes { margin-top: var(--e1); font-family: var(--maquina); font-size: var(--t-rot); color: var(--ok); letter-spacing: .08em; }
 
 /* variante deliberadamente quebrada: recurso pedagógico, não erro */
-.versao--quebrada { background: var(--falha-lav); box-shadow: inset 3px 0 0 var(--falha); padding-left: var(--e2); }
+.versao--quebrada { background: var(--falha-lav); padding-left: var(--e2); }
 .versao--quebrada .versao__tag { color: var(--falha); }
 .versao--quebrada .versao__testes { color: var(--falha); }
 .versao--quebrada .aviso-proposito {
-  display: inline-block; margin-bottom: 4px; padding: 1px 5px;
+  display: inline-block; margin-bottom: var(--e0); padding: 1px var(--e0);
   background: var(--falha); color: var(--vazio);
   font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .1em;
 }
@@ -470,7 +674,7 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 .nav-pe a:hover { background: var(--painel); color: var(--fosforo); }
 .nav-pe a:last-child { text-align: right; }
 .nav-pe .tecla-rot { font-size: var(--t-rot); letter-spacing: .14em; color: var(--fantasma); }
-.nav-pe .alvo { font-size: calc(15px * var(--s)); margin-top: 5px; }
+.nav-pe .alvo { font-size: calc(15px * var(--s)); margin-top: var(--e0); }
 .nav-pe .meio {
   border-inline: var(--rule-w) solid var(--grade); padding: var(--e3);
   display: flex; align-items: center; font-size: var(--t-est); color: var(--fantasma); letter-spacing: .1em;
@@ -500,11 +704,123 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
 /* =============================================================
    RESPONSIVO - de 360px a projetor. O v1 tinha uma @media só.
    ============================================================= */
-@media (max-width: 1100px) {
-  :root { --arvore: 240px; }
+
+/* ---- projeção é modo de APRESENTAÇÃO --------------------------
+   A tecla F é escala e não modo em tudo o mais, e continua sendo. A
+   exceção é a árvore, e ela é decisão de produto: uma lista com as 26
+   aulas é localizador para quem lê a 60cm, e é cromo para trinta pessoas
+   a quatro metros. Projetada, ela some e continua a uma tecla (M).
+
+   E não é só estética. Em 1366 projetado, com a árvore ocupando 300px, a
+   prosa caía para ~640px a 24,65px de corpo - cerca de cinquenta
+   caracteres por linha, quebrando "o dono do / recurso". Sem a árvore
+   sobram 1278px, e a grade de três colunas cabe inteira.
+
+   As quatro regras repetem as da faixa <=1100px de propósito: media
+   query e classe não se combinam num seletor só, e agrupar por herança
+   deixaria a gaveta dependendo de uma ordem de cascata frágil. */
+html.proj .aula { grid-template-columns: minmax(0, 1fr); }
+html.proj .gaveta-abre {
+  display: inline-flex; align-items: center; gap: .4em;
+  height: var(--tap); padding: 0 var(--e2);
+  background: transparent; border: var(--rule-w) solid var(--grade-alta);
+  color: var(--fosforo); font-family: var(--maquina); font-size: var(--t-est); cursor: pointer;
 }
-@media (max-width: 860px) {
-  :root { --goteira: 16px; }
+html.proj .arvore {
+  position: fixed; inset: calc(46px * var(--s)) 0 0 0; z-index: 30;
+  max-height: none; background: var(--vazio); overflow-y: auto;
+  border-right: none; border-top: var(--rule-w) solid var(--grade);
+  padding: var(--e3) 0 var(--e5); display: none;
+}
+html.proj .arvore[data-aberta="1"] { display: block; }
+
+/* ---- >=1360px: a terceira coluna ------------------------------
+   Aqui a largura que sobrava passa a trabalhar. Tres consequencias, e as
+   tres importam mais na projecao em sala que na leitura em casa:
+
+   1. Toda regua de moldura termina onde o conteudo termina (`campo-fim`),
+      e nao na borda da janela.
+   2. O que NAO reflui - codigo, tabela, interativo, diagrama - atravessa
+      prosa E campo. Um bloco de C++ ganha 262px, o que em projecao e a
+      diferenca entre a linha caber e a linha rolar.
+   3. A procedencia de cada numero sai do fluxo da prosa e vai para a
+      margem, como no livro.
+
+   O bloco inteiro e centrado na coluna que sobra da arvore: encostado a
+   esquerda, com 600px de vazio a direita, o desequilibrio lia como erro.  */
+@media (min-width: 1360px) {
+  .corpo {
+    max-width: calc(var(--medida) + var(--goteira) * 3 + var(--campo));
+    margin-inline: auto;
+  }
+  .cabeca-aula, .slide {
+    display: grid;
+    grid-template-columns:
+      [prosa] minmax(0, var(--medida))
+      [goteira] var(--goteira)
+      [campo] var(--campo) [campo-fim];
+    column-gap: 0;
+    align-content: start;
+  }
+  /* A regra e por omissao LARGA, e nao estreita. Onze construtores de
+     pagina usam `.corpo` - aula, trilha, laboratorios, rubrica,
+     exercicios, portao, plano, glossario e os tres anexos -, e cada um
+     tem blocos proprios (`.trilha`, `.versao`, `.grupo`, `.bytes`, o
+     painel de estado). Listar quem atravessa deixaria de fora o que eu
+     nao previ, e o bloco esquecido ficaria 262px mais estreito do que
+     esta hoje - regressao silenciosa. Assim ninguem estreita: so a
+     prosa fica limitada, e ela ja tinha `max-width: var(--medida)`. */
+  .cabeca-aula > *, .slide > * { grid-column: prosa / campo-fim; min-width: 0; }
+  .cabeca-aula > h1,
+  .slide > .slide__cab, .slide > p, .slide > ul, .slide > ol,
+  .slide > .callout, .slide > .exercicio, .slide > blockquote,
+  .slide > h3, .slide > h4 { grid-column: prosa; }
+
+  /* linha 1 ao lado do titulo; a barra das secoes fica na linha 2,
+     atravessando prosa e campo como os blocos de codigo. */
+  .ficha {
+    grid-column: campo; grid-row: 1; align-self: start;
+    flex-direction: column; gap: 2px; margin: 0;
+    padding-left: var(--e1);
+  }
+  /* rotulo e valor na MESMA linha: empilhados, a ficha ficava mais alta
+     que o h1 e esticava a primeira linha da grade, abrindo um vazio de
+     ~100px debaixo do titulo. */
+  .ficha__par {
+    display: grid; grid-template-columns: 8.5em 1fr;
+    column-gap: var(--e1); white-space: normal;
+  }
+  /* --apagado, e nao --fantasma: os seis rotulos sao o unico texto que diz
+     o que os numeros da ficha significam, e a 2,46:1 quem nao os lia era
+     justamente o estudante no desktop - abaixo de 1360px eles ja eram
+     --apagado, e em projecao --fantasma resolve para #B6BDB7. */
+  .ficha__par b { color: var(--apagado); }
+  .ficha__par b::after { content: none; }
+
+  .carimbo {
+    grid-column: campo; align-self: start;
+    margin: 0 0 var(--e4); max-width: none;
+    border-left: 0; padding-left: 0;
+  }
+  .carimbo__regua {
+    display: block; overflow: hidden; white-space: nowrap;
+    color: var(--grade-alta); line-height: 1.35; margin-bottom: var(--e0);
+  }
+  .carimbo__valor, .carimbo__grandeza { display: block; }
+  .carimbo__valor::after { content: none; }
+}
+
+/* ---- <=1100px: a arvore vira gaveta -------------------------
+   Havia um degrau intermediario aqui: `--arvore: 240px`. Em 240px, com
+   2x18px de recuo e Mono de 13px, cabem 21 caracteres - e
+   `contador_de_instancias<T>` tem 25 sozinho. Metade das 26 entradas
+   embrulhava em tres linhas e a da Aula 19 saia cortada no fio.
+
+   A saida nao e estreitar mais: e a gaveta, que ja existia em 860px e
+   funciona. Nesta faixa a coluna de leitura tem ~600px, e devolver 240px
+   a ela vale mais que a navegacao permanentemente visivel - que fica a
+   uma tecla (M) ou a um toque de distancia.                       */
+@media (max-width: 1100px) {
   .aula { grid-template-columns: minmax(0, 1fr); }
   .gaveta-abre {
     display: inline-flex; align-items: center; gap: .4em;
@@ -517,9 +833,28 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
     max-height: none; background: var(--vazio);
     border-right: none; border-top: var(--rule-w) solid var(--grade);
     padding: var(--e3) 0 var(--e5); display: none;
+    overflow-y: auto;
   }
   .arvore[data-aberta="1"] { display: block; }
   .arvore a { min-height: var(--tap); }
+}
+@media (max-width: 860px) {
+  :root { --goteira: 16px; }
+  /* `height` fixa de 46px com `flex` sem folga: o badge UFPB embrulhava
+     em duas linhas e GLOSSARIO encostava em AULAS. O badge e
+     institucional e o rodape o traz - aqui ele sai, e a altura passa a
+     ser piso em vez de teto. */
+  .barra { height: auto; min-height: calc(46px * var(--s)); padding: var(--e1) var(--goteira); }
+  .badge-ufpb { display: none; }
+  .migalha { overflow: hidden; }
+  .migalha .secao { display: none; }
+  /* com o badge fora, esta barra nao separa mais nada */
+  .migalha > .sep { display: none; }
+  /* A migalha e as tres teclas nao cabem em 390px: `AULA 12` saia cortada
+     em `AULA` e GLOSSARIO corria por baixo de F PROJECAO. A tecla que sai
+     e a da projecao - projetar num telefone de 390px nao e caso de uso, e
+     o atalho de teclado continua ligado para quem tiver teclado. */
+  .barra [data-acao="projecao"] { display: none; }
   .cabeca-aula h1 { font-size: calc(26px * var(--s)); }
   .int__controles { flex-direction: column; align-items: stretch; }
   .grupo { display: grid; grid-template-columns: 1fr 1.4fr 1fr; }
@@ -542,8 +877,41 @@ h2 .c20, h1 .c20 { margin-left: .5em; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 
+/* ---- impressao de uma pagina do site -------------------------
+   O bloco fazia meia inversao: `body { background: #fff; color: #000 }`
+   e mais nada. Os paineis continuavam a #101413, as molduras a #2C3835 e
+   o ambar a #F2A93B - no papel, ambar sobre branco da 2.0:1 e moldura da
+   1.6:1. Imprimir uma aula saia pior do que nao ter regra de impressao
+   nenhuma, porque o defeito e invisivel na tela de quem escreveu.
+
+   Como TODA medida e TODA cor derivam dos tokens, a inversao completa e
+   um remapeamento deles. O artefato de impressao do material continua
+   sendo o livro (livro/poo-v2.pdf, composto pelo XeLaTeX com medida,
+   quebra de pagina e hifenizacao portuguesa); isto aqui e para quem
+   imprime uma aula para levar. */
 @media print {
-  body { background: #fff; color: #000; background-image: none; }
+  :root {
+    --vazio: #fff; --painel: #f4f5f3; --painel-alto: #eceee9;
+    --grade: #c3c8c2; --grade-alta: #9aa19a;
+    --fosforo: #7a4b00; --fosforo-alto: #4d2f00;
+    --leitura: #161a18; --apagado: #4a514c; --fantasma: #656c66;
+    --ok: #1c6b34; --falha: #a8201a; --frio: #12586a; --outro: #5a2f78;
+    --ok-lav: #eaf5ed; --falha-lav: #fceceb; --frio-lav: #e9f3f6;
+    --fosforo-lav: #fbf2e2; --outro-lav: #f3ecf8;
+  }
+  body { background: var(--vazio); color: var(--leitura); background-image: none; }
+  a { color: var(--frio); }
   .barra, .arvore, .ferramentas, .int__controles, .nav-pe { display: none; }
-  .interativo, .codigo, .callout { break-inside: avoid; }
+  .interativo, .codigo, .callout, .exercicio, .carimbo { break-inside: avoid; }
+  /* o mapa das secoes nao serve no papel: nao ha secao corrente. E como
+     `:not(:has(.progresso))` continua casando com o elemento presente no
+     DOM, o fio da cabeca tem de voltar aqui - senao as 26 aulas saem no
+     papel sem regua nenhuma. */
+  .progresso { display: none; }
+  .cabeca-aula {
+    padding-bottom: var(--e4);
+    border-bottom: var(--rule-w) solid var(--grade);
+  }
+  /* a ficha volta ao fluxo: no papel nao ha campo de margem */
+  .ficha { grid-column: prosa; }
 }

@@ -22,7 +22,7 @@
   <div class="migalha">
     <span class="badge-ufpb">UFPB · CI</span>
     <span class="sep">/</span><a href="index.html" style="border:none;color:var(--fosforo)"><b>POO</b></a>
-    <span class="sep">/</span><span class="atual">PORTÃO</span>
+    <span class="atual">PORTÃO</span>
   </div>
   <div class="ferramentas">
     <button class="tecla gaveta-abre" type="button" data-acao="gaveta" aria-expanded="false">▸ AULAS</button>
@@ -78,7 +78,7 @@
 <li><a href="galeria.html"><span class="galho">├</span><span class="num">▸</span>Os 8 instrumentos</a></li>
 <li><a href="laboratorios.html"><span class="galho">├</span><span class="num">▸</span>12 laboratórios</a></li>
 <li><a href="rubrica.html"><span class="galho">├</span><span class="num">▸</span>Rubrica de revisão</a></li>
-<li><a href="verifica.html" aria-current="page"><span class="galho">├</span><span class="num">▸</span>Portão make verifica</a></li>
+<li><a href="verifica.html" aria-current="page"><span class="galho">┣</span><span class="num">▸</span>Portão make verifica</a></li>
 <li><a href="exercicios.html"><span class="galho">├</span><span class="num">▸</span>Exercícios</a></li>
 <li><a href="plano-de-ensino.html"><span class="galho">╰</span><span class="num">▸</span>Plano de ensino</a></li>
 </ol></nav>
@@ -100,25 +100,25 @@
     vida (<a href="aula-08.html">Aula 08</a>) e o <code>gdb</code> com ponto de parada em
     destrutor (<a href="aula-11.html">Aula 11</a>).</p>
     <div class="trilha"><div class="versao">
-  <div class="versao__tag">warning<span class="aula">portão</span></div>
+  <div class="versao__tag">warning<span class="versao__aula">portão</span></div>
   <div class="versao__o">
     <div class="versao__entrega"><code>g++ -std=c++17 -Wall -Wextra -Wpedantic</code></div>
     <div class="versao__conc">zero warning <strong>no código do estudante</strong>. O FTXUI e o Catch2 entram por <code>FetchContent</code> como <code>SYSTEM</code>, de forma que o que essas bibliotecas emitem fique fora da conta, porém também não sirva de abrigo para um warning seu.</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">testes<span class="aula">portão</span></div>
+  <div class="versao__tag">testes<span class="versao__aula">portão</span></div>
   <div class="versao__o">
     <div class="versao__entrega"><code>ctest --test-dir build</code></div>
     <div class="versao__conc">todos verdes. Nas variantes deliberadamente quebradas a falha é esperada, e o roteiro de observação de cada uma diz o que se deve ver.</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">replay<span class="aula">portão</span></div>
+  <div class="versao__tag">replay<span class="versao__aula">portão</span></div>
   <div class="versao__o">
     <div class="versao__entrega"><code>./deriva --replay roteiro.txt --semente 7 | diff - esperado.txt</code></div>
     <div class="versao__conc">despejo idêntico byte a byte. É o oráculo das Aulas 16, 24 e 25, nas quais uma refatoração se considera correta quando a saída do roteiro não muda.</div>
   </div>
 </div><div class="versao">
-  <div class="versao__tag">contadores<span class="aula">portão</span></div>
+  <div class="versao__tag">contadores<span class="versao__aula">portão</span></div>
   <div class="versao__o">
     <div class="versao__entrega"><code>grep &#x27;vivos=0&#x27; saida.txt</code></div>
     <div class="versao__conc">o contador de instâncias vivas fecha em zero no fim de <code>main</code>, o que acusa qualquer destrutor que deixou de rodar, sem depender de ferramenta externa.</div>

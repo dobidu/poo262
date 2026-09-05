@@ -8,24 +8,61 @@
 
 /* ---- abertura tipo POST -------------------------------------
    Uma vez, saltável, e nada de conteúdo depende dela.          */
+/* A abertura reservava 8 linhas para sempre - ~290px em 1440 e ~500px em
+   390, no ponto de maior proeminencia da porta de entrada, repetindo
+   contagens que `.capa__meta` traz 200px abaixo. O POST e diegetico e
+   precede: e a estacao ligando. O que nao se justifica e ele MORAR ali.
+   Agora ele roda, recolhe na ultima linha, e o botao que servia para
+   saltar passa a servir para reabrir. Sob `reduced-motion` nasce
+   recolhido, e nada se perde: a linha que fica e `▸ sistema pronto`. */
 .abertura {
   padding: var(--e5) 0 var(--e4);
   font-family: var(--maquina); font-size: var(--t-est); line-height: 1.9;
   color: var(--apagado);
 }
+/* Quem recolhe e o LOG; a linha de estado nao sai nunca. O teto e numerico
+   nos dois extremos (0 -> 21em), que e o que torna a transicao possivel:
+   `max-height: auto` nao anima.
+
+   O padrao e RECOLHIDO, e a abertura so cresce quando o JS a poe para
+   rodar. A primeira versao fazia o contrario, e falhava do lado errado:
+   sem JS, com JS bloqueado, ou no intervalo entre o HTML pintar e o
+   script correr, o visitante recebia os ~290px de log no ponto de maior
+   proeminencia da porta de entrada - exatamente o defeito que esta
+   passada existe para corrigir. Falhar recolhido tambem elimina o pulo
+   de leiaute no carregamento. */
+.abertura__log {
+  max-height: 0; overflow: hidden;
+  transition: max-height 420ms cubic-bezier(.2, .7, .2, 1);
+}
+.abertura[data-rodando="1"] .abertura__log,
+.abertura[data-aberta="1"] .abertura__log { max-height: 21em; }
 .abertura [data-post] { white-space: pre-wrap; }
+/* a linha que fica depois do recolhimento e a mais legivel do bloco: ela e
+   o que o visitante le em toda visita, e as sete acima sao de uma vez so */
+.abertura__pronto { color: var(--leitura); }
 .abertura [data-post][data-oculta] { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .abertura__log { transition: none; } }
 .abertura .ok { color: var(--ok); }
 .abertura .am { color: var(--fosforo); }
 .abertura .fr { color: var(--frio); }
 .abertura .fa { color: var(--fantasma); }
+/* `display: none` por omissao: os dois atributos que o revelam sao postos
+   por app.js, entao sem JS nao ha botao inerte na tela. */
+.saltar { display: none; }
+.abertura[data-rodando="1"] .saltar,
+.abertura[data-pronta="1"] .saltar { display: inline-block; }
 .saltar {
   margin-top: var(--e2); background: none; border: none; padding: 0;
-  color: var(--fantasma); font-family: var(--maquina); font-size: var(--t-rot);
+  color: var(--apagado); font-family: var(--maquina); font-size: var(--t-rot);
   letter-spacing: .12em; cursor: pointer; text-decoration: underline;
 }
 .saltar:hover { color: var(--fosforo); }
-.abertura[data-pronta="1"] .saltar { display: none; }
+/* O botao NAO desaparece no fim: ele troca de funcao. Esta regra era do
+   tempo em que a abertura ficava no alto para sempre, quando nao havia o
+   que reabrir. app.js relabela para "▸ VER A INICIALIZACAO". */
+.abertura[data-pronta="1"] .saltar { margin-top: var(--e1); text-decoration: none; }
+.abertura[data-pronta="1"] .saltar:hover { text-decoration: underline; }
 
 /* ---- título ------------------------------------------------- */
 .capa__tit { padding: var(--e3) 0 var(--e4); }
@@ -67,7 +104,7 @@
 .hv__bloco[data-aceso="1"] { border-color: var(--fosforo); background: var(--fosforo-lav); }
 .hv__cab {
   font-size: var(--t-rot); letter-spacing: .14em; color: var(--apagado);
-  border-bottom: var(--rule-w) solid var(--grade); padding-bottom: 3px; margin-bottom: 4px;
+  border-bottom: var(--rule-w) solid var(--grade); padding-bottom: var(--e00); margin-bottom: var(--e0);
 }
 .hv__seta {
   flex: 0 0 auto; align-self: center;
@@ -104,19 +141,34 @@
 }
 .heroi__legenda .rot {
   flex: 0 0 auto; font-family: var(--maquina); font-size: var(--t-rot);
-  letter-spacing: .14em; color: var(--fosforo); padding-top: 2px;
+  letter-spacing: .14em; color: var(--fosforo); padding-top: var(--e00);
 }
 .heroi__legenda p { margin: 0; font-family: var(--rotulo); font-size: calc(14px * var(--s)); max-width: 78ch; }
 
 /* =============================================================
    ÍNDICE · 3 unidades × 26 aulas
    ============================================================= */
+/* estava como `style="..."` no gerador, com sete declaracoes em linha */
+.capa__secao {
+  margin: var(--e5) 0 0; font-weight: 500;
+  font-family: var(--maquina); font-size: var(--t-rot);
+  letter-spacing: .18em; color: var(--fosforo);
+}
+/* `auto-fit` decidia a topologia no lugar do conteudo: em 900px dava 2+1,
+   e a Unidade III sozinha na segunda fila lia como sendo de outra
+   natureza. Existem exatamente tres unidades, e sempre existirao. */
 .unidades {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--e3); padding: var(--e5) 0 0;
 }
-.unidade { border-inline: var(--rule-w) solid var(--grade); background: var(--painel); }
-.unidade__corpo { padding: var(--e2); }
+/* o pe do painel ("0/8 lidas") flutuava logo abaixo da ultima aula: a
+   Unidade III tem 8 contra 9 das outras, e sobravam ~60px de vazio
+   dentro do painel. Pe de painel mora no fundo. */
+.unidade {
+  border-inline: var(--rule-w) solid var(--grade); background: var(--painel);
+  display: flex; flex-direction: column;
+}
+.unidade__corpo { padding: var(--e2); flex: 1 1 auto; }
 .unidade__tema {
   font-family: var(--rotulo); font-size: calc(15px * var(--s));
   color: var(--leitura); margin-bottom: var(--e2);
@@ -125,7 +177,7 @@
 .unidade li { display: flex; }
 .unidade a {
   display: flex; gap: .55em; align-items: baseline; flex: 1 1 auto;
-  min-height: calc(30px * var(--s)); padding: 3px var(--e1);
+  min-height: calc(30px * var(--s)); padding: var(--e00) var(--e1);
   border: none; color: var(--apagado); line-height: 1.45;
 }
 .unidade a:hover { background: var(--painel-alto); color: var(--fosforo-alto); }
@@ -135,26 +187,84 @@
 .unidade a .tem-int { color: var(--fosforo); flex: 0 0 auto; }
 .unidade__pe {
   padding: var(--e1) var(--e2); border-top: var(--rule-w) solid var(--grade);
-  font-family: var(--maquina); font-size: var(--t-rot); color: var(--fantasma); letter-spacing: .1em;
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado); letter-spacing: .1em;
 }
-.unidade__pe b { color: var(--apagado); font-weight: 400; }
+.unidade__pe b { color: var(--leitura); font-weight: 500; }
 
-/* ---- atalhos da capa --------------------------------------- */
-.atalhos {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--e2); padding: var(--e4) 0 0;
+/* ---- os nove destinos, em tres familias ---------------------
+   Eram nove cartoes de peso igual num `auto-fit` de `minmax(220px, 1fr)`:
+   5+4 em 1440 e 6+3 em 1920, e nenhuma das quebras caindo nas fronteiras
+   reais do que ali existe. Os nove nao sao equivalentes - um deles e um
+   PDF de 299 paginas, quatro acompanham a aula da semana e quatro sao
+   instrumento de processo -, e a topologia agora diz isso.
+
+   O cartao tambem deixa de ter sobrolho: o rotulo pequeno em cima de um
+   nome grande virava etiqueta redundante. O destino E o titulo.        */
+.destinos { padding: var(--e5) 0 0; }
+.familia + .familia { margin-top: var(--e4); }
+.familia__rot {
+  margin: 0 0 var(--e2);
+  font-family: var(--maquina); font-size: var(--t-rot); font-weight: 500;
+  letter-spacing: .18em; color: var(--fosforo);
 }
+.familia__itens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e2); }
+
 .atalho {
-  border: var(--rule-w) solid var(--grade); background: var(--painel);
+  border-inline: var(--rule-w) solid var(--grade); background: var(--painel);
   padding: var(--e2); color: var(--apagado);
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: column; gap: var(--e1);
+  border-bottom: none;
 }
 .atalho:hover { border-color: var(--fosforo); background: var(--painel-alto); color: var(--apagado); }
-.atalho__rot { font-family: var(--maquina); font-size: var(--t-rot); letter-spacing: .14em; color: var(--fosforo); }
-.atalho__nome { font-family: var(--rotulo); font-size: calc(16px * var(--s)); color: var(--leitura); }
-.atalho__nota { font-family: var(--maquina); font-size: var(--t-rot); color: var(--fantasma); }
+.atalho__rot {
+  font-family: var(--maquina); font-size: calc(15px * var(--s));
+  letter-spacing: .14em; color: var(--fosforo);
+}
+.atalho:hover .atalho__rot { color: var(--fosforo-alto); }
+.atalho__nome { font-family: var(--rotulo); font-size: calc(14px * var(--s)); color: var(--leitura); }
+.atalho__nota {
+  margin-top: auto; padding-top: var(--e1);
+  font-family: var(--maquina); font-size: var(--t-rot); color: var(--apagado);
+}
+
+/* ---- o livro: o unico destino que e um artefato de 299 paginas ---
+   Ele nao cabia num cartao de 220px, e a nota tinha de dizer em prosa
+   que existe uma segunda versao ("e a versao de tela em livro/livro.html").
+   Duas acoes pedem dois botoes, e dois botoes nao entram num <a>.      */
+.levar {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: var(--e4) var(--e3); flex-wrap: wrap;
+  border-inline: var(--rule-w) solid var(--grade-alta);
+  background: var(--painel-alto); padding: var(--e3);
+}
+.levar__txt { min-width: 0; flex: 1 1 26ch; }
+.levar__tit {
+  margin: 0; font-family: var(--humana); font-size: calc(23px * var(--s));
+  font-weight: 600; color: var(--leitura); line-height: 1.2;
+}
+.levar__nota {
+  margin: var(--e1) 0 0; max-width: 62ch;
+  font-family: var(--rotulo); font-size: calc(14px * var(--s)); color: var(--apagado);
+}
+.levar__acoes { display: flex; gap: var(--e2); flex-wrap: wrap; }
+.levar__acoes .bt { border-bottom-width: var(--rule-w); }
+
+@media (max-width: 1040px) {
+  .unidades { grid-template-columns: minmax(0, 1fr); }
+  .familia__itens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* O herói empilhava só em 860px, e as unidades passaram a empilhar em
+     1040: entre os dois a capa tinha duas fronteiras diferentes, e nessa
+     faixa os quatro blocos do despacho rolavam na horizontal - a peça que
+     estabelece o contrato visual da capa entrando cortada. */
+  .hv__palco { flex-wrap: wrap; }
+  .hv__bloco { flex: 1 1 46%; }
+  .hv__seta { align-self: center; }
+}
 
 @media (max-width: 860px) {
+  .familia__itens { grid-template-columns: minmax(0, 1fr); }
+  .levar { align-items: stretch; }
+  .levar__acoes .bt { flex: 1 1 auto; }
   .capa__tit h1 { font-size: calc(34px * var(--s)); }
   .hv__palco { flex-wrap: wrap; }
   .hv__bloco { flex: 1 1 100%; }

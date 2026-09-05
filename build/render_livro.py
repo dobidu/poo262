@@ -40,7 +40,7 @@ sys.path.insert(0, str(RAIZ / "conteudo"))
 import mapa                                          # noqa: E402
 import medidas                                       # noqa: E402
 from comum import (MARCA_CODIGO, esc_tex, largura_maxima,   # noqa: E402
-                   moldura, realcar, realcar_tex)
+                   moldura, realcar, realcar_tex, tabela_de_carimbos)
 
 try:
     from codigo_deriva import CODIGO
@@ -63,44 +63,6 @@ CORPO_MINIMO = 6.9
 # sizeof de `entidade`. Cada medida carimba uma vez por capítulo: a margem é
 # campo de conferência, não de repetição.
 # ---------------------------------------------------------------------------
-def tabela_de_carimbos() -> list[tuple]:
-    M, P = medidas.MEDIDAS, medidas.PROCEDENCIA
-    t: list[tuple] = []
-
-    def por(chave, palavra, valor, grandeza, exibe=None):
-        """`exibe` fixa o valor do carimbo quando o texto casado não é uma
-        quantidade: `sem um aviso` casa a frase, mas o que o carimbo tem de
-        mostrar é `0 avisos`."""
-        cmd, arq = P[chave]
-        t.append((re.compile(palavra, re.I), re.compile(valor), grandeza,
-                  cmd, arq, exibe))
-
-    # do maior nome para o menor: `celula_ingenua` tem de casar antes de `celula`
-    for nome, v in sorted(M["sizeof"].items(), key=lambda kv: -len(kv[0])):
-        por("sizeof", rf"\b{re.escape(nome)}\b",
-            rf"\b{v}\s*(?:bytes|B)\b", rf"sizeof({nome})")
-
-    por("vptr", r"\bvptr\b", rf"\b{M['vptr']}\s*(?:bytes|B)\b", "custo do vptr")
-    por("testes", r"\btestes?\b", rf"\b{M['testes']}\s+testes\b", "testes verdes")
-    por("ciclo_bytes", r"\bciclo\b", rf"\b{M['ciclo_bytes']}\s*(?:bytes|B)\b",
-        "presos pelo ciclo")
-    por("no", r"sizeof\(no\)|\bnó\b", rf"\b{M['no']}\s*(?:bytes|B)\b", "sizeof(no)")
-    for nome, v in M["diamante"].items():
-        por("diamante", rf"patrulha_{nome}\b", rf"\b{v}\s*(?:bytes|B)\b",
-            f"sizeof(patrulha_{nome})")
-    por("construcoes_de_texto", r"constru[cç]", r"\bduas constru|\b2 constru",
-        "construções em de_texto")
-    por("testes_deriva", r"\bDeriva\b", rf"\b{M['testes_deriva']}\s+testes\b",
-        "testes do Deriva")
-    por("testes_labs", r"laborat[óo]rio", rf"\b{M['testes_labs']}\s+(?:testes|laborat)",
-        "laboratórios no ctest")
-    por("variantes_escritas", r"variante", rf"\b{len(M['variantes_escritas'])}\s+variantes\b",
-        "variantes quebradas")
-    por("avisos", r"\bWall\b|\bWextra\b|\baviso", r"\bsem um aviso\b|\bzero aviso\b",
-        "avisos do compilador", exibe=f"{M['avisos']} avisos")
-    return t
-
-
 CARIMBOS = tabela_de_carimbos()
 
 
