@@ -5,8 +5,8 @@ Prof. Carlos Eduardo C. F. Batista · semestre-alvo **2026.2**.
 
 Este repositório executa o que está em `PLANO_DE_ENSINO_POO_v2.md`,
 `PLANO-MATERIAL-POO-v2.md` e `PLANO-LIVRO-POO-v2.md`: **26 aulas** (não 27),
-Aula N = Capítulo N, sistema-base **Deriva**, alvo **C++17**, e oito tipos de
-exemplo interativo.
+Aula N = Capítulo N, sistema-base **Deriva**, alvo **C++17**, e oito instrumentos
+interativos, mais a corrida reaproveitada de LPII e o diagrama de classes.
 
 ## Uma fonte, dois meios
 
@@ -15,7 +15,8 @@ fonte única - foi o que aconteceu no v1, e é o que a arquitetura abaixo impede
 
 ```
 conteudo/mapa.py          A TABELA CANÔNICA: 26 aulas, 3 anexos, 20 versões do
-                          Deriva, 12 laboratórios, 8 interativos. Verifica os
+                          Deriva, 12 laboratórios, 10 tipos de interativo em 28
+                          usos. Verifica os
                           próprios invariantes; mapa quebrado não gera nada.
 conteudo/aulas/*.py       fonte de verdade do conteúdo (prosa, código, callouts,
                           exercícios), extraída do v1 e editável à mão
@@ -210,12 +211,13 @@ trechos que site e livro publicam saem de lá, com arquivo e linha no rodapé de
 cada bloco.
 
 As 38 páginas do site, geradas: 26 aulas, 3 anexos, capa com o herói
-de despacho virtual, galeria dos 8 interativos, trilha das 20 versões, os 12
+de despacho virtual, galeria dos oito instrumentos, trilha das 20 versões, os 12
 laboratórios, a rubrica de revisão, o portão `make verifica`, o plano de ensino
 (com `.docx`), exercícios agregados, glossário e bibliografia. O livro
 reestruturado em 26 capítulos + 3 anexos, com o manifesto que prova, seção por
-seção, que nada do v1 ficou órfão. Os 9 interativos (8 tipos + a peça de corrida
-reaproveitada de LPII), passando o contrato.
+seção, que nada do v1 ficou órfão. As 9 peças da galeria (os oito instrumentos mais a
+corrida reaproveitada de LPII), passando o contrato; o diagrama de classes é o
+décimo tipo, e é ferramenta, não instrumento.
 
 **Não está feito, e está registrado item a item** - 96 pendências em
 `conteudo/PENDENCIAS.md` e 54 em `livro/MIGRACAO.md`:
